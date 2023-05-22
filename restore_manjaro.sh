@@ -1,4 +1,4 @@
-#!/bin/bash
+n#!/bin/bash
 
 if [ "$EUID" -ne 0 ]
     then echo "Please run as root"
@@ -20,7 +20,7 @@ function install_packages(){
     pacman -Syyu --noconfirm
     echo -e "\n\x1B[34mInstalling base packages (It may take a long time)\x1B[0m"
     pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
-    sudo -H -u dragonis41 bash -c 'yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux61-headers autojump'
+    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux61-headers autojump'
 }
 
 function install_extra_packages(){
@@ -28,9 +28,22 @@ function install_extra_packages(){
     pacman -Syyu --noconfirm
     echo -e "\n\x1B[34mInstalling extra packages (It may take a long time)\x1B[0m"
     pacman -S yay --noconfirm
-    sudo -H -u dragonis41 bash -c 'yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin spotify thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker'
+    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker'
     systemctl enable --now docker.service
+    if (($? != 0)); then
+        echo -e "\n\x1B[31mAn error occured will enabling docker.service\x1B[0m"
+        exit 1
+    fi
     usermod -aG docker dragonis41
+    if (($? != 0)); then
+        echo -e "\n\x1B[31mAn error occured will usermod dragonis41 with group docker\x1B[0m"
+        exit 1
+    fi
+    systemctl enable --now vncserver-x11-serviced.service
+    if (($? != 0)); then
+        echo -e "\n\x1B[31mAn error occured will enabling vncserver-x11-serviced.service\x1B[0m"
+        exit 1
+    fi
 }
 
 function install_ohmyzsh(){
@@ -44,6 +57,10 @@ function install_ohmyzsh(){
 
 function configure_yubikey(){
     systemctl enable --now pcscd.socket
+    if (($? != 0)); then
+        echo -e "\n\x1B[31mAn error occured will enabling pcscd.socket\x1B[0m"
+        exit 1
+    fi
 
     echo ""
     read -p "Insert the Yubikey and press enter to continue" yn

@@ -55,7 +55,7 @@ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
 # Options for Zbell oh-my-zsh plugin.
 zbell_duration=15
-zbell_ignore=($EDITOR $PAGER gdiff nano)
+zbell_ignore=($EDITOR $PAGER gdiff htop nano top)
 zbell_use_notify_send=true
 
 # Load Oh My Zsh plugins.

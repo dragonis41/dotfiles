@@ -1,0 +1,47 @@
+#!/bin/bash
+
+sentences=(
+    "BEGIN RSA PRIVATE KEY"
+    "shadowed-private-key"
+    "BEGIN PGP PRIVATE KEY BLOCK"
+    "BEGIN DSA PRIVATE KEY"
+    "BEGIN EC PRIVATE KEY"
+    "BEGIN OPENSSH PRIVATE KEY"
+    "BEGIN PRIVATE KEY"
+    "PuTTY-User-Key-File-2"
+    "BEGIN SSH2 ENCRYPTED PRIVATE KEY"
+    "BEGIN ENCRYPTED PRIVATE KEY"
+    "BEGIN OpenVPN Static key V1"
+)
+
+blacklists=(
+    "01.check-for-private-key.hook"
+)
+
+
+## Get all staged file.
+STAGED_GO_FILES=$(git diff --cached --name-only --diff-filter=d --)
+
+## Check if there is staged file.
+if [[ $STAGED_GO_FILES == "" ]]; then
+    echo -e "Check for private key................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
+## otherwise we can do stuff with these changed files.
+else
+    for file in $STAGED_GO_FILES; do
+    filename=$(basename $file)
+        for blacklist in "${blacklists[@]}"; do
+            # Check if the file is blacklisted
+            if [[ $filename != $blacklist ]]; then
+                ## Check if it contains a private key
+                for sentence in "${sentences[@]}"; do
+                    if grep -q -e "$sentence" "$file"; then
+                        echo -e "Check for private key....................................................\x1B[41mFAILED\x1B[0m"
+                        echo -e "\x1B[31mA private key was found in staged file: $file\x1B[0m"
+                        exit 1
+                    fi
+                done
+            fi
+        done
+    done
+    echo -e "Check for private key....................................................\x1B[42mPASSED\x1B[0m"
+fi

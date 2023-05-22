@@ -1,0 +1,16 @@
+[user]
+	name = Guillaume Pinon
+	email = dev@guillaume-pinon.eu
+	signingKey = 8FE9B74341E0B8D8
+[gpg]
+	program = gpg2
+[commit]
+	gpgsign = true
+[core]
+	autocrlf = input
+	editor = nano
+	hooksPath = /home/dragonis41/.git-hooks
+[credential]
+	helper = store
+[url "ssh://git@gitlab.dev.petit.ninja/"]
+	insteadOf = https://gitlab.dev.petit.ninja/

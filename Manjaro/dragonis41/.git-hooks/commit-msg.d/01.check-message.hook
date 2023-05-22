@@ -1,0 +1,40 @@
+#!/usr/bin/python
+
+import re
+import sys
+
+def validate_commit_message(message):
+	pattern = r"^((build|BREAKING CHANGE|chore|ci|deprecate|docs|feat|fix|init|perf|refactor|revert|security|style|test)?(?:\(([^A-Z)\s]+)?\))?!?: (.+))(\n{2}|$)(((?:^.+(\n|$))+(?:\n|$){0,2}?)+(?:(^.+(\n|$))+)|(?:^.+$))?$"
+	match = re.fullmatch(pattern, message, flags=re.MULTILINE)
+	return match is not None
+
+commit_msg_file = sys.argv[1]
+
+with open(commit_msg_file, "r") as f:
+	commit_message = f.read()
+
+if not validate_commit_message(commit_message.strip()):
+	print("Validating commit message................................................\x1B[41mFAILED\x1B[0m")
+	print("\n\x1B[31mInvalid commit message : \x1B[33m" + commit_message + "\x1B[0m")
+	print("-------------------------------------------------------------------------------")
+	print("The format is : \x1B[1m\x1B[3mtype(scope): subject\x1B[0m")
+	print("Types :")
+	print(" * \x1B[93mbuild\x1B[0m: Change in build configuration, dev tools, external dependencies, or other changes that don't affect the user.")
+	print(" * \x1B[93mBREAKING CHANGE\x1B[0m: Indicates that the change affects the public API, usually the removal or major modification of a feature.")
+	print(" * \x1B[93mchore\x1B[0m: Technical or preventive maintenance that is not related to functionality and does not impact the user. For example, the release of a new version or the regeneration of generated code can be considered as chores.")
+	print(" * \x1B[93mci\x1B[0m: Change related to continuous integration or the deployment environment.")
+	print(" * \x1B[93mdeprecate\x1B[0m: Marks a feature as deprecated but does not remove it so as not to break applications that use it.")
+	print(" * \x1B[93mdocs\x1B[0m: For documentation changes only.")
+	print(" * \x1B[93mfeat\x1B[0m: Implements a new feature.")
+	print(" * \x1B[93mfix\x1B[0m: Fix a bug or defect.")
+	print(" * \x1B[93minit\x1B[0m: Initialize a repository/project.")
+	print(" * \x1B[93mperf\x1B[0m: Change that improves performance.")
+	print(" * \x1B[93mrefactor\x1B[0m: Change that does not fix a bug or add functionality.")
+	print(" * \x1B[93msecurity\x1B[0m: Change that fixes a security vulnerability.")
+	print(" * \x1B[93mstyle\x1B[0m: Change that do not affect code execution (spaces, formatting, missing semicolon, etc).")
+	print(" * \x1B[93mtest\x1B[0m: Addition of missing tests or correction of existing tests.")
+	print("-------------------------------------------------------------------------------")
+
+	sys.exit(1)
+
+print("Validating commit message................................................\x1B[42mPASSED\x1B[0m")

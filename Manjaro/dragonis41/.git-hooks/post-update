@@ -1,0 +1,23 @@
+#!/bin/bash
+
+echo -e "\x1B[94m▶ Git Hooks (post update)\x1B[0m"
+
+folder="/home/dragonis41/.git-hooks/post-update.d"
+
+# Check if the directory exist.
+if [[ ! -d $folder ]]; then
+  echo "Error: the folder $folder doesn't exist"
+  exit 1
+fi
+
+for file in "$folder"/*; do
+  # Check if the file is executable.
+  if [ -x "$file" ]; then
+    # Execute the file.
+    "$file"
+    if (($? != 0)); then
+      exit 1
+    fi
+  fi
+done
+echo "" # Empty line.

@@ -41,6 +41,7 @@ files=(
     "/home/dragonis41/.git-hooks/post-update.d/01.update-server-info.hook:Manjaro/dragonis41/.git-hooks/post-update.d/"
 
     ############################ System #############################
+    "/etc/issue:Manjaro/dragonis41/etc/"
     "/etc/pacman.conf:Manjaro/dragonis41/etc/"
 
     ####################### Root config files #######################

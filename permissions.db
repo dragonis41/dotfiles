@@ -17,6 +17,7 @@
 755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/commit-msg.d/01.check-message.hook;755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/commit-msg.d;Manjaro/dragonis41/.git-hooks/commit-msg.d/01.check-message.hook
 755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/post-update;755;dragonis41:dragonis41;/home/dragonis41/.git-hooks;Manjaro/dragonis41/.git-hooks/post-update
 644;dragonis41:dragonis41;/home/dragonis41/.git-hooks/post-update.d/01.update-server-info.hook;755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/post-update.d;Manjaro/dragonis41/.git-hooks/post-update.d/01.update-server-info.hook
+644;root:root;/etc/issue;755;root:root;/etc;Manjaro/dragonis41/etc/issue
 644;root:root;/etc/pacman.conf;755;root:root;/etc;Manjaro/dragonis41/etc/pacman.conf
 644;root:root;/root/.nanorc;750;root:root;/root;Manjaro/root/.nanorc
 644;root:root;/root/.p10k.zsh;750;root:root;/root;Manjaro/root/.p10k.zsh

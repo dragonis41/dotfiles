@@ -1,4 +1,4 @@
-n#!/bin/bash
+#!/bin/bash
 
 if [ "$EUID" -ne 0 ]
     then echo "Please run as root"
@@ -20,7 +20,7 @@ function install_packages(){
     pacman -Syyu --noconfirm
     echo -e "\n\x1B[34mInstalling base packages (It may take a long time)\x1B[0m"
     pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
-    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux61-headers autojump'
+    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux61 linux61-headers autojump fprintd'
 }
 
 function install_extra_packages(){
@@ -127,6 +127,10 @@ function restore_config(){
             return 1
         fi
     done < $database
+
+    echo "\nIf there is no fingerprint registered, execute the following command :"
+    echo -e "\x1B[33mfprintd-enroll \$(whoami)\x1B[0m"
+    echo -e "\x1B[33mfprintd-verify\x1B[0m"
 }
 
 

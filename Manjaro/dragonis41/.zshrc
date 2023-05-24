@@ -55,7 +55,7 @@ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
 # Options for Zbell oh-my-zsh plugin.
 zbell_duration=15
-zbell_ignore=($EDITOR $PAGER gdiff htop nano top)
+zbell_ignore=($EDITOR $PAGER gdiff htop man nano top)
 zbell_use_notify_send=true
 
 # Load Oh My Zsh plugins.
@@ -93,8 +93,8 @@ alias dcu='docker compose up -d --always-recreate-deps --force-recreate --build'
 alias gc='git commit -S -m'
 alias gdiff='git diff'
 alias gfp='git fetch && git pull'
-alias glog='git log --graph --oneline --all'
-alias glog+="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches --all"
+alias gtree='git log --graph --oneline --all'
+alias gtree+="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches --all"
 alias go-get='ssh-add -L && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
 #alias go-get='eval $(ssh-agent -s) && ssh-add && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
 alias gp='git push'

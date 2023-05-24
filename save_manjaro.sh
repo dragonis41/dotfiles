@@ -28,10 +28,11 @@ files=(
     "/home/dragonis41/.git-hooks/pre-commit:Manjaro/dragonis41/.git-hooks/"
     "/home/dragonis41/.git-hooks/pre-commit.d/01.check-for-private-key.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
     "/home/dragonis41/.git-hooks/pre-commit.d/02.check-for-env-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/03.check-end-of-file.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/04.format-go-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/05.validate-json-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/06.validate-xml-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
+    "/home/dragonis41/.git-hooks/pre-commit.d/03.remove-trailing-space.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
+    "/home/dragonis41/.git-hooks/pre-commit.d/04.fix-end-of-file.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
+    "/home/dragonis41/.git-hooks/pre-commit.d/05.format-go-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
+    "/home/dragonis41/.git-hooks/pre-commit.d/06.validate-json-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
+    "/home/dragonis41/.git-hooks/pre-commit.d/07.validate-xml-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
     # Commit msg
     "/home/dragonis41/.git-hooks/commit-msg:Manjaro/dragonis41/.git-hooks/"
     "/home/dragonis41/.git-hooks/commit-msg.d/01.check-message.hook:Manjaro/dragonis41/.git-hooks/commit-msg.d/"
@@ -73,7 +74,7 @@ function mkcp(){
     # Copy each file if it is different and newer preserving its attributes.
     cp -uv --preserve=all "$file_source" "$folder_dest"
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occured will cp $file_source to $folder_dest\x1B[0m"
+        echo -e "\n\x1B[31mAn error occured will copying $file_source to $folder_dest\x1B[0m"
         return 1
     fi
 

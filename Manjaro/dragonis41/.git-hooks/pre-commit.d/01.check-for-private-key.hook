@@ -20,7 +20,7 @@ blacklists=(
 
 
 ## Get all staged file.
-STAGED_GO_FILES=$(git diff --cached --name-only --diff-filter=d --)
+STAGED_GO_FILES=$(git diff --staged --name-only --diff-filter=d --)
 
 ## Check if there is staged file.
 if [[ $STAGED_GO_FILES == "" ]]; then

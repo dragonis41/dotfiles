@@ -1,0 +1,26 @@
+#!/bin/bash
+
+## Get all staged file.
+STAGED_GO_FILES=$(git diff --staged --name-only --diff-filter=d --)
+
+## Check if there is staged file.
+if [[ $STAGED_GO_FILES == "" ]]; then
+    echo -e "Remove trailing space................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
+## otherwise we can do stuff with these changed go files.
+else
+    for file in $STAGED_GO_FILES; do
+        # Skip if the file is a markdown file
+        if [[ $file == *.md ]]; then
+            continue
+        fi
+
+        # Remove trailing whitespace and re-stage the file if it was modified
+        sed -i 's/[ \t]*$//' "$file" \
+        && git add "$file"
+        if (($? != 0)); then
+            echo -e "Remove trailing space....................................................\x1B[41mFAILED\x1B[0m"
+            exit 1
+        fi
+    done
+    echo -e "Remove trailing space....................................................\x1B[42mPASSED\x1B[0m"
+fi

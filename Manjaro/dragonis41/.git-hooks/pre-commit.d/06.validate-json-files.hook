@@ -1,27 +1,27 @@
 #!/bin/bash
 
 ## Get all staged .json file.
-STAGED_JSON_FILES=$(git diff --cached --name-only --diff-filter=d -- '*.json')
+STAGED_JSON_FILES=$(git diff --staged --name-only --diff-filter=d -- '*.json')
 
 ## Check if there is staged file.
 if [[ $STAGED_JSON_FILES == "" ]]; then
-    echo -e "Validating JSON files................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
+    echo -e "Validate JSON files..................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
 ## otherwise we can do stuff with these changed Json files.
 else
     if ! command -v jq &>/dev/null; then
-        echo -e "Validating JSON files.................................(jq not installed)\x1B[44mSKIPPED\x1B[0m"
+        echo -e "Validate JSON files...................................(jq not installed)\x1B[44mSKIPPED\x1B[0m"
     else
         for file in $STAGED_JSON_FILES; do
             ## Validate our file
             jq . "$file" >/dev/null 2>&1
             if (($? != 0)); then
-                echo -e "Validating JSON files....................................................\x1B[41mFAILED\x1B[0m"
+                echo -e "Validate JSON files......................................................\x1B[41mFAILED\x1B[0m"
                 echo -e "\x1B[31mThe following file is not a valid JSON file: \x1B[33m$file\x1B[0m"
                 jq . "$file"
                 echo -e "\x1B[0m"
                 exit 1
             fi
         done
-        echo -e "Validating JSON files....................................................\x1B[42mPASSED\x1B[0m"
+        echo -e "Validate JSON files......................................................\x1B[42mPASSED\x1B[0m"
     fi
 fi

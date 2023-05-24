@@ -1,11 +1,11 @@
 #!/bin/bash
 
 ## Get all staged file.
-STAGED_GO_FILES=$(git diff --cached --name-only --diff-filter=d --)
+STAGED_GO_FILES=$(git diff --staged --name-only --diff-filter=d --)
 
 ## Check if there is staged file.
 if [[ $STAGED_GO_FILES == "" ]]; then
-    echo -e "Check end of file....................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
+    echo -e "Fix end of file.....................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
 ## otherwise we can do stuff with these changed go files.
 else
     for file in $STAGED_GO_FILES; do
@@ -16,10 +16,10 @@ else
             ## add any potential changes from our formatting to the commit.
             git add $file
             if (($? != 0)); then
-                echo -e "Check end of file........................................................\x1B[41mFAILED\x1B[0m"
+                echo -e "Fix end of file.........................................................\x1B[41mFAILED\x1B[0m"
                 exit 1
             fi
         fi
     done
-    echo -e "Check end of file........................................................\x1B[42mPASSED\x1B[0m"
+    echo -e "Fix end of file.........................................................\x1B[42mPASSED\x1B[0m"
 fi

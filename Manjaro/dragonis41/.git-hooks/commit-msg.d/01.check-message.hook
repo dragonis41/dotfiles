@@ -4,7 +4,7 @@ import re
 import sys
 
 def validate_commit_message(message):
-	pattern = r"^((build|BREAKING CHANGE|chore|ci|deprecate|docs|feat|fix|init|perf|refactor|revert|security|style|test)?(?:\(([^A-Z)\s]+)?\))?!?: (.+))(\n{2}|$)(((?:^.+(\n|$))+(?:\n|$){0,2}?)+(?:(^.+(\n|$))+)|(?:^.+$))?$"
+	pattern = r"^((build|BREAKING CHANGE|chore|ci|deprecate|docs|feat|fix|init|perf|refactor|revert|security|style|test)?(?:\((?:[^A-Z)\s]+)?\))?!?: (.+))(\n{2}|$)(((?:^.+(\n|$))+(?:\n|$){0,2}?)+(?:(^.+(\n|$))+)|(?:^.+$))?$"
 	match = re.fullmatch(pattern, message, flags=re.MULTILINE)
 	return match is not None
 

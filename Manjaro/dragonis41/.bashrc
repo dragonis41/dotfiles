@@ -132,6 +132,7 @@ ex ()
 
 
 # Exports
+# Options for GPG and SSH agents with Yubikey.
 export PATH=${PATH}:`go env GOPATH`/bin
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
@@ -139,29 +140,28 @@ gpgconf --launch gpg-agent
 
 
 # Alias
-alias l='ls -laF --group-directories-first --color=auto'
-alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
-alias ip='ip -color'
-alias update='yay -Syyu'
+alias ccopy='xclip -sel clip <'
+alias cls='clear'
+alias dcd='docker compose down --remove-orphans --rmi all --volumes'
+alias dcu='docker compose up -d --always-recreate-deps --force-recreate --build'
+alias gc='git commit -S -m'
+alias gdiff='git diff'
+alias gfp='git fetch && git pull'
 alias gtree='git log --graph --oneline --all'
 alias gtree+="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches --all"
-alias gstatus='git status'
-alias gc='git commit -S -m'
-alias gp='git push'
-alias gfp='git fetch && git pull'
-alias gchout='git checkout'
-alias gckout='git checkout'
-alias gchoutb='git checkout -b'
-alias gckoutb='git checkout -b'
-alias gdiff='git diff'
-alias lzd='lazydocker'
-alias cls='clear'
-alias restart-network='sudo systemctl restart NetworkManager.service'
+alias go-get='ssh-add -L && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
 #alias go-get='eval $(ssh-agent -s) && ssh-add && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
-alias go-get='ssh-add && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
+alias gp='git push'
 alias gpg-yubi='gpg-connect-agent "scd serialno" "learn --force" /bye'
-alias dcu='docker compose up -d --always-recreate-deps --force-recreate --build'
-alias dcd='docker compose down --remove-orphans --rmi all --volumes'
+alias gstatus='git status'
+alias history="omz_history -i | awk '{ printf \"\033[1;32m%s  \033[1;33m%s \033[1;33m%s \033[0m\", \$1, \$2, \$3; for(i=4; i<=NF; i++) printf \" \033[1;34m%s\033[0m\", \$i; printf \"\n\" }'"
+alias ip='ip -color'
+alias l='ls -laF --group-directories-first --color=auto'
+alias lzd='lazydocker'
+alias restart-bios='sudo systemctl reboot --firmware-setup'
+alias restart-network='sudo systemctl restart NetworkManager.service'
+alias update='yay -Syyu'
+alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 # Fonctions
 mk() {

@@ -42,6 +42,7 @@ plugins=(
     nmap # Adds some useful aliases for Nmap similar to the profiles in zenmap.
     sudo # Easily prefix your current or previous commands with `sudo` by pressing 'esc' twice.
     web-search # This plugin adds aliases for searching with Google, Wiki, Bing, YouTube and other popular services.
+    zbell # This plugin prints a bell character when a command finishes if it has been running for longer than a specified duration.
     zsh-syntax-highlighting # This package provides syntax highlighting for the shell zsh.
     zsh-autosuggestions # It suggests commands as you type based on history and completions.
 )
@@ -52,6 +53,10 @@ export PATH=${PATH}:`go env GOPATH`/bin
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
+# Options for Zbell oh-my-zsh plugin.
+zbell_duration=30
+zbell_ignore=($EDITOR $PAGER gdiff htop man nano top)
+zbell_use_notify_send=true
 
 # Load Oh My Zsh plugins.
 source $ZSH/oh-my-zsh.sh
@@ -88,8 +93,8 @@ alias dcu='docker compose up -d --always-recreate-deps --force-recreate --build'
 alias gc='git commit -S -m'
 alias gdiff='git diff'
 alias gfp='git fetch && git pull'
-alias glog='git log --graph --oneline --all'
-alias glog+="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches --all"
+alias gtree='git log --graph --oneline --all'
+alias gtree+="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches --all"
 alias go-get='ssh-add -L && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
 #alias go-get='eval $(ssh-agent -s) && ssh-add && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
 alias gp='git push'

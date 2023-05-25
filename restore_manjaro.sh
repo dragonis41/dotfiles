@@ -49,10 +49,18 @@ function install_extra_packages(){
 function install_ohmyzsh(){
     echo -e "\n\x1B[34mInstalling oh-my-zsh with plugins\x1B[0m"
     sudo pacman -S git --noconfirm
+
+    # Installing for dragonis41
     sudo rm -r /home/dragonis41/.oh-my-zsh/
     sudo -H -u dragonis41 bash -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
     sudo -H -u dragonis41 bash -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-/home/dragonis41/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
     sudo -H -u dragonis41 bash -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-/home/dragonis41/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+
+    # Installing for root
+    sudo rm -r /root/.oh-my-zsh/
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-/home/dragonis41/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-/home/dragonis41/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 }
 
 function configure_yubikey(){

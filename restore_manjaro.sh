@@ -153,11 +153,11 @@ function display_end_message(){
             read -p "Do you want to register a fingerprint ? [yn]  " yn
             case $yn in
                 [Yy]* )
-                    sudo -H -u dragonis41 bash -c 'fprind-enroll dragonis41'
+                    sudo -H -u dragonis41 bash -c 'fprintd-enroll dragonis41'
                     sudo -H -u dragonis41 bash -c 'fprintd-verify'
                 ;;
                 [Nn]* )
-                    echo "\nIf there is no fingerprint registered, execute the following command :"
+                    echo -e "\nIf there is no fingerprint registered, execute the following command :"
                     echo -e "\x1B[33mfprintd-enroll \$(whoami)\x1B[0m"
                     echo -e "\x1B[33mfprintd-verify\x1B[0m"
                 ;;

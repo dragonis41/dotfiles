@@ -111,6 +111,8 @@ alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafte
 
 # Alias for Git Hooks
 # pre-commit
+alias activate.pre-commit.all='chmod +x ~/.git-hooks/pre-commit.d/*'
+alias deactivate.pre-commit.all='chmod -x ~/.git-hooks/pre-commit.d/*'
 alias activate.pre-commit.01.check-for-private-key='chmod +x ~/.git-hooks/pre-commit.d/01.check-for-private-key.hook'
 alias deactivate.pre-commit.01.check-for-private-key='chmod -x ~/.git-hooks/pre-commit.d/01.check-for-private-key.hook'
 alias activate.pre-commit.02.check-for-env-file='chmod +x ~/.git-hooks/pre-commit.d/02.check-for-env-files.hook'
@@ -128,9 +130,13 @@ alias deactivate.pre-commit.07.validate-json-files='chmod -x ~/.git-hooks/pre-co
 alias activate.pre-commit.08.validate-xml-files='chmod +x ~/.git-hooks/pre-commit.d/08.validate-xml-files.hook'
 alias deactivate.pre-commit.08.validate-xml-files='chmod -x ~/.git-hooks/pre-commit.d/08.validate-xml-files.hook'
 # commit-msg
+alias activate.commit-msg.all='chmod +x ~/.git-hooks/commit-msg.d/*'
+alias deactivate.commit-msg.all='chmod -x ~/.git-hooks/commit-msg.d/*'
 alias activate.commit-msg.01.check-message='chmod +x ~/.git-hooks/commit-msg.d/01.check-message.hook'
 alias deactivate.commit-msg.01.check-message='chmod -x ~/.git-hooks/commit-msg.d/01.check-message.hook'
 # post-update
+alias activate.post-update.all='chmod +x ~/.git-hooks/post-update.d/*'
+alias deactivate.post-update.all='chmod -x ~/.git-hooks/post-update.d/*'
 alias activate.post-update.01.update-server-info='chmod +x ~/.git-hooks/post-update.d/01.update-server-info.hook'
 alias deactivate.post-update.01.update-server-info='chmod -x ~/.git-hooks/post-update.d/01.update-server-info.hook'
 

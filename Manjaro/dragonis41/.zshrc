@@ -109,6 +109,31 @@ alias restart-network='sudo systemctl restart NetworkManager.service'
 alias update='yay -Syyu'
 alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
+# Alias for Git Hooks
+# pre-commit
+alias activate.pre-commit.check-for-private-key='chmod +x ~/.git-hooks/pre-commit.d/01.check-for-private-key.hook'
+alias deactivate.pre-commit.check-for-private-key='chmod -x ~/.git-hooks/pre-commit.d/01.check-for-private-key.hook'
+alias activate.pre-commit.check-for-env-file='chmod +x ~/.git-hooks/pre-commit.d/02.check-for-env-files.hook'
+alias deactivate.pre-commit.check-for-env-file='chmod -x ~/.git-hooks/pre-commit.d/02.check-for-env-files.hook'
+alias activate.pre-commit.check-for-credentials='chmod +x ~/.git-hooks/pre-commit.d/03.check-for-credentials.hook'
+alias deactivate.pre-commit.check-for-credentials='chmod -x ~/.git-hooks/pre-commit.d/03.check-for-credentials.hook'
+alias activate.pre-commit.remove-trailing-space='chmod +x ~/.git-hooks/pre-commit.d/04.remove-trailing-space.hook'
+alias deactivate.pre-commit.remove-trailing-space='chmod -x ~/.git-hooks/pre-commit.d/04.remove-trailing-space.hook'
+alias activate.pre-commit.fix-end-of-file='chmod +x ~/.git-hooks/pre-commit.d/05.fix-end-of-files.hook'
+alias deactivate.pre-commit.fix-end-of-file='chmod -x ~/.git-hooks/pre-commit.d/05.fix-end-of-files.hook'
+alias activate.pre-commit.format-go-file='chmod +x ~/.git-hooks/pre-commit.d/06.format-go-files.hook'
+alias deactivate.pre-commit.format-go-file='chmod -x ~/.git-hooks/pre-commit.d/06.format-go-files.hook'
+alias activate.pre-commit.validate-json-files='chmod +x ~/.git-hooks/pre-commit.d/07.validate-json-files.hook'
+alias deactivate.pre-commit.validate-json-files='chmod -x ~/.git-hooks/pre-commit.d/07.validate-json-files.hook'
+alias activate.pre-commit.validate-xml-files='chmod +x ~/.git-hooks/pre-commit.d/08.validate-xml-files.hook'
+alias deactivate.pre-commit.validate-xml-files='chmod -x ~/.git-hooks/pre-commit.d/08.validate-xml-files.hook'
+# commit-msg
+alias activate.commit-msg.checkmessage='chmod +x ~/.git-hooks/commit-msg.d/01.check-message.hook'
+alias deactivate.commit-msg.checkmessage='chmod -x ~/.git-hooks/commit-msg.d/01.check-message.hook'
+# post-update
+alias activate.post-update.updateserverinfo='chmod +x ~/.git-hooks/post-update.d/01.update-server-info.hook'
+alias deactivate.post-update.updateserverinfo='chmod -x ~/.git-hooks/post-update.d/01.update-server-info.hook'
+
 # Fonctions
 chpwd() { ls -laF --group-directories-first --color=auto }  # ZSH function. Show the content of the folder we just cd into.
 mk() { mkdir -p -- "$1" && touch -- "$1"/"$2" && cd -- "$1" }  # Create as many folder and subfolder as wanted.

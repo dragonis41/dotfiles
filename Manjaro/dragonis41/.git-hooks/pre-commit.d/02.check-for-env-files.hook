@@ -13,7 +13,7 @@ else
         ## Check if the file is an environment file.
         if [[ $file =~ $regex ]]; then
             echo -e "Check for env file.......................................................\x1B[41mFAILED\x1B[0m"
-            echo -e "\x1B[31mAn environment file was found in staged file: \x1B[33m$file\x1B[0m"
+            echo -e "\x1B[31mAn environment file was found in staged files: \x1B[33m$file\x1B[0m"
             exit 1
         fi
     done

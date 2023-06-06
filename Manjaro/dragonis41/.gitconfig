@@ -6,6 +6,8 @@
 	program = gpg2
 [commit]
 	gpgsign = true
+[pull]
+	rebase = false
 [core]
 	autocrlf = input
 	editor = nano

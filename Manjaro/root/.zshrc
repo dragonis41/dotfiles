@@ -144,7 +144,7 @@ alias deactivate.post-update.01.update-server-info='chmod -x ~/.git-hooks/post-u
 chpwd() { ls -laF --group-directories-first --color=auto }  # ZSH function. Show the content of the folder we just cd into.
 mk() { mkdir -p -- "$1" && touch -- "$1"/"$2" && cd -- "$1" }  # Create as many folder and subfolder as wanted.
 search() { find -L . -name "*$**" }  # Search for a specific file name recursively.
-searchcontent() { find . -type f -exec grep "$*" '{}' \; -print }  # Search for a string in all files recursively.
+searchcontent() { fd --type f --exec grep "$*" --color=always } # Search for a string in all files recursively.
 get_cpu_temp() { CEL=$'\xc2\xb0C'; temp=$(cat /sys/devices/virtual/thermal/thermal_zone10/temp); temp=`expr $temp / 1000`; echo $temp$CEL; }  # Get the temperature of the CPU package for the XPS 9315.
 cpu_temp() {  # Get the temperature of all CPU core and package for the XPS 9315.
 	echo "thermal_zone0"; cat /sys/class/thermal/thermal_zone0/temp;  cat /sys/class/thermal/thermal_zone0/type; echo "";

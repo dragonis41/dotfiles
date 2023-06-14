@@ -202,7 +202,7 @@ search() {
 	find -L . -name "*$**"
 }
 searchcontent() {
-	find . -type f -exec grep "$*" '{}' \; -print
+	fd --type f --exec grep "$*" --color=always
 }
 get_cpu_temp() {
 	CEL=$'\xc2\xb0C';

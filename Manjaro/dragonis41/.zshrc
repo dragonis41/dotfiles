@@ -8,7 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -106,7 +106,7 @@ alias l='ls -laF --group-directories-first --color=auto'
 alias lzd='lazydocker'
 alias restart-bios='sudo systemctl reboot --firmware-setup'
 alias restart-network='sudo systemctl restart NetworkManager.service'
-alias update='yay -Syyu'
+alias update='yay -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
 alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 # Alias for Git Hooks

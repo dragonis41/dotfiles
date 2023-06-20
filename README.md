@@ -21,3 +21,5 @@ Permissions and paths are stored in this file.
 
 ### Manjaro/
 The folder where backup is stored
+
+password="mypassword"

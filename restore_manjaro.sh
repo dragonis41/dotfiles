@@ -29,7 +29,7 @@ function install_extra_packages(){
     echo -e "\n\x1B[34mInstalling extra packages (It may take a long time)\x1B[0m"
     pacman -S yay --noconfirm
     sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker'
-    systemctl enable --now docker.service
+    systemctl enable docker.service
     if (($? != 0)); then
         echo -e "\n\x1B[31mAn error occured will enabling docker.service\x1B[0m"
         exit 1
@@ -39,7 +39,7 @@ function install_extra_packages(){
         echo -e "\n\x1B[31mAn error occured will usermod dragonis41 with group docker\x1B[0m"
         exit 1
     fi
-    systemctl enable --now vncserver-x11-serviced.service
+    systemctl enable vncserver-x11-serviced.service
     if (($? != 0)); then
         echo -e "\n\x1B[31mAn error occured will enabling vncserver-x11-serviced.service\x1B[0m"
         exit 1

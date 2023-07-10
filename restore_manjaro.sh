@@ -156,7 +156,15 @@ function display_end_message(){
             case $yn in
                 [Yy]* )
                     sudo -H -u dragonis41 bash -c 'fprintd-enroll dragonis41'
+                    if (($? != 0)); then
+                        echo -e "\n\x1B[31mAn error occured will enrolling fingerprint\x1B[0m"
+                        exit 1
+                    fi
                     sudo -H -u dragonis41 bash -c 'fprintd-verify'
+                    if (($? != 0)); then
+                        echo -e "\n\x1B[31mAn error occured will verifying fingerprint enroll\x1B[0m"
+                        exit 1
+                    fi
                 ;;
                 [Nn]* )
                     echo -e "\nIf there is no fingerprint registered, execute the following command :"

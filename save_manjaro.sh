@@ -22,6 +22,7 @@ files=(
     "/home/dragonis41/.nanorc:Manjaro/dragonis41/"
     "/home/dragonis41/.p10k.zsh:Manjaro/dragonis41/"
     "/home/dragonis41/.zshrc:Manjaro/dragonis41/"
+    "/home/dragonis41/.config/htop/htoprc:Manjaro/dragonis41/"
 
     ########################### Git Hooks ###########################
     # Pre commit
@@ -50,6 +51,7 @@ files=(
     "/root/.nanorc:Manjaro/root/"
     "/root/.p10k.zsh:Manjaro/root/"
     "/root/.zshrc:Manjaro/root/"
+    "/home/dragonis41/.config/htop/htoprc:Manjaro/root/"
 )
 
 

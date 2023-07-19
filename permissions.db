@@ -22,6 +22,7 @@
 644;root:root;/etc/issue;755;root:root;/etc;Manjaro/etc/issue
 644;root:root;/etc/pacman.conf;755;root:root;/etc;Manjaro/etc/pacman.conf
 644;root:root;/etc/pam.d/system-auth;755;root:root;/etc/pam.d;Manjaro/etc/system-auth
+644;root:root;/root/.bashrc;750;root:root;/root;Manjaro/root/.bashrc
 644;root:root;/root/.nanorc;750;root:root;/root;Manjaro/root/.nanorc
 644;root:root;/root/.p10k.zsh;750;root:root;/root;Manjaro/root/.p10k.zsh
 640;root:root;/root/.zshrc;750;root:root;/root;Manjaro/root/.zshrc

@@ -48,6 +48,7 @@ files=(
     "/etc/pam.d/system-auth:Manjaro/etc/"
 
     ####################### Root config files #######################
+    "/root/.bashrc:Manjaro/root/"
     "/root/.nanorc:Manjaro/root/"
     "/root/.p10k.zsh:Manjaro/root/"
     "/root/.zshrc:Manjaro/root/"

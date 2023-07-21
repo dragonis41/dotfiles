@@ -14,6 +14,7 @@ It will :
 - Install oh-my-zsh
 - Install and configure fingerprint authentication
 - Install and configure Yubikey
+- Restore configuration files
 
 ### permissions.db
 Do not touch !\

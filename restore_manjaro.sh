@@ -28,7 +28,7 @@ function install_extra_packages(){
     pacman -Syyu --noconfirm
     echo -e "\n\x1B[34mInstalling extra packages (It may take a long time)\x1B[0m"
     pacman -S yay --noconfirm
-    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker'
+    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted'
     systemctl enable docker.service
     if (($? != 0)); then
         echo -e "\n\x1B[31mAn error occured will enabling docker.service\x1B[0m"
@@ -188,6 +188,8 @@ function display_end_message(){
         echo -e "\x1B[33mquit\x1B[0m"
         echo "Then, reboot."
     fi
+
+    echo -e "\nPlease, check that you are using x11, VNC Server won't start on Wayland\n\n\x1B[34mDone\x1B[0m\n\n"
 }
 
 

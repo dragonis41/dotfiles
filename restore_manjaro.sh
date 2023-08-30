@@ -20,7 +20,7 @@ function install_packages(){
     pacman -Syyu --noconfirm
     echo -e "\n\x1B[34mInstalling base packages (It may take a long time)\x1B[0m"
     pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
-    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux61 linux61-headers autojump fprintd fd'
+    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux61 linux61-headers autojump fprintd fd jq'
 }
 
 function install_extra_packages(){

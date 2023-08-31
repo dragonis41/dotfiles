@@ -107,36 +107,6 @@ alias restart-network='sudo systemctl restart NetworkManager.service'
 alias update='yay -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
 alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
-# Alias for Git Hooks
-# pre-commit
-alias activate.pre-commit.all='chmod +x ~/.git-hooks/pre-commit.d/*'
-alias deactivate.pre-commit.all='chmod -x ~/.git-hooks/pre-commit.d/*'
-alias activate.pre-commit.01.check-for-private-key='chmod +x ~/.git-hooks/pre-commit.d/01.check-for-private-key.hook'
-alias deactivate.pre-commit.01.check-for-private-key='chmod -x ~/.git-hooks/pre-commit.d/01.check-for-private-key.hook'
-alias activate.pre-commit.02.check-for-env-file='chmod +x ~/.git-hooks/pre-commit.d/02.check-for-env-files.hook'
-alias deactivate.pre-commit.02.check-for-env-file='chmod -x ~/.git-hooks/pre-commit.d/02.check-for-env-files.hook'
-alias activate.pre-commit.03.check-for-credentials='chmod +x ~/.git-hooks/pre-commit.d/03.check-for-credentials.hook'
-alias deactivate.pre-commit.03.check-for-credentials='chmod -x ~/.git-hooks/pre-commit.d/03.check-for-credentials.hook'
-alias activate.pre-commit.04.remove-trailing-space='chmod +x ~/.git-hooks/pre-commit.d/04.remove-trailing-space.hook'
-alias deactivate.pre-commit.04.remove-trailing-space='chmod -x ~/.git-hooks/pre-commit.d/04.remove-trailing-space.hook'
-alias activate.pre-commit.05.fix-end-of-file='chmod +x ~/.git-hooks/pre-commit.d/05.fix-end-of-files.hook'
-alias deactivate.pre-commit.05.fix-end-of-file='chmod -x ~/.git-hooks/pre-commit.d/05.fix-end-of-files.hook'
-alias activate.pre-commit.06.format-go-file='chmod +x ~/.git-hooks/pre-commit.d/06.format-go-files.hook'
-alias deactivate.pre-commit.06.format-go-file='chmod -x ~/.git-hooks/pre-commit.d/06.format-go-files.hook'
-alias activate.pre-commit.07.validate-json-files='chmod +x ~/.git-hooks/pre-commit.d/07.validate-json-files.hook'
-alias deactivate.pre-commit.07.validate-json-files='chmod -x ~/.git-hooks/pre-commit.d/07.validate-json-files.hook'
-alias activate.pre-commit.08.validate-xml-files='chmod +x ~/.git-hooks/pre-commit.d/08.validate-xml-files.hook'
-alias deactivate.pre-commit.08.validate-xml-files='chmod -x ~/.git-hooks/pre-commit.d/08.validate-xml-files.hook'
-# commit-msg
-alias activate.commit-msg.all='chmod +x ~/.git-hooks/commit-msg.d/*'
-alias deactivate.commit-msg.all='chmod -x ~/.git-hooks/commit-msg.d/*'
-alias activate.commit-msg.01.check-message='chmod +x ~/.git-hooks/commit-msg.d/01.check-message.hook'
-alias deactivate.commit-msg.01.check-message='chmod -x ~/.git-hooks/commit-msg.d/01.check-message.hook'
-# post-update
-alias activate.post-update.all='chmod +x ~/.git-hooks/post-update.d/*'
-alias deactivate.post-update.all='chmod -x ~/.git-hooks/post-update.d/*'
-alias activate.post-update.01.update-server-info='chmod +x ~/.git-hooks/post-update.d/01.update-server-info.hook'
-alias deactivate.post-update.01.update-server-info='chmod -x ~/.git-hooks/post-update.d/01.update-server-info.hook'
 
 # Fonctions
 chpwd() { ls -laF --group-directories-first --color=auto }  # ZSH function. Show the content of the folder we just cd into.
@@ -144,17 +114,55 @@ mk() { mkdir -p -- "$1" && touch -- "$1"/"$2" && cd -- "$1" }  # Create as many 
 search() { find -L . -name "*$**" }  # Search for a specific file name recursively.
 searchcontent() { fd --type f --exec grep "$*" --color=always } # Search for a string in all files recursively.
 get_cpu_temp() { CEL=$'\xc2\xb0C'; temp=$(cat /sys/devices/virtual/thermal/thermal_zone10/temp); temp=`expr $temp / 1000`; echo $temp$CEL; }  # Get the temperature of the CPU package for the XPS 9315.
-cpu_temp() {  # Get the temperature of all CPU core and package for the XPS 9315.
-	echo "thermal_zone0"; cat /sys/class/thermal/thermal_zone0/temp;  cat /sys/class/thermal/thermal_zone0/type; echo "";
-	echo "thermal_zone1"; cat /sys/class/thermal/thermal_zone1/temp;  cat /sys/class/thermal/thermal_zone1/type; echo "";
-	echo "thermal_zone2"; cat /sys/class/thermal/thermal_zone2/temp;  cat /sys/class/thermal/thermal_zone2/type; echo "";
-	echo "thermal_zone3"; cat /sys/class/thermal/thermal_zone3/temp;  cat /sys/class/thermal/thermal_zone3/type; echo "";
-	echo "thermal_zone4"; cat /sys/class/thermal/thermal_zone4/temp;  cat /sys/class/thermal/thermal_zone4/type; echo "";
-	echo "thermal_zone5"; cat /sys/class/thermal/thermal_zone5/temp;  cat /sys/class/thermal/thermal_zone5/type; echo "";
-	echo "thermal_zone6"; cat /sys/class/thermal/thermal_zone6/temp;  cat /sys/class/thermal/thermal_zone6/type; echo "";
-	echo "thermal_zone7"; cat /sys/class/thermal/thermal_zone7/temp;  cat /sys/class/thermal/thermal_zone7/type; echo "";
-	echo "thermal_zone8"; cat /sys/class/thermal/thermal_zone8/temp;  cat /sys/class/thermal/thermal_zone8/type; echo "";
-	echo "thermal_zone9"; cat /sys/class/thermal/thermal_zone9/temp;  cat /sys/class/thermal/thermal_zone9/type; echo "";
-	echo "thermal_zone10"; cat /sys/class/thermal/thermal_zone10/temp;  cat /sys/class/thermal/thermal_zone10/type; echo "";
-	echo "thermal_zone11"; cat /sys/class/thermal/thermal_zone11/temp;  cat /sys/class/thermal/thermal_zone11/type; echo "";
+git-hooks() {  # TUI to de/activate git hooks
+  # Define the directories
+  local -a directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")
+
+  # Create an array to hold the files and their permissions
+  local -a elements=()
+
+  # Loop through each directory and each file in each directory
+  for directory in "${directories[@]}"; do
+    for file in "$directory"/*; do
+      # Check if the file is executable
+      if [[ -x "$file" ]]; then
+        elements+=("$file" "activated" "ON")  # If it is, add it to the array with a ON state
+      else
+        elements+=("$file" "deactivated" "OFF")  # If it isn't, add it to the array with a OFF state
+      fi
+    done
+  done
+
+  # Get terminal dimensions
+  local height=$(tput lines)
+  local width=$(tput cols)
+
+  # Use dialog to display a selectable list
+  local result
+  result=$(dialog --checklist "Activated hooks :" $((height-10)) $((width/3*2)) $((height/3*2-5)) "${elements[@]}" 3>&1 1>&2 2>&3 3>&-)
+  # Check the exit status of dialog
+  local dialog_status=$?
+
+  clear
+
+  # If the status is 1, the user clicked "Cancel", so exit the function
+  if [[ $dialog_status -eq 1 ]]; then
+    echo -e "\x1B[33mCanceled\x1B[0m"
+    return
+  fi
+
+  # Reset permissions
+  for directory in "${directories[@]}"; do
+    chmod -x "$directory"/*
+  done
+
+  # Convert result string to an array
+  local -a result_array=("${(@s/ /)result}")
+
+  # Make executable every selected hook
+  for item in "${result_array[@]}"; do
+    chmod +x "$item"
+  done
+
+  echo -e "\x1B[32mDone\x1B[0m"
 }

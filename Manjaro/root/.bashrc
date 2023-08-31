@@ -204,7 +204,60 @@ searchcontent() {
 }
 get_cpu_temp() {
 	CEL=$'\xc2\xb0C';
-	temp=$(cat /sys/devices/virtual/thermal/thermal_zone0/temp);
+	temp=$(cat /sys/devices/virtual/thermal/thermal_zone10/temp);
 	temp=`expr $temp / 1000`;
 	echo $temp$CEL;
+}
+git-hooks() {  # TUI to de/activate git hooks
+  # Define the directories
+  local directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")
+
+  # Create an array to hold the files and their permissions
+  local elements=()
+
+  # Loop through each directory and each file in each directory
+  for directory in "${directories[@]}"; do
+    for file in "$directory"/*; do
+      # Check if the file is executable
+      if [[ -x "$file" ]]; then
+        elements+=("$file" "activated" "ON")  # If it is, add it to the array with a ON state
+      else
+        elements+=("$file" "deactivated" "OFF")  # If it isn't, add it to the array with a OFF state
+      fi
+    done
+  done
+
+  # Get terminal dimensions
+  local height=$(tput lines)
+  local width=$(tput cols)
+
+  # Use dialog to display a selectable list
+  local result
+  result=$(dialog --checklist "Activated hooks :" $((height-10)) $((width/3*2)) $((height/3*2-5)) "${elements[@]}" 3>&1 1>&2 2>&3 3>&-)
+  # Check the exit status of dialog
+  local dialog_status=$?
+
+  clear
+
+  # If the status is 1, the user clicked "Cancel", so exit the function
+  if [[ $dialog_status -eq 1 ]]; then
+    echo -e "\x1B[33mCanceled\x1B[0m"
+    return
+  fi
+
+  # Reset permissions
+  for directory in "${directories[@]}"; do
+    chmod -x "$directory"/*
+  done
+
+  # Convert result string to an array
+  local result_array
+  IFS=' ' read -ra result_array <<< "$result"
+
+  # Make executable every selected hook
+  for item in "${result_array[@]}"; do
+    chmod +x "$item"
+  done
+
+  echo -e "\x1B[32mDone\x1B[0m"
 }

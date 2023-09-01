@@ -92,6 +92,7 @@ alias dcd='docker compose down --remove-orphans --rmi all --volumes'
 alias dcu='docker compose up -d --always-recreate-deps --force-recreate --build'
 alias gc='git commit -S -m'
 alias gfp='git fetch && git pull'
+alias gh='git log --oneline | gum filter | cut -d" " -f1 | xargs -I {} sh -c "echo {} | xclip -sel clip"'
 alias gtree='git log --graph --oneline --all'
 alias gtree+="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches --all"
 alias go-get='ssh-add -L && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
@@ -118,37 +119,32 @@ git-hooks() {  # TUI to de/activate git hooks
   # Define the directories
   local -a directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")
 
-  # Create an array to hold the files and their permissions
+  # Create an array to hold the files
   local -a elements=()
+  local -a elements_selected=()
 
   # Loop through each directory and each file in each directory
   for directory in "${directories[@]}"; do
     for file in "$directory"/*; do
+      # Add the file to the list
+      elements+=("$file")
       # Check if the file is executable
       if [[ -x "$file" ]]; then
-        elements+=("$file" "activated" "ON")  # If it is, add it to the array with a ON state
-      else
-        elements+=("$file" "deactivated" "OFF")  # If it isn't, add it to the array with a OFF state
+        elements_selected+=("$file")  # If it is, add it to the selected array
       fi
     done
   done
 
-  # Get terminal dimensions
-  local height=$(tput lines)
-  local width=$(tput cols)
-
-  # Use dialog to display a selectable list
+  # Use gum to display a selectable list
   local result
-  result=$(dialog --checklist "Activated hooks :" $((height-10)) $((width/3*2)) $((height/3*2-5)) "${elements[@]}" 3>&1 1>&2 2>&3 3>&-)
+  result=$(gum choose --no-limit --selected=$elements_selected $elements)
   # Check the exit status of dialog
   local dialog_status=$?
 
-  clear
-
   # If the status is 1, the user clicked "Cancel", so exit the function
-  if [[ $dialog_status -eq 1 ]]; then
+  if [[ $dialog_status -ne 0 ]]; then
     echo -e "\x1B[33mCanceled\x1B[0m"
-    return
+    return 1
   fi
 
   # Reset permissions
@@ -156,13 +152,18 @@ git-hooks() {  # TUI to de/activate git hooks
     chmod -x "$directory"/*
   done
 
+  if [[ -z "$result" ]]; then
+    return 0
+  fi
+
   # Convert result string to an array
-  local -a result_array=("${(@s/ /)result}")
+  local -a result_array=("${(@f)result}")
 
   # Make executable every selected hook
   for item in "${result_array[@]}"; do
     chmod +x "$item"
   done
 
-  echo -e "\x1B[32mDone\x1B[0m"
+
+  return 0
 }

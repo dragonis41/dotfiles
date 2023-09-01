@@ -146,6 +146,7 @@ alias dcd='docker compose down --remove-orphans --rmi all --volumes'
 alias dcu='docker compose up -d --always-recreate-deps --force-recreate --build'
 alias gc='git commit -S -m'
 alias gfp='git fetch && git pull'
+alias gh='git log --oneline | gum filter | cut -d" " -f1 | xargs -I {} sh -c "echo {} | xclip -sel clip"'
 alias gtree='git log --graph --oneline --all'
 alias gtree+="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches --all"
 alias go-get='ssh-add -L && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
@@ -161,36 +162,6 @@ alias restart-network='sudo systemctl restart NetworkManager.service'
 alias update='yay -Syyu'
 alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
-# Alias for Git Hooks
-# pre-commit
-alias activate.pre-commit.all='chmod +x ~/.git-hooks/pre-commit.d/*'
-alias deactivate.pre-commit.all='chmod -x ~/.git-hooks/pre-commit.d/*'
-alias activate.pre-commit.01.check-for-private-key='chmod +x ~/.git-hooks/pre-commit.d/01.check-for-private-key.hook'
-alias deactivate.pre-commit.01.check-for-private-key='chmod -x ~/.git-hooks/pre-commit.d/01.check-for-private-key.hook'
-alias activate.pre-commit.02.check-for-env-file='chmod +x ~/.git-hooks/pre-commit.d/02.check-for-env-files.hook'
-alias deactivate.pre-commit.02.check-for-env-file='chmod -x ~/.git-hooks/pre-commit.d/02.check-for-env-files.hook'
-alias activate.pre-commit.03.check-for-credentials='chmod +x ~/.git-hooks/pre-commit.d/03.check-for-credentials.hook'
-alias deactivate.pre-commit.03.check-for-credentials='chmod -x ~/.git-hooks/pre-commit.d/03.check-for-credentials.hook'
-alias activate.pre-commit.04.remove-trailing-space='chmod +x ~/.git-hooks/pre-commit.d/04.remove-trailing-space.hook'
-alias deactivate.pre-commit.04.remove-trailing-space='chmod -x ~/.git-hooks/pre-commit.d/04.remove-trailing-space.hook'
-alias activate.pre-commit.05.fix-end-of-file='chmod +x ~/.git-hooks/pre-commit.d/05.fix-end-of-files.hook'
-alias deactivate.pre-commit.05.fix-end-of-file='chmod -x ~/.git-hooks/pre-commit.d/05.fix-end-of-files.hook'
-alias activate.pre-commit.06.format-go-file='chmod +x ~/.git-hooks/pre-commit.d/06.format-go-files.hook'
-alias deactivate.pre-commit.06.format-go-file='chmod -x ~/.git-hooks/pre-commit.d/06.format-go-files.hook'
-alias activate.pre-commit.07.validate-json-files='chmod +x ~/.git-hooks/pre-commit.d/07.validate-json-files.hook'
-alias deactivate.pre-commit.07.validate-json-files='chmod -x ~/.git-hooks/pre-commit.d/07.validate-json-files.hook'
-alias activate.pre-commit.08.validate-xml-files='chmod +x ~/.git-hooks/pre-commit.d/08.validate-xml-files.hook'
-alias deactivate.pre-commit.08.validate-xml-files='chmod -x ~/.git-hooks/pre-commit.d/08.validate-xml-files.hook'
-# commit-msg
-alias activate.commit-msg.all='chmod +x ~/.git-hooks/commit-msg.d/*'
-alias deactivate.commit-msg.all='chmod -x ~/.git-hooks/commit-msg.d/*'
-alias activate.commit-msg.01.check-message='chmod +x ~/.git-hooks/commit-msg.d/01.check-message.hook'
-alias deactivate.commit-msg.01.check-message='chmod -x ~/.git-hooks/commit-msg.d/01.check-message.hook'
-# post-update
-alias activate.post-update.all='chmod +x ~/.git-hooks/post-update.d/*'
-alias deactivate.post-update.all='chmod -x ~/.git-hooks/post-update.d/*'
-alias activate.post-update.01.update-server-info='chmod +x ~/.git-hooks/post-update.d/01.update-server-info.hook'
-alias deactivate.post-update.01.update-server-info='chmod -x ~/.git-hooks/post-update.d/01.update-server-info.hook'
 
 # Fonctions
 mk() {
@@ -212,7 +183,7 @@ git-hooks() {  # TUI to de/activate git hooks
   # Define the directories
   local directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")
 
-  # Create an array to hold the files and their permissions
+  # Create an array to hold the files
   local elements=()
 
   # Loop through each directory and each file in each directory

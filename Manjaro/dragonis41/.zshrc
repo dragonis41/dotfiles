@@ -115,7 +115,7 @@ mk() { mkdir -p -- "$1" && touch -- "$1"/"$2" && cd -- "$1" }  # Create as many 
 search() { find -L . -name "*$**" }  # Search for a specific file name recursively.
 searchcontent() { fd --type f --exec grep "$*" --color=always } # Search for a string in all files recursively.
 get_cpu_temp() { CEL=$'\xc2\xb0C'; temp=$(cat /sys/devices/virtual/thermal/thermal_zone10/temp); temp=`expr $temp / 1000`; echo $temp$CEL; }  # Get the temperature of the CPU package for the XPS 9315.
-git-hooks() {  # TUI to de/activate git hooks
+ghooks() {  # TUI to de/activate git hooks
   # Define the directories
   local -a directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")
 

@@ -179,7 +179,7 @@ get_cpu_temp() {
 	temp=`expr $temp / 1000`;
 	echo $temp$CEL;
 }
-git-hooks() {  # TUI to de/activate git hooks
+ghooks() {  # TUI to de/activate git hooks
   # Define the directories
   local directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")
 

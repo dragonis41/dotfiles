@@ -4,4 +4,4 @@ set linenumbers # Toggles the display of line numbers in front of the text.
 set indicator # Display a "scrollbar" on the righthand side of the edit window. It shows the position of the viewport in the buffer and how much of the buffer is covered by the viewport
 set softwrap # Display lines that exceed the screen’s width over multiple screen lines. (You can make this soft-wrapping occur at whitespace instead of rudely at the screen’s edge, by using also set atblanks.)
 set atblanks # When soft line wrapping is enabled, make it wrap lines at blank characters (tabs and spaces) instead of always at the edge of the screen.
-# set guidestripe 110 # Draw a vertical stripe at the given column, to help judge the width of the text. (The color of the stripe can be changed with set stripecolor.)
+#set guidestripe 120 # Draw a vertical stripe at the given column, to help judge the width of the text. (The color of the stripe can be changed with set stripecolor.)

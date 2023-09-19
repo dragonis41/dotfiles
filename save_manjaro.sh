@@ -53,7 +53,7 @@ files=(
     "/root/.nanorc:Manjaro/root/"
     "/root/.p10k.zsh:Manjaro/root/"
     "/root/.zshrc:Manjaro/root/"
-    "/home/dragonis41/.config/htop/htoprc:Manjaro/root/"
+    "/root/.config/htop/htoprc:Manjaro/root/"
 )
 
 

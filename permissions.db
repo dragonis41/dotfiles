@@ -27,4 +27,4 @@
 644;root:root;/root/.nanorc;750;root:root;/root;Manjaro/root/.nanorc
 644;root:root;/root/.p10k.zsh;750;root:root;/root;Manjaro/root/.p10k.zsh
 640;root:root;/root/.zshrc;750;root:root;/root;Manjaro/root/.zshrc
-644;dragonis41:dragonis41;/home/dragonis41/.config/htop/htoprc;700;dragonis41:dragonis41;/home/dragonis41/.config/htop;Manjaro/root/htoprc
+644;root:root;/root/.config/htop/htoprc;700;root:root;/root/.config/htop;Manjaro/root/htoprc

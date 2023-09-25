@@ -28,7 +28,7 @@ if [[ $STAGED_GO_FILES == "" ]]; then
 ## otherwise we can do stuff with these changed files.
 else
     for file in $STAGED_GO_FILES; do
-    filename=$(basename $file)
+        filename=$(basename $file)
         for blacklist in "${blacklists[@]}"; do
             # Check if the file is blacklisted
             if [[ $filename != $blacklist ]]; then

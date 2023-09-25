@@ -1,20 +1,43 @@
 #!/bin/bash
 
-## Get all staged file.
+## Blacklist those files.
+file_blacklist=(
+    "mytestfile.txt"
+)
+## Blacklist those file extensions
+extension_blacklist=(
+    "md"
+    "mo"
+    "exe"
+    "bin"
+)
+
+
+## Get all staged files.
 STAGED_GO_FILES=$(git diff --staged --name-only --diff-filter=d --)
 
-## Check if there is staged file.
+## Check if there are staged files.
 if [[ $STAGED_GO_FILES == "" ]]; then
     echo -e "Remove trailing space................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
 ## otherwise we can do stuff with these changed go files.
 else
     for file in $STAGED_GO_FILES; do
-        # Skip if the file is a markdown file
-        if [[ $file == *.md ]]; then
-            continue
-        fi
+        filename=$(basename $file)
+        # Check if the file is in the file blacklist.
+        for blacklist_item in "${file_blacklist[@]}"; do
+            if [[ $filename == $blacklist_item ]]; then
+                continue 2
+            fi
+        done
 
-        # Remove trailing whitespace and re-stage the file if it was modified
+        # Check if the file extension is in the extension blacklist.
+        for blacklist_item in "${extension_blacklist[@]}"; do
+            if [[ ${filename##*.} == $blacklist_item ]]; then
+                continue 2
+            fi
+        done
+
+        # Remove trailing whitespace and re-stage the file if it was modified.
         sed -i 's/[ \t]*$//' "$file" \
         && git add "$file"
         if (($? != 0)); then

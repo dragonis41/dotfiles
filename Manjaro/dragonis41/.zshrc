@@ -107,14 +107,15 @@ alias pager='gum pager <'
 alias restart-bios='sudo systemctl reboot --firmware-setup'
 alias restart-network='sudo systemctl restart NetworkManager.service'
 alias update='yay -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
-alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
-
+alias update-nocache='yay-nocache -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
+alias yay='yay --answerclean None --answerdiff None --answeredit None --nocleanafter --noremovemake --sudoloop'
+alias yay-nocache='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 # Fonctions
 chpwd() { ls -laF --group-directories-first --color=auto }  # ZSH function. Show the content of the folder we just cd into.
 mk() { mkdir -p -- "$1" && touch -- "$1"/"$2" && cd -- "$1" }  # Create as many folder and subfolder as wanted.
 search() { find -L . -name "*$**" }  # Search for a specific file name recursively.
-searchcontent() { fd --type f --exec grep "$*" --color=always } # Search for a string in all files recursively.
+searchcontent() { fd --type f --exec grep -H "$*" --color=always | sed -r "s/([^:]*):/\x1B[34m\1\x1B[0m:/" } # Search for a string in all files recursively.
 get_cpu_temp() { CEL=$'\xc2\xb0C'; temp=$(cat /sys/devices/virtual/thermal/thermal_zone10/temp); temp=`expr $temp / 1000`; echo $temp$CEL; }  # Get the temperature of the CPU package for the XPS 9315.
 ghooks() {  # TUI to de/activate git hooks
   # Define the directories

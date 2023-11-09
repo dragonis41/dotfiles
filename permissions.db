@@ -1,10 +1,10 @@
 644;dragonis41:dragonis41;/home/dragonis41/.gnupg/gpg-agent.conf;700;dragonis41:dragonis41;/home/dragonis41/.gnupg;Manjaro/dragonis41/.gnupg/gpg-agent.conf
 644;dragonis41:dragonis41;/home/dragonis41/.gnupg/public.key;700;dragonis41:dragonis41;/home/dragonis41/.gnupg;Manjaro/dragonis41/.gnupg/public.key
-644;dragonis41:dragonis41;/home/dragonis41/.bashrc;700;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.bashrc
-644;dragonis41:dragonis41;/home/dragonis41/.gitconfig;700;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.gitconfig
-644;dragonis41:dragonis41;/home/dragonis41/.nanorc;700;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.nanorc
-644;dragonis41:dragonis41;/home/dragonis41/.p10k.zsh;700;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.p10k.zsh
-644;dragonis41:dragonis41;/home/dragonis41/.zshrc;700;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.zshrc
+644;dragonis41:dragonis41;/home/dragonis41/.bashrc;710;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.bashrc
+644;dragonis41:dragonis41;/home/dragonis41/.gitconfig;710;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.gitconfig
+644;dragonis41:dragonis41;/home/dragonis41/.nanorc;710;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.nanorc
+644;dragonis41:dragonis41;/home/dragonis41/.p10k.zsh;710;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.p10k.zsh
+644;dragonis41:dragonis41;/home/dragonis41/.zshrc;710;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.zshrc
 644;dragonis41:dragonis41;/home/dragonis41/.config/htop/htoprc;700;dragonis41:dragonis41;/home/dragonis41/.config/htop;Manjaro/dragonis41/.config/htop/htoprc
 600;dragonis41:dragonis41;/home/dragonis41/.local/share/konsole/Custom.profile;755;dragonis41:dragonis41;/home/dragonis41/.local/share/konsole;Manjaro/dragonis41/.local/konsole/Custom.profile
 755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/pre-commit;755;dragonis41:dragonis41;/home/dragonis41/.git-hooks;Manjaro/dragonis41/.git-hooks/pre-commit

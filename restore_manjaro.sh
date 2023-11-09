@@ -20,7 +20,7 @@ function install_packages(){
     pacman -Syyu --noconfirm
     echo -e "\n\x1B[34mInstalling base packages (It may take a long time)\x1B[0m"
     pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
-    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux61 linux61-headers autojump fprintd fd jq dialog gum noto-fonts-emoji mtr nano-syntax-highlighting'
+    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux65 linux65-headers autojump fprintd fd jq dialog gum noto-fonts-emoji mtr nano-syntax-highlighting'
 }
 
 function install_extra_packages(){
@@ -28,7 +28,7 @@ function install_extra_packages(){
     pacman -Syyu --noconfirm
     echo -e "\n\x1B[34mInstalling extra packages (It may take a long time)\x1B[0m"
     pacman -S yay --noconfirm
-    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted'
+    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
     systemctl enable docker.service
     if (($? != 0)); then
         echo -e "\n\x1B[31mAn error occured will enabling docker.service\x1B[0m"

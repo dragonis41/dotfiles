@@ -157,10 +157,13 @@ alias history="omz_history -i | awk '{ printf \"\033[1;32m%s  \033[1;33m%s \033[
 alias ip='ip -color'
 alias l='ls -laF --group-directories-first --color=auto'
 alias lzd='lazydocker'
+alias pager='gum pager <'
 alias restart-bios='sudo systemctl reboot --firmware-setup'
 alias restart-network='sudo systemctl restart NetworkManager.service'
-alias update='yay -Syyu'
-alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
+alias update='yay -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
+alias update-nocache='yay-nocache -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
+alias yay='yay --answerclean None --answerdiff None --answeredit None --nocleanafter --noremovemake --sudoloop'
+alias yay-nocache='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 
 # Fonctions
@@ -171,7 +174,7 @@ search() {
 	find -L . -name "*$**"
 }
 searchcontent() {
-	fd --type f --exec grep "$*" --color=always
+	fd --type f --exec grep -H "$*" --color=always | sed -r "s/([^:]*):/\x1B[34m\1\x1B[0m:/"
 }
 get_cpu_temp() {
 	CEL=$'\xc2\xb0C';

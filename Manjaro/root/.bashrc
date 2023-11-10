@@ -170,6 +170,9 @@ alias yay-nocache='yay --answerclean All --answerdiff None --answeredit None --c
 mk() {
 	mkdir -p -- "$1" && touch -- "$1"/"$2" && cd -- "$1" && ls -laF
 }
+gpmr() {
+	git push -o merge_request.create -o merge_request.target=$1
+}
 search() {
 	find -L . -name "*$**"
 }

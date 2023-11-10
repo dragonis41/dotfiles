@@ -113,6 +113,7 @@ alias yay-nocache='yay --answerclean All --answerdiff None --answeredit None --c
 
 # Fonctions
 chpwd() { ls -laF --group-directories-first --color=auto }  # ZSH function. Show the content of the folder we just cd into.
+gpmr() { git push -o merge_request.create -o merge_request.target=$1 }
 mk() { mkdir -p -- "$1" && touch -- "$1"/"$2" && cd -- "$1" }  # Create as many folder and subfolder as wanted.
 search() { find -L . -name "*$**" }  # Search for a specific file name recursively.
 searchcontent() { fd --type f --exec grep -H "$*" --color=always | sed -r "s/([^:]*):/\x1B[34m\1\x1B[0m:/" } # Search for a string in all files recursively.

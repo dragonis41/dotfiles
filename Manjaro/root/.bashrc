@@ -171,7 +171,18 @@ mk() {
 	mkdir -p -- "$1" && touch -- "$1"/"$2" && cd -- "$1" && ls -laF
 }
 gpmr() {
-	git push -o merge_request.create -o merge_request.target=$1
+    # Ensure target branch is provided
+    if [ -z "$1" ]
+    then
+        echo "Please provide a target branch name."
+        return 1
+    fi
+
+    # Variables
+    TARGET_BRANCH=$1
+
+    # Git push with options to automatically create a merge request
+    git push origin HEAD -o merge_request.create -o merge_request.target=$TARGET_BRANCH
 }
 search() {
 	find -L . -name "*$**"

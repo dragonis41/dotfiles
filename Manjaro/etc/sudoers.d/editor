@@ -1,0 +1,3 @@
+# Change the default visudo editor to nano
+
+Defaults editor=/usr/bin/nano

@@ -47,6 +47,8 @@ files=(
     "/etc/issue:Manjaro/etc/"
     "/etc/pacman.conf:Manjaro/etc/"
     "/etc/pam.d/system-auth:Manjaro/etc/"
+    "/etc/sudoers.d/timeout:Manjaro/etc/sudoers.d/"
+    "/etc/sudoers.d/editor:Manjaro/etc/sudoers.d/"
 
     ####################### Root config files #######################
     "/root/.bashrc:Manjaro/root/"

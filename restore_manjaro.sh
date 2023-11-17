@@ -189,7 +189,7 @@ function display_end_message(){
         echo "Then, reboot."
     fi
 
-    echo -e "\nPlease, check that you are using x11, VNC Server won't start on Wayland\n\n\x1B[34mDone\x1B[0m\n\n"
+    echo -e "\n\x1B[33m⚠️ Please, check that you are using x11, VNC Server won't start on Wayland ⚠️\n\n\x1B[34mDone\x1B[0m\n\n"
 }
 
 

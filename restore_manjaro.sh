@@ -141,12 +141,12 @@ function copyfile(){
         mkdir "$folder_path" -m $folder_permission -p
         if (($? != 0)); then
             echo -e "\n\x1B[31m[copyfile()] An error occured will creating $folder_path folder\x1B[0m"
-            return 1
+            exit 1
         fi
         chown -R $folder_group $folder_path
         if (($? != 0)); then
             echo -e "\n\x1B[31m[copyfile()] An error occured will chown $folder_path with $folder_group\x1B[0m"
-            return 1
+            exit 1
         fi
     fi
 
@@ -154,21 +154,21 @@ function copyfile(){
     cp -v --preserve=all "$backup_file" "$file_path"
     if (($? != 0)); then
         echo -e "\n\x1B[31m[copyfile()] An error occured will copying $backup_file to $file_path\x1B[0m"
-        return 1
+        exit 1
     fi
 
     # Set the right permission.
     chmod $file_permission $file_path
     if (($? != 0)); then
         echo -e "\n\x1B[31m[copyfile()] An error occured will chmod $file_path with $file_permission\x1B[0m"
-        return 1
+        exit 1
     fi
 
     # Set the right group.
     chown $file_group $file_path
     if (($? != 0)); then
         echo -e "\n\x1B[31m[copyfile()] An error occured will chown $file_path with $file_group\x1B[0m"
-        return 1
+        exit 1
     fi
 }
 

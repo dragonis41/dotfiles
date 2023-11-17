@@ -18,30 +18,54 @@ database="permissions.db"
 function install_packages(){
     echo -e "\n\x1B[34mUpdating package list and system packages\x1B[0m"
     pacman -Syyu --noconfirm
+    if (($? != 0)); then
+        echo -e "\n\x1B[31m[Base packages] An error occured will updating the system\x1B[0m"
+        exit 1
+    fi
     echo -e "\n\x1B[34mInstalling base packages (It may take a long time)\x1B[0m"
     pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
+    if (($? != 0)); then
+        echo -e "\n\x1B[31m[Base packages] An error occured will installing packages with pacman\x1B[0m"
+        exit 1
+    fi
     sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux65 linux65-headers autojump fprintd fd jq dialog gum noto-fonts-emoji mtr nano-syntax-highlighting'
+    if (($? != 0)); then
+        echo -e "\n\x1B[31m[Base packages] An error occured will installing packages with yay\x1B[0m"
+        exit 1
+    fi
 }
 
 function install_extra_packages(){
     echo -e "\n\x1B[34mUpdating package list and system packages\x1B[0m"
     pacman -Syyu --noconfirm
+    if (($? != 0)); then
+        echo -e "\n\x1B[31m[Extra packages] An error occured will updating the system\x1B[0m"
+        exit 1
+    fi
     echo -e "\n\x1B[34mInstalling extra packages (It may take a long time)\x1B[0m"
     pacman -S yay --noconfirm
+    if (($? != 0)); then
+        echo -e "\n\x1B[31m[Extra packages] An error occured will installing packages with pacman\x1B[0m"
+        exit 1
+    fi
     sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
+    if (($? != 0)); then
+        echo -e "\n\x1B[31m[Extra packages] An error occured will installing packages with yay\x1B[0m"
+        exit 1
+    fi
     systemctl enable docker.service
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occured will enabling docker.service\x1B[0m"
+        echo -e "\n\x1B[31m[Extra packages] An error occured will enabling docker.service\x1B[0m"
         exit 1
     fi
     usermod -aG docker dragonis41
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occured will usermod dragonis41 with group docker\x1B[0m"
+        echo -e "\n\x1B[31m[Extra packages] An error occured will usermod dragonis41 with group docker\x1B[0m"
         exit 1
     fi
     systemctl enable vncserver-x11-serviced.service
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occured will enabling vncserver-x11-serviced.service\x1B[0m"
+        echo -e "\n\x1B[31m[Extra packages] An error occured will enabling vncserver-x11-serviced.service\x1B[0m"
         exit 1
     fi
 }
@@ -68,7 +92,7 @@ function install_ohmyzsh(){
 function configure_yubikey(){
     systemctl enable --now pcscd.socket
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occured will enabling pcscd.socket\x1B[0m"
+        echo -e "\n\x1B[31m[Yubikey] An error occured will enabling pcscd.socket\x1B[0m"
         exit 1
     fi
 
@@ -116,12 +140,12 @@ function copyfile(){
     if [[ ! -e $folder_path ]]; then
         mkdir "$folder_path" -m $folder_permission -p
         if (($? != 0)); then
-            echo -e "\n\x1B[31mAn error occured will creating $folder_path folder\x1B[0m"
+            echo -e "\n\x1B[31m[copyfile()] An error occured will creating $folder_path folder\x1B[0m"
             return 1
         fi
         chown -R $folder_group $folder_path
         if (($? != 0)); then
-            echo -e "\n\x1B[31mAn error occured will chown $folder_path with $folder_group\x1B[0m"
+            echo -e "\n\x1B[31m[copyfile()] An error occured will chown $folder_path with $folder_group\x1B[0m"
             return 1
         fi
     fi
@@ -129,21 +153,21 @@ function copyfile(){
     # Copy each file by preserving its attributes.
     cp -v --preserve=all "$backup_file" "$file_path"
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occured will copying $backup_file to $file_path\x1B[0m"
+        echo -e "\n\x1B[31m[copyfile()] An error occured will copying $backup_file to $file_path\x1B[0m"
         return 1
     fi
 
     # Set the right permission.
     chmod $file_permission $file_path
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occured will chmod $file_path with $file_permission\x1B[0m"
+        echo -e "\n\x1B[31m[copyfile()] An error occured will chmod $file_path with $file_permission\x1B[0m"
         return 1
     fi
 
     # Set the right group.
     chown $file_group $file_path
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occured will chown $file_path with $file_group\x1B[0m"
+        echo -e "\n\x1B[31m[copyfile()] An error occured will chown $file_path with $file_group\x1B[0m"
         return 1
     fi
 }

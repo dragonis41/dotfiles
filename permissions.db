@@ -6,6 +6,7 @@
 644;dragonis41:dragonis41;/home/dragonis41/.p10k.zsh;710;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.p10k.zsh
 644;dragonis41:dragonis41;/home/dragonis41/.zshrc;710;dragonis41:dragonis41;/home/dragonis41;Manjaro/dragonis41/.zshrc
 644;dragonis41:dragonis41;/home/dragonis41/.config/htop/htoprc;700;dragonis41:dragonis41;/home/dragonis41/.config/htop;Manjaro/dragonis41/.config/htop/htoprc
+600;dragonis41:dragonis41;/home/dragonis41/.config/kglobalshortcutsrc;755;dragonis41:dragonis41;/home/dragonis41/.config;Manjaro/dragonis41/.configkglobalshortcutsrc
 600;dragonis41:dragonis41;/home/dragonis41/.local/share/konsole/Custom.profile;755;dragonis41:dragonis41;/home/dragonis41/.local/share/konsole;Manjaro/dragonis41/.local/konsole/Custom.profile
 755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/pre-commit;755;dragonis41:dragonis41;/home/dragonis41/.git-hooks;Manjaro/dragonis41/.git-hooks/pre-commit
 755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/pre-commit.d/01.check-for-private-key.hook;755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/pre-commit.d;Manjaro/dragonis41/.git-hooks/pre-commit.d/01.check-for-private-key.hook
@@ -23,8 +24,8 @@
 644;root:root;/etc/issue;755;root:root;/etc;Manjaro/etc/issue
 644;root:root;/etc/pacman.conf;755;root:root;/etc;Manjaro/etc/pacman.conf
 644;root:root;/etc/pam.d/system-auth;755;root:root;/etc/pam.d;Manjaro/etc/system-auth
-644;root:root;/etc/sudoers.d/timeout;750;root:root;/etc/sudoers.d;Manjaro/etc/sudoers.d/timeout
-644;root:root;/etc/sudoers.d/editor;750;root:root;/etc/sudoers.d;Manjaro/etc/sudoers.d/editor
+640;root:root;/etc/sudoers.d/timeout;750;root:root;/etc/sudoers.d;Manjaro/etc/sudoers.d/timeout
+640;root:root;/etc/sudoers.d/editor;750;root:root;/etc/sudoers.d;Manjaro/etc/sudoers.d/editor
 644;root:root;/root/.bashrc;750;root:root;/root;Manjaro/root/.bashrc
 644;root:root;/root/.nanorc;750;root:root;/root;Manjaro/root/.nanorc
 644;root:root;/root/.p10k.zsh;750;root:root;/root;Manjaro/root/.p10k.zsh

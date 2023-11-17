@@ -8,6 +8,8 @@
 	gpgsign = true
 [pull]
 	rebase = false
+[push]
+	autoSetupRemote = true
 [core]
 	autocrlf = input
 	editor = nano

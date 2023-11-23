@@ -26,6 +26,7 @@
 644;root:root;/etc/pam.d/system-auth;755;root:root;/etc/pam.d;Manjaro/etc/system-auth
 640;root:root;/etc/sudoers.d/timeout;750;root:root;/etc/sudoers.d;Manjaro/etc/sudoers.d/timeout
 640;root:root;/etc/sudoers.d/editor;750;root:root;/etc/sudoers.d;Manjaro/etc/sudoers.d/editor
+644;root:root;/etc/udev/rules.d/99-via.rules;755;root:root;/etc/udev/rules.d;Manjaro/etc/udev/99-via.rules
 644;root:root;/root/.bashrc;750;root:root;/root;Manjaro/root/.bashrc
 644;root:root;/root/.nanorc;750;root:root;/root;Manjaro/root/.nanorc
 644;root:root;/root/.p10k.zsh;750;root:root;/root;Manjaro/root/.p10k.zsh

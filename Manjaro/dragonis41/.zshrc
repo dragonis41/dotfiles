@@ -57,6 +57,8 @@ gpgconf --launch gpg-agent
 zbell_duration=30
 zbell_ignore=($EDITOR $PAGER gdiff htop man nano top)
 zbell_use_notify_send=true
+# Prevent compinit from putting config, cache and dump file in $HOME
+export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
 
 # Load Oh My Zsh plugins.
 source $ZSH/oh-my-zsh.sh
@@ -107,9 +109,7 @@ alias pager='gum pager <'
 alias restart-bios='sudo systemctl reboot --firmware-setup'
 alias restart-network='sudo systemctl restart NetworkManager.service'
 alias update='yay -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
-alias update-nocache='yay-nocache -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
-alias yay='yay --answerclean None --answerdiff None --answeredit None --nocleanafter --noremovemake --sudoloop'
-alias yay-nocache='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
+alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 # Fonctions
 chpwd() { ls -laF --group-directories-first --color=auto }  # ZSH function. Show the content of the folder we just cd into.

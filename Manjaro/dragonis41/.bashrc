@@ -161,9 +161,7 @@ alias pager='gum pager <'
 alias restart-bios='sudo systemctl reboot --firmware-setup'
 alias restart-network='sudo systemctl restart NetworkManager.service'
 alias update='yay -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
-alias update-nocache='yay-nocache -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
-alias yay='yay --answerclean None --answerdiff None --answeredit None --nocleanafter --noremovemake --sudoloop'
-alias yay-nocache='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
+alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 
 # Fonctions

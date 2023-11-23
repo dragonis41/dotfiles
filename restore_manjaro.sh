@@ -28,7 +28,7 @@ function install_packages(){
         echo -e "\n\x1B[31m[Base packages] An error occured will installing packages with pacman\x1B[0m"
         exit 1
     fi
-    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux65 linux65-headers autojump fprintd fd jq dialog gum noto-fonts-emoji mtr nano-syntax-highlighting'
+    sudo -H -u dragonis41 bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux66 linux66-headers autojump fprintd fd jq dialog gum noto-fonts-emoji mtr nano-syntax-highlighting'
     if (($? != 0)); then
         echo -e "\n\x1B[31m[Base packages] An error occured will installing packages with yay\x1B[0m"
         exit 1

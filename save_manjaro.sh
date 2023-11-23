@@ -50,6 +50,7 @@ files=(
     "/etc/pam.d/system-auth:Manjaro/etc/"
     "/etc/sudoers.d/timeout:Manjaro/etc/sudoers.d/"
     "/etc/sudoers.d/editor:Manjaro/etc/sudoers.d/"
+    "/etc/udev/rules.d/99-via.rules:Manjaro/etc/udev/"
 
     ####################### Root config files #######################
     "/root/.bashrc:Manjaro/root/"

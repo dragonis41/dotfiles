@@ -160,7 +160,7 @@ alias lzd='lazydocker'
 alias pager='gum pager <'
 alias reboot-bios='sudo systemctl reboot --firmware-setup'
 alias restart-network='sudo systemctl restart NetworkManager.service'
-alias update='yay -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
+alias update='sudo pacman-mirrors -c ch,de,fr,nl && yay -Syyu --noconfirm'
 alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 

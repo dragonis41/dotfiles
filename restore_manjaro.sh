@@ -248,7 +248,7 @@ function prompt_extra_packages(){
 prompt_extra_packages
 
 function prompt_ohmyzsh(){
-    read -p "Install Oh My Zsh with plugins ? Warning : It will delete current installation [yn]  " yn
+    read -p "Install Oh My Zsh with plugins ? Warning : It will delete current installation [yn] " yn
     case $yn in
         [Yy]* ) var_install_ohmyzsh=true;;
         [Nn]* ) var_install_ohmyzsh=false;;
@@ -268,7 +268,7 @@ function prompt_fingerprint(){
 prompt_fingerprint
 
 function prompt_yubikey(){
-    read -p "Configure the Yubikey ? [yn]" yn
+    read -p "Configure the Yubikey ? [yn] " yn
     case $yn in
         [Yy]* ) var_configure_yubikey=true;;
         [Nn]* ) var_configure_yubikey=false;;

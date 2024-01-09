@@ -87,6 +87,27 @@ fi
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
+## ZSH OPTIONS
+# History
+HISTFILE="$HOME/.zhistory"
+HISTSIZE=10000000
+SAVEHIST=10000000
+unsetopt APPEND_HISTORY # When set, zsh sessions will append their history list to the history file, rather than replace it. Thus, multiple parallel zsh sessions will all have the new entries from their history lists added to the history file, in the order that they exit. The file will still be periodically re-written to trim it when the number of lines grows 20% beyond the value specified by $SAVEHIST (see also the HIST_SAVE_BY_COPY option).
+setopt EXTENDED_HISTORY # When set, Save each command’s beginning timestamp (in seconds since the epoch) and the duration (in seconds) to the history file. The format of this prefixed data is: ‘: <beginning time>:<elapsed seconds>;<command>’.
+unsetopt HIST_EXPIRE_DUPS_FIRST # If the internal history needs to be trimmed to add the current command line, setting this option will cause the oldest history event that has a duplicate to be lost before losing a unique event from the list. You should be sure to set the value of HISTSIZE to a larger number than SAVEHIST in order to give you some room for the duplicated events, otherwise this option will behave just like HIST_IGNORE_ALL_DUPS once the history fills up with unique events.
+unsetopt HIST_FIND_NO_DUPS # When searching for history entries in the line editor, do not display duplicates of a line previously found, even if the duplicates are not contiguous.
+unsetopt HIST_IGNORE_ALL_DUPS # If a new command line being added to the history list duplicates an older one, the older command is removed from the list (even if it is not the previous event).
+unsetopt HIST_IGNORE_DUPS # Do not enter command lines into the history list if they are duplicates of the previous event.
+setopt HIST_IGNORE_SPACE # Remove command lines from the history list when the first character on the line is a space, or when one of the expanded aliases contains a leading space. Only normal aliases (not global or suffix aliases) have this behaviour. Note that the command lingers in the internal history until the next command is entered before it vanishes, allowing you to briefly reuse or edit the line. If you want to make it vanish right away without entering another command, type a space and press return.
+setopt HIST_NO_STORE # Remove the history (fc -l) command from the history list when invoked. Note that the command lingers in the internal history until the next command is entered before it vanishes, allowing you to briefly reuse or edit the line.
+setopt HIST_REDUCE_BLANKS # Remove superfluous blanks from each command line being added to the history list.
+setopt HIST_SAVE_BY_COPY # When the history file is re-written, we normally write out a copy of the file named $HISTFILE.new and then rename it over the old one. However, if this option is unset, we instead truncate the old history file and write out the new version in-place. If one of the history-appending options is enabled, this option only has an effect when the enlarged history file needs to be re-written to trim it down to size. Disable this only if you have special needs, as doing so makes it possible to lose history entries if zsh gets interrupted during the save.
+unsetopt HIST_SAVE_NO_DUPS # When writing out the history file, older commands that duplicate newer ones are omitted.
+unsetopt INC_APPEND_HISTORY # This option works like APPEND_HISTORY except that new history lines are added to the $HISTFILE incrementally (as soon as they are entered), rather than waiting until the shell exits. The file will still be periodically re-written to trim it when the number of lines grows 20% beyond the value specified by $SAVEHIST (see also the HIST_SAVE_BY_COPY option).
+unsetopt INC_APPEND_HISTORY_TIME # This option is a variant of INC_APPEND_HISTORY in which, where possible, the history entry is written out to the file after the command is finished, so that the time taken by the command is recorded correctly in the history file in EXTENDED_HISTORY format. This means that the history entry will not be available immediately from other instances of the shell that are using the same history file. This option is only useful if INC_APPEND_HISTORY and SHARE_HISTORY are turned off. The three options should be considered mutually exclusive.
+setopt SHARE_HISTORY # This option both imports new commands from the history file, and also causes your typed commands to be appended to the history file (the latter is like specifying INC_APPEND_HISTORY, which should be turned off if this option is in effect). The history lines are also output with timestamps ala EXTENDED_HISTORY (which makes it easier to find the spot where we left off reading the file after it gets re-written). By default, history movement commands visit the imported lines as well as the local lines, but you can toggle this on and off with the set-local-history zle binding. It is also possible to create a zle widget that will make some commands ignore imported commands, and some include them. If you find that you want more control over when commands get imported, you may wish to turn SHARE_HISTORY off, INC_APPEND_HISTORY or INC_APPEND_HISTORY_TIME (see above) on, and then manually import commands whenever you need them using ‘fc -RI’.
+
+
 # Alias
 alias ccopy='xclip -sel clip <'
 alias cls='clear'
@@ -108,7 +129,7 @@ alias lzd='lazydocker'
 alias pager='gum pager <'
 alias reboot-bios='sudo systemctl reboot --firmware-setup'
 alias restart-network='sudo systemctl restart NetworkManager.service'
-alias update='yay -Syyu && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
+alias update='sudo pacman-mirrors -c ch,de,fr,nl && yay -Syyu --noconfirm && omz update && git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
 alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 # Fonctions
@@ -121,7 +142,6 @@ gpmr() {
         return 1
     fi
 
-    # Variables
     TARGET_BRANCH=$1
 
     # Git push with options to automatically create a merge request

@@ -15,16 +15,17 @@ database="permissions.db"
 # Format: "source:dest".
 files=(
     ####################### User config files #######################
-    "/home/dragonis41/.gnupg/gpg-agent.conf:Manjaro/dragonis41/.gnupg/"
-    "/home/dragonis41/.gnupg/public.key:Manjaro/dragonis41/.gnupg/"
     "/home/dragonis41/.bashrc:Manjaro/dragonis41/"
-    "/home/dragonis41/.gitconfig:Manjaro/dragonis41/"
-    "/home/dragonis41/.nanorc:Manjaro/dragonis41/"
-    "/home/dragonis41/.p10k.zsh:Manjaro/dragonis41/"
-    "/home/dragonis41/.zshrc:Manjaro/dragonis41/"
     "/home/dragonis41/.config/htop/htoprc:Manjaro/dragonis41/.config/htop/"
     "/home/dragonis41/.config/kglobalshortcutsrc:Manjaro/dragonis41/.config/"
+    "/home/dragonis41/.gitconfig:Manjaro/dragonis41/"
+    "/home/dragonis41/.gnupg/gpg-agent.conf:Manjaro/dragonis41/.gnupg/"
+    "/home/dragonis41/.gnupg/public.key:Manjaro/dragonis41/.gnupg/"
     "/home/dragonis41/.local/share/konsole/Custom.profile:Manjaro/dragonis41/.local/konsole/"
+    "/home/dragonis41/.nanorc:Manjaro/dragonis41/"
+    "/home/dragonis41/.p10k.zsh:Manjaro/dragonis41/"
+    "/home/dragonis41/.ssh/config:Manjaro/dragonis41/.ssh/"
+    "/home/dragonis41/.zshrc:Manjaro/dragonis41/"
 
     ########################### Git Hooks ###########################
     # Pre commit
@@ -54,10 +55,10 @@ files=(
 
     ####################### Root config files #######################
     "/root/.bashrc:Manjaro/root/"
+    "/root/.config/htop/htoprc:Manjaro/root/"
     "/root/.nanorc:Manjaro/root/"
     "/root/.p10k.zsh:Manjaro/root/"
     "/root/.zshrc:Manjaro/root/"
-    "/root/.config/htop/htoprc:Manjaro/root/"
 )
 
 

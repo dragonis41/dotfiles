@@ -21,7 +21,7 @@ prompt_username
 # Name of the database where permissions, owners and paths are stored.
 database="permissions_manjaro.db"
 # Folder where the files will be saved.
-backup_folder="Manjaro"
+backup_folder="config/Manjaro"
 # Full path of files to save.
 # Format: "source:dest" where source is a file and dest is a folder.
 files=(

@@ -1,5 +1,5 @@
 # dotfiles
-My personnal dotfiles with custom backup and restore script.
+My personal dotfiles with custom backup and restore script.
 
 ## Features
 ### save_manjaro.sh
@@ -16,9 +16,9 @@ It will :
 - Install and configure Yubikey
 - Restore configuration files
 
-### permissions.db
+### permissions_xyz.db
 Do not touch !\
 Permissions and paths are stored in this file.
 
-### Manjaro/
-The folder where backup is stored
+### config/
+The folder where backups are stored

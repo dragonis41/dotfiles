@@ -1,18 +1,10 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]
-    then echo "Please run as root"
+if [ "$EUID" -ne 0 ] || [ "$SUDO_USER" = "" ]; then
+    echo "Please run as sudo but not as root"
     exit
 fi
 
-function prompt_username(){
-    read -rp "name of the non-root user : " main_user
-    if ! id -u "$main_user" >/dev/null 2>&1; then
-		echo "User does not exist"
-		prompt_username
-	fi
-}
-prompt_username
 
 ##################################################
 # VARIABLES
@@ -37,7 +29,7 @@ function install_packages(){
         echo -e "\n\x1B[31m[Base packages] An error occurred will installing packages with pacman\x1B[0m"
         exit 1
     fi
-    sudo -H -u "$main_user" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux66 linux66-headers autojump fprintd fd jq dialog gum noto-fonts-emoji mtr nano-syntax-highlighting'
+    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux66 linux66-headers autojump fprintd fd jq dialog gum noto-fonts-emoji mtr nano-syntax-highlighting'
     if (($? != 0)); then
         echo -e "\n\x1B[31m[Base packages] An error occurred will installing packages with yay\x1B[0m"
         exit 1
@@ -54,10 +46,10 @@ function install_extra_packages(){
     echo -e "\n\x1B[34mInstalling extra packages (It may take a long time)\x1B[0m"
     pacman -S yay --noconfirm
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Extra packages] An error occured will installing packages with pacman\x1B[0m"
+        echo -e "\n\x1B[31m[Extra packages] An error occurred will installing packages with pacman\x1B[0m"
         exit 1
     fi
-    sudo -H -u "$main_user" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
+    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
     if (($? != 0)); then
         echo -e "\n\x1B[31m[Extra packages] An error occurred will installing packages with yay\x1B[0m"
         exit 1
@@ -67,9 +59,9 @@ function install_extra_packages(){
         echo -e "\n\x1B[31m[Extra packages] An error occurred will enabling docker.service\x1B[0m"
         exit 1
     fi
-    usermod -aG docker "$main_user"
+    usermod -aG docker "$SUDO_USER"
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Extra packages] An error occurred will usermod $main_user with group docker\x1B[0m"
+        echo -e "\n\x1B[31m[Extra packages] An error occurred will usermod docker group for $SUDO_USER\x1B[0m"
         exit 1
     fi
     systemctl enable vncserver-x11-serviced.service
@@ -84,18 +76,22 @@ function install_ohmyzsh(){
     pacman -S git --noconfirm
 
     # Installing for root
-    rm -r "/root/.oh-my-zsh/"
+    if [ -d "/root/.oh-my-zsh" ]; then
+        rm -r /root/.oh-my-zsh/
+    fi
     sudo -H -u root bash -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
     sudo -H -u root bash -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-/root/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
     sudo -H -u root bash -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-/root/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
     sudo -H -u root bash -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-/root/.oh-my-zsh/custom}/themes/powerlevel10k'
 
-    # Installing for $main_user
-    rm -r "/home/$main_user/.oh-my-zsh/"
-    sudo -H -u "$main_user" bash -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
-    sudo -H -u "$main_user" bash -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-/home/$main_user/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
-    sudo -H -u "$main_user" bash -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-/home/$main_user/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
-    sudo -H -u "$main_user" bash -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'
+    # Installing for user
+    if [ -d "/home/$SUDO_USER/.oh-my-zsh" ]; then
+        rm -r "/home/$SUDO_USER/.oh-my-zsh/"
+    fi
+    sudo -H -u "$SUDO_USER" bash -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+    sudo -H -u "$SUDO_USER" bash -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
+    sudo -H -u "$SUDO_USER" bash -c 'git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+    sudo -H -u "$SUDO_USER" bash -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k'
 }
 
 function configure_yubikey(){
@@ -111,15 +107,14 @@ function configure_yubikey(){
         * ) echo -e "\n\x1B[34mConfiguring Yubikey\x1B[0m";;
     esac
 
-    sudo -H -u "$main_user" bash -c 'gpg --import /home/$main_user/.gnupg/public.key'
+    sudo -H -u "$SUDO_USER" bash -c 'gpg --import $home/.gnupg/public.key'
 }
 
 function restore_config(){
     echo -e "\n\x1B[34mRestoring configuration files\x1B[0m"
     while read -r line
     do
-        line=$($line | sed "s/main_user/$main_user/g")
-        folder_path="$($line | cut -d ";" -f6)"
+        folder_path="$(echo "$line" | cut -d ";" -f6)"
 
         # Restore files if
         # - The folder is different than "/etc/pam.d"
@@ -148,7 +143,6 @@ function copyfile(){
 
     # create original folder with right permissions.
     if [[ ! -e $folder_path ]]; then
-        # shellcheck disable=SC2174
         mkdir "$folder_path" -m "$folder_permission" -p
         if (($? != 0)); then
             echo -e "\n\x1B[31m[copyfile()] An error occurred will creating $folder_path folder\x1B[0m"
@@ -190,12 +184,12 @@ function display_end_message(){
             read -rp "Do you want to register a fingerprint ? [yn]  " yn
             case $yn in
                 [Yy]* )
-                    sudo -H -u "$main_user" bash -c 'fprintd-enroll $main_user'
+                    sudo -H -u "$SUDO_USER" bash -c 'fprintd-enroll '"$SUDO_USER"
                     if (($? != 0)); then
                         echo -e "\n\x1B[31mAn error occurred will enrolling fingerprint\x1B[0m"
                         exit 1
                     fi
-                    sudo -H -u "$main_user" bash -c 'fprintd-verify'
+                    sudo -H -u "$SUDO_USER" bash -c 'fprintd-verify'
                     if (($? != 0)); then
                         echo -e "\n\x1B[31mAn error occurred will verifying fingerprint enroll\x1B[0m"
                         exit 1

@@ -5,60 +5,71 @@ if [ "$EUID" -ne 0 ]
     exit
 fi
 
+function prompt_username(){
+    read -rp "name of the non-root user : " main_user
+    if ! id -u "$main_user" >/dev/null 2>&1; then
+		echo "User does not exist"
+		prompt_username
+	fi
+}
+prompt_username
+
 
 ##################################################
 # VARIABLES
 ##################################################
 # Name of the database where permissions, owners and paths are stored.
-database="permissions.db"
+database="permissions_manjaro.db"
+# Folder where the files will be saved.
+backup_folder="Manjaro"
 # Full path of files to save.
-# Format: "source:dest".
+# Format: "source:dest" where source is a file and dest is a folder.
 files=(
     ####################### User config files #######################
-    "/home/dragonis41/.bashrc:Manjaro/dragonis41/"
-    "/home/dragonis41/.config/htop/htoprc:Manjaro/dragonis41/.config/htop/"
-    "/home/dragonis41/.config/kglobalshortcutsrc:Manjaro/dragonis41/.config/"
-    "/home/dragonis41/.gitconfig:Manjaro/dragonis41/"
-    "/home/dragonis41/.gnupg/gpg-agent.conf:Manjaro/dragonis41/.gnupg/"
-    "/home/dragonis41/.gnupg/public.key:Manjaro/dragonis41/.gnupg/"
-    "/home/dragonis41/.local/share/konsole/Custom.profile:Manjaro/dragonis41/.local/konsole/"
-    "/home/dragonis41/.nanorc:Manjaro/dragonis41/"
-    "/home/dragonis41/.p10k.zsh:Manjaro/dragonis41/"
-    "/home/dragonis41/.ssh/config:Manjaro/dragonis41/.ssh/"
-    "/home/dragonis41/.zshrc:Manjaro/dragonis41/"
+    "/home/$main_user/.bashrc:$backup_folder/$main_user/"
+    "/home/$main_user/.config/htop/htoprc:$backup_folder/$main_user/.config/htop/"
+    "/home/$main_user/.config/kglobalshortcutsrc:$backup_folder/$main_user/.config/"
+    "/home/$main_user/.gitconfig:$backup_folder/$main_user/"
+    "/home/$main_user/.gnupg/gpg-agent.conf:$backup_folder/$main_user/.gnupg/"
+    "/home/$main_user/.gnupg/public.key:$backup_folder/$main_user/.gnupg/"
+    "/home/$main_user/.local/share/konsole/Custom.profile:$backup_folder/$main_user/.local/konsole/"
+    "/home/$main_user/.nanorc:$backup_folder/$main_user/"
+    "/home/$main_user/.p10k.zsh:$backup_folder/$main_user/"
+    "/home/$main_user/.ssh/config:$backup_folder/$main_user/.ssh/"
+    "/home/$main_user/.zshrc:$backup_folder/$main_user/"
 
     ########################### Git Hooks ###########################
     # Pre commit
-    "/home/dragonis41/.git-hooks/pre-commit:Manjaro/dragonis41/.git-hooks/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/01.check-for-private-key.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/02.check-for-env-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/03.check-for-credentials.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/04.remove-trailing-space.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/05.fix-end-of-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/06.format-go-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/07.validate-json-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
-    "/home/dragonis41/.git-hooks/pre-commit.d/08.validate-xml-files.hook:Manjaro/dragonis41/.git-hooks/pre-commit.d/"
+    "/home/$main_user/.git-hooks/pre-commit:$backup_folder/$main_user/.git-hooks/"
+    "/home/$main_user/.git-hooks/pre-commit.d/01.check-for-private-key.hook:$backup_folder/$main_user/.git-hooks/pre-commit.d/"
+    "/home/$main_user/.git-hooks/pre-commit.d/02.check-for-env-files.hook:$backup_folder/$main_user/.git-hooks/pre-commit.d/"
+    "/home/$main_user/.git-hooks/pre-commit.d/03.check-for-credentials.hook:$backup_folder/$main_user/.git-hooks/pre-commit.d/"
+    "/home/$main_user/.git-hooks/pre-commit.d/04.remove-trailing-space.hook:$backup_folder/$main_user/.git-hooks/pre-commit.d/"
+    "/home/$main_user/.git-hooks/pre-commit.d/05.fix-end-of-files.hook:$backup_folder/$main_user/.git-hooks/pre-commit.d/"
+    "/home/$main_user/.git-hooks/pre-commit.d/06.format-go-files.hook:$backup_folder/$main_user/.git-hooks/pre-commit.d/"
+    "/home/$main_user/.git-hooks/pre-commit.d/07.validate-json-files.hook:$backup_folder/$main_user/.git-hooks/pre-commit.d/"
+    "/home/$main_user/.git-hooks/pre-commit.d/08.validate-xml-files.hook:$backup_folder/$main_user/.git-hooks/pre-commit.d/"
     # Commit msg
-    "/home/dragonis41/.git-hooks/commit-msg:Manjaro/dragonis41/.git-hooks/"
-    "/home/dragonis41/.git-hooks/commit-msg.d/01.check-message.hook:Manjaro/dragonis41/.git-hooks/commit-msg.d/"
+    "/home/$main_user/.git-hooks/commit-msg:$backup_folder/$main_user/.git-hooks/"
+    "/home/$main_user/.git-hooks/commit-msg.d/01.check-message.hook:$backup_folder/$main_user/.git-hooks/commit-msg.d/"
     # Post update
-    "/home/dragonis41/.git-hooks/post-update:Manjaro/dragonis41/.git-hooks/"
-    "/home/dragonis41/.git-hooks/post-update.d/01.update-server-info.hook:Manjaro/dragonis41/.git-hooks/post-update.d/"
+    "/home/$main_user/.git-hooks/post-update:$backup_folder/$main_user/.git-hooks/"
+    "/home/$main_user/.git-hooks/post-update.d/01.update-server-info.hook:$backup_folder/$main_user/.git-hooks/post-update.d/"
 
     ############################ System #############################
-    "/etc/issue:Manjaro/etc/"
-    "/etc/pacman.conf:Manjaro/etc/"
-    "/etc/pam.d/system-auth:Manjaro/etc/"
-    "/etc/sudoers.d/timeout:Manjaro/etc/sudoers.d/"
-    "/etc/sudoers.d/editor:Manjaro/etc/sudoers.d/"
-    "/etc/udev/rules.d/99-via.rules:Manjaro/etc/udev/"
+    "/etc/issue:$backup_folder/etc/"
+    "/etc/pacman.conf:$backup_folder/etc/"
+    "/etc/pam.d/system-auth:$backup_folder/etc/pam.d/"
+    "/etc/sudoers.d/timeout:$backup_folder/etc/sudoers.d/"
+    "/etc/sudoers.d/editor:$backup_folder/etc/sudoers.d/"
+    "/etc/udev/rules.d/99-via.rules:$backup_folder/etc/udev/"
 
     ####################### Root config files #######################
-    "/root/.bashrc:Manjaro/root/"
-    "/root/.config/htop/htoprc:Manjaro/root/"
-    "/root/.nanorc:Manjaro/root/"
-    "/root/.p10k.zsh:Manjaro/root/"
-    "/root/.zshrc:Manjaro/root/"
+    "/root/.bashrc:$backup_folder/root/"
+    "/root/.config/htop/htoprc:$backup_folder/root/"
+    "/root/.nanorc:$backup_folder/root/"
+    "/root/.p10k.zsh:$backup_folder/root/"
+    "/root/.zshrc:$backup_folder/root/"
 )
 
 
@@ -71,14 +82,14 @@ function mkcp(){
 
     # Format everything and add it to the database.
     # Format : file_permission ; file_group ; file_path ; folder_permission ; folder_group ; folder_path ; backup_file
-    echo "$(stat -c "%a;%U:%G;%n" "$file_source");$(stat -c "%a;%U:%G;%n" $(dirname $file_source));$folder_dest$(basename $file_source)" >> $database
+    echo "$(stat -c "%a;%U:%G;%n" "$file_source");$(stat -c "%a;%U:%G;%n" "$(dirname "$file_source")");$folder_dest$(basename "$file_source")" | sed "s/$main_user/main_user/g" >> $database
 
     # Create destination folder.
     if [[ ! -e $folder_dest ]]; then
         mkdir "$folder_dest" -m 755 -p
-        chown dragonis41:dragonis41 "$folder_dest"
+        chown "$main_user":"$main_user" "$folder_dest"
         if (($? != 0)); then
-            echo -e "\n\x1B[31mAn error occured will chmod $folder_dest\x1B[0m"
+            echo -e "\n\x1B[31mAn error occurred will chmod $folder_dest\x1B[0m"
             return 1
         fi
     fi
@@ -86,7 +97,7 @@ function mkcp(){
     # Copy each file if it is different and newer preserving its attributes.
     cp -uv --preserve=all "$file_source" "$folder_dest"
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occured will copying $file_source to $folder_dest\x1B[0m"
+        echo -e "\n\x1B[31mAn error occurred will copying $file_source to $folder_dest\x1B[0m"
         return 1
     fi
 
@@ -100,8 +111,8 @@ function mkcp(){
 echo -e "\n\x1B[34mResetting permission database\x1B[0m"
 echo -n "" > $database
 chmod 664 $database
-chown dragonis41:dragonis41 $database
-rm -r Manjaro/
+chown "$main_user":"$main_user" $database
+rm -r "${backup_folder:?}/"
 
 ##################################################
 # COPY
@@ -118,9 +129,10 @@ do
 done
 
 echo -e "\n\x1B[34mCleaning\x1B[0m"
-find ./Manjaro -type d -exec chmod 755 {} +
-find ./Manjaro -type f -exec chmod 664 {} +
-chown -R dragonis41:dragonis41 ./Manjaro/
+top_backup_folder=$(echo $backup_folder | cut -d'/' -f 1)
+find ./$top_backup_folder -type d -exec chmod 755 {} +
+find ./$top_backup_folder -type f -exec chmod 664 {} +
+chown -R "$main_user":"$main_user" ./$top_backup_folder/
 
 echo -e "\n\x1B[32mDone\x1B[0m"
 exit 0

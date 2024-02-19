@@ -18,6 +18,7 @@ database="permissions_manjaro.db"
 ##################################################
 function install_packages(){
     echo -e "\n\x1B[34mUpdating package list and system packages\x1B[0m"
+    pacman-mirrors -c ch,de,fr,nl
     pacman -Syyu --noconfirm
     if (($? != 0)); then
         echo -e "\n\x1B[31m[Base packages] An error occurred will updating the system\x1B[0m"

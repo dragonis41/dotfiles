@@ -16,6 +16,7 @@ LocalTabTitleFormat=%u - %d : %n
 Name=Custom
 Parent=FALLBACK/
 SemanticInputClick=false
+SemanticUpDown=true
 TerminalCenter=false
 
 [Interaction Options]
@@ -24,7 +25,7 @@ TrimTrailingSpacesInSelectedText=true
 UnderlineFilesEnabled=true
 
 [Keyboard]
-KeyBindings=linux
+KeyBindings=default
 
 [Scrolling]
 HistoryMode=1

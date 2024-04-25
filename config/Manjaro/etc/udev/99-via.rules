@@ -1,1 +1,2 @@
+# Rule for the keyboard IronClad v3 with Via/QMK firmware
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="320f", ATTRS{idProduct}=="511e", MODE="0666"

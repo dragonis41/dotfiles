@@ -55,7 +55,7 @@ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
 # Options for Zbell oh-my-zsh plugin.
 zbell_duration=30
-zbell_ignore=($EDITOR $PAGER gdiff htop man nano top)
+zbell_ignore=($EDITOR $PAGER htop man nano top)
 zbell_use_notify_send=true
 # Prevent compinit from putting config, cache and dump file in $HOME
 export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST

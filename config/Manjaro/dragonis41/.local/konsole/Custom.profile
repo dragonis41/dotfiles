@@ -1,7 +1,7 @@
 [Appearance]
 ColorScheme=Breeze
 EmojiFont=Noto Color Emoji,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
-Font=MesloLGS NF,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+Font=MesloLGS NF,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 TabColor=128,255,255
 UseFontLineChararacters=false
 WordModeBrahmic=false

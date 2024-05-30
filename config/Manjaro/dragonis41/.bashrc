@@ -153,7 +153,6 @@ alias go-get='ssh-add -L && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v
 #alias go-get='eval $(ssh-agent -s) && ssh-add && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v -x '
 alias gp='git push'
 alias gpg-yubi='gpg-connect-agent "scd serialno" "learn --force" /bye'
-alias history="omz_history -i | awk '{ printf \"\033[1;32m%s  \033[1;33m%s \033[1;33m%s \033[0m\", \$1, \$2, \$3; for(i=4; i<=NF; i++) printf \" \033[1;34m%s\033[0m\", \$i; printf \"\n\" }'"
 alias ip='ip -color'
 alias l='ls -laF --group-directories-first --color=auto'
 alias lzd='lazydocker'

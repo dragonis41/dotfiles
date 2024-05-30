@@ -25,7 +25,7 @@ function install_packages(){
         exit 1
     fi
     echo -e "\n\x1B[34mInstalling base packages (It may take a long time)\x1B[0m"
-    pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
+    pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode pacman-contrib
     if (($? != 0)); then
         echo -e "\n\x1B[31m[Base packages] An error occurred will installing packages with pacman\x1B[0m"
         exit 1

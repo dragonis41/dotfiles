@@ -159,7 +159,7 @@ alias lzd='lazydocker'
 alias pager='gum pager <'
 alias reboot-bios='sudo systemctl reboot --firmware-setup'
 alias restart-network='sudo systemctl restart NetworkManager.service'
-alias update='sudo pacman-mirrors -c ch,de,fr,nl && yay -Syyu --noconfirm'
+alias update='sudo pacman-mirrors -c ch,de,fr,nl; yay -Syyu'
 alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 

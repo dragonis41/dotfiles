@@ -108,7 +108,7 @@ function configure_yubikey(){
         * ) echo -e "\n\x1B[34mConfiguring Yubikey\x1B[0m";;
     esac
 
-    sudo -H -u "$SUDO_USER" bash -c 'gpg --import $home/.gnupg/public.key'
+    sudo -H -u "$SUDO_USER" bash -c 'gpg --import $HOME/.gnupg/public.key'
 }
 
 function restore_config(){

@@ -53,6 +53,9 @@ files=(
     "/etc/sudoers.d/timeout:${backup_folder}/etc/sudoers.d/"
     "/etc/sudoers.d/editor:${backup_folder}/etc/sudoers.d/"
     "/etc/udev/rules.d/99-via.rules:${backup_folder}/etc/udev/"
+    # Config for Nvidia graphic card
+    "/etc/optimus-manager/optimus-manager.conf:${backup_folder}/etc/optimus-manager/"
+    "/etc/sddm.conf:${backup_folder}/etc/"
 
     ####################### Root config files #######################
     "/root/.bashrc:${backup_folder}/root/"

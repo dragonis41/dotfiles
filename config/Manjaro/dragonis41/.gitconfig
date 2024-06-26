@@ -10,6 +10,8 @@
 	rebase = false
 [push]
 	autoSetupRemote = true
+[alias]
+	unstage = reset HEAD --
 [core]
 	autocrlf = input
 	editor = nano

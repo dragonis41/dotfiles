@@ -55,6 +55,7 @@ files=(
     "/etc/udev/rules.d/99-via.rules:${backup_folder}/etc/udev/"
     # Config for Nvidia graphic card
     "/etc/optimus-manager/optimus-manager.conf:${backup_folder}/etc/optimus-manager/"
+    "/etc/X11/xorg.conf.d/10-optimus-manager.conf:${backup_folder}/etc/X11/xorg.conf.d/"
     "/etc/sddm.conf:${backup_folder}/etc/"
 
     ####################### Root config files #######################

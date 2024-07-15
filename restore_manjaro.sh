@@ -41,13 +41,13 @@ function install_extra_packages(){
     if (($? != 0)); then
         display_error "[Extra packages] An error occurred will updating the system"
     fi
-    display_step "Installing extra packages [step 1/2] (It may take a long time)"
+    display_step "Installing extra packages [step 1/2]"
     pacman -S yay --noconfirm
     if (($? != 0)); then
         display_error "[Extra packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing extra packages [step 2/2] (It may take a long time)"
-    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
+    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox mattermost-desktop notepadqq thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
     if (($? != 0)); then
         display_error "[Extra packages] An error occurred will installing packages with yay"
     fi
@@ -80,7 +80,7 @@ function install_qemu(){
     if (($? != 0)); then
         display_error "[Virt-manager - Qemu] An error occurred will updating the system"
     fi
-    display_step "Installing Virt-manager libvirt and Qemu [step 1/2] (It may take a long time)"
+    display_step "Installing Virt-manager libvirt and Qemu [step 1/2]"
     pacman -S yay --noconfirm
     if (($? != 0)); then
         display_error "[Virt-manager - Qemu] An error occurred will installing packages with pacman"
@@ -90,24 +90,41 @@ function install_qemu(){
     if (($? != 0)); then
         display_error "[Extra packages] An error occurred will installing packages with yay"
     fi
-    display_step "[Virt-manager - Qemu] Enabling libvirtd.service"
-    systemctl enable libvirtd.service
+    display_step "[Virt-manager - Qemu] Adding user ${SUDO_USER} to libvirt group"
+    usermod -aG libvirt "$SUDO_USER"
     if (($? != 0)); then
-        display_error "[Virt-manager - Qemu] An error occurred will enabling libvirtd.service"
+        display_error "[Virt-manager - Qemu] An error occurred will adding ${SUDO_USER} to libvirt group"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Enabling virtlogd.socket"
     systemctl enable virtlogd.socket
+    systemctl start virtlogd.socket
     if (($? != 0)); then
         display_error "[Virt-manager - Qemu] An error occurred will enabling virtlogd.socket"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
-    display_step "[Virt-manager - Qemu] Adding user ${SUDO_USER} to libvirt group"
-    usermod -aG libvirt "$SUDO_USER"
+    display_step "[Virt-manager - Qemu] Enabling virtqemud.socket"
+    systemctl enable virtqemud.socket
+    systemctl start virtqemud.socket
     if (($? != 0)); then
-        display_error "[Virt-manager - Qemu] An error occurred will adding ${SUDO_USER} to libvirt group"
+        display_error "[Virt-manager - Qemu] An error occurred will enabling virtqemud.socket"
+    else
+        echo -e "${green_color}ok${reset_color}"
+    fi
+    display_step "[Virt-manager - Qemu] Enabling libvirtd.service"
+    systemctl enable libvirtd.service
+    systemctl start libvirtd.service
+    if (($? != 0)); then
+        display_error "[Virt-manager - Qemu] An error occurred will enabling libvirtd.service"
+    else
+        echo -e "${green_color}ok${reset_color}"
+    fi
+    display_step "[Virt-manager - Qemu] Setting user rights to libvirt-sock"
+    setfacl -m user:${SUDO_USER}:rw /var/run/libvirt/libvirt-sock
+    if (($? != 0)); then
+        display_error "[Virt-manager - Qemu] An error occurred will setting user rights to libvirt-sock"
     else
         echo -e "${green_color}ok${reset_color}"
     fi

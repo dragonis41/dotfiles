@@ -17,66 +17,122 @@ database="permissions_manjaro.db"
 # FUNCTIONS
 ##################################################
 function install_packages(){
-    echo -e "\n\x1B[34mUpdating package list and system packages\x1B[0m"
+    display_step "Updating package list and system packages"
     pacman-mirrors -c ch,de,fr,nl
     pacman -Syyu --noconfirm
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Base packages] An error occurred will updating the system\x1B[0m"
-        exit 1
+        display_error "[Base packages] An error occurred will updating the system"
     fi
-    echo -e "\n\x1B[34mInstalling base packages (It may take a long time)\x1B[0m"
+    display_step "Installing base packages [step 1/2] (It may take a long time)"
     pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Base packages] An error occurred will installing packages with pacman\x1B[0m"
-        exit 1
+        display_error "[Base packages] An error occurred will installing packages with pacman"
     fi
+    display_step "Installing base packages [step 2/2] (It may take a long time)"
     sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux69 linux69-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager'
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Base packages] An error occurred will installing packages with yay\x1B[0m"
-        exit 1
+        display_error "[Base packages] An error occurred will installing packages with yay"
     fi
 }
 
 function install_extra_packages(){
-    echo -e "\n\x1B[34mUpdating package list and system packages\x1B[0m"
+    display_step "Updating package list and system packages"
     pacman -Syyu --noconfirm
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Extra packages] An error occurred will updating the system\x1B[0m"
-        exit 1
+        display_error "[Extra packages] An error occurred will updating the system"
     fi
-    echo -e "\n\x1B[34mInstalling extra packages (It may take a long time)\x1B[0m"
+    display_step "Installing extra packages [step 1/2] (It may take a long time)"
     pacman -S yay --noconfirm
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Extra packages] An error occurred will installing packages with pacman\x1B[0m"
-        exit 1
+        display_error "[Extra packages] An error occurred will installing packages with pacman"
     fi
-    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox burpsuite filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
+    display_step "Installing extra packages [step 2/2] (It may take a long time)"
+    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox filezilla mattermost-desktop notepadqq postman-bin thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Extra packages] An error occurred will installing packages with yay\x1B[0m"
-        exit 1
+        display_error "[Extra packages] An error occurred will installing packages with yay"
     fi
+    display_step "[Extra packages] Enabling docker.service"
     systemctl enable docker.service
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Extra packages] An error occurred will enabling docker.service\x1B[0m"
-        exit 1
+        display_error "[Extra packages] An error occurred will enabling docker.service"
+    else
+        echo -e "${green_color}ok${reset_color}"
     fi
+    display_step "[Extra packages] Adding user ${SUDO_USER} to docker group"
     usermod -aG docker "$SUDO_USER"
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Extra packages] An error occurred will usermod docker group for $SUDO_USER\x1B[0m"
-        exit 1
+        display_error "[Extra packages] An error occurred will usermod docker group for $SUDO_USER$"
+    else
+        echo -e "${green_color}ok${reset_color}"
     fi
+    display_step "[Extra packages] Enabling vncserver-x11-serviced.service"
     systemctl enable vncserver-x11-serviced.service
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Extra packages] An error occurred will enabling vncserver-x11-serviced.service\x1B[0m"
-        exit 1
+        display_error "[Extra packages] An error occurred will enabling vncserver-x11-serviced.service"
+    else
+        echo -e "${green_color}ok${reset_color}"
+    fi
+}
+
+function install_qemu(){
+    display_step "Updating package list and system packages"
+    pacman -Syyu --noconfirm
+    if (($? != 0)); then
+        display_error "[Virt-manager - Qemu] An error occurred will updating the system"
+    fi
+    display_step "Installing Virt-manager libvirt and Qemu [step 1/2] (It may take a long time)"
+    pacman -S yay --noconfirm
+    if (($? != 0)); then
+        display_error "[Virt-manager - Qemu] An error occurred will installing packages with pacman"
+    fi
+    display_step "Installing Virt-manager libvirt and Qemu [step 2/2] (It may take a long time)"
+    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S qemu virt-manager libvirt'
+    if (($? != 0)); then
+        display_error "[Extra packages] An error occurred will installing packages with yay"
+    fi
+    display_step "[Virt-manager - Qemu] Enabling libvirtd.service"
+    systemctl enable libvirtd.service
+    if (($? != 0)); then
+        display_error "[Virt-manager - Qemu] An error occurred will enabling libvirtd.service"
+    else
+        echo -e "${green_color}ok${reset_color}"
+    fi
+    display_step "[Virt-manager - Qemu] Enabling virtlogd.socket"
+    systemctl enable virtlogd.socket
+    if (($? != 0)); then
+        display_error "[Virt-manager - Qemu] An error occurred will enabling virtlogd.socket"
+    else
+        echo -e "${green_color}ok${reset_color}"
+    fi
+    display_step "[Virt-manager - Qemu] Adding user ${SUDO_USER} to libvirt group"
+    usermod -aG libvirt "$SUDO_USER"
+    if (($? != 0)); then
+        display_error "[Virt-manager - Qemu] An error occurred will adding ${SUDO_USER} to libvirt group"
+    else
+        echo -e "${green_color}ok${reset_color}"
+    fi
+    display_step "[Virt-manager - Qemu] Defining default Qemu network"
+    virsh net-define /etc/libvirt/qemu/networks/default.xml
+    if (($? != 0)); then
+        display_error "[Virt-manager - Qemu] An error occurred will defining default Qemu network"
+    else
+        echo -e "${green_color}ok${reset_color}"
+    fi
+    display_step "[Virt-manager - Qemu] Setting autostart on default Qemu network"
+    virsh net-autostart default
+    if (($? != 0)); then
+        display_error "[Virt-manager - Qemu] An error occurred will setting autostart on Qemu network"
+    else
+        echo -e "${green_color}ok${reset_color}"
     fi
 }
 
 function install_ohmyzsh(){
-    echo -e "\x1B[34mInstalling oh-my-zsh with plugins\x1B[0m"
+    display_step "Installing oh-my-zsh with plugins"
     pacman -S git --noconfirm
 
     # Installing for root
+    display_step "[Oh My Zsh] Installing Oh My Zsh for root user (type 'exit' when you fallback into a shell)"
     if [ -d "/root/.oh-my-zsh" ]; then
         rm -r /root/.oh-my-zsh/
     fi
@@ -86,6 +142,7 @@ function install_ohmyzsh(){
     sudo -H -u root bash -c 'git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-/root/.oh-my-zsh/custom}/themes/powerlevel10k'
 
     # Installing for user
+    display_step "[Oh My Zsh] Installing Oh My Zsh for ${SUDO_USER} user (type 'exit' when you fallback into a shell)"
     if [ -d "/home/$SUDO_USER/.oh-my-zsh" ]; then
         rm -r "/home/$SUDO_USER/.oh-my-zsh/"
     fi
@@ -96,23 +153,28 @@ function install_ohmyzsh(){
 }
 
 function configure_yubikey(){
+    display_step "[Yubikey] Enabling pcscd.socket"
     systemctl enable --now pcscd.socket
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[Yubikey] An error occurred will enabling pcscd.socket\x1B[0m"
-        exit 1
+        display_error "[Yubikey] An error occurred will enabling pcscd.socket"
+    else
+        echo -e "${green_color}ok${reset_color}"
     fi
 
     echo ""
-    read -rp "Insert the Yubikey and press enter to continue" yn
-    case $yn in
-        * ) echo -e "\n\x1B[34mConfiguring Yubikey\x1B[0m";;
+    read -rp "Insert the Yubikey and press enter to continue" key_pressed
+    case $key_pressed in
+        * ) display_step "Configuring Yubikey";;
     esac
 
     sudo -H -u "$SUDO_USER" bash -c 'gpg --import $HOME/.gnupg/public.key'
+    if (($? != 0)); then
+        display_error "[Yubikey] An error occurred will importing new GPG key"
+    fi
 }
 
 function restore_config(){
-    echo -e "\n\x1B[34mRestoring configuration files\x1B[0m"
+    display_step "Restoring configuration files"
     while read -r line
     do
         folder_path="$(echo "$line" | cut -d ";" -f6)"
@@ -146,60 +208,55 @@ function copyfile(){
     if [[ ! -e $folder_path ]]; then
         mkdir "$folder_path" -m "$folder_permission" -p
         if (($? != 0)); then
-            echo -e "\n\x1B[31m[copyfile()] An error occurred will creating $folder_path folder\x1B[0m"
-            exit 1
+            display_error "[copyfile()] An error occurred will creating $folder_path folder"
         fi
         chown -R "$folder_group" "$folder_path"
         if (($? != 0)); then
-            echo -e "\n\x1B[31m[copyfile()] An error occurred will chown $folder_path with $folder_group\x1B[0m"
-            exit 1
+            display_error "[copyfile()] An error occurred will chown $folder_path with $folder_group"
         fi
     fi
 
     # Copy each file by preserving its attributes.
     cp -v --preserve=all "$backup_file" "$file_path"
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[copyfile()] An error occurred will copying $backup_file to $file_path\x1B[0m"
-        exit 1
+        display_error "[copyfile()] An error occurred will copying $backup_file to $file_path"
     fi
 
     # Set the right permission.
     chmod "$file_permission" "$file_path"
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[copyfile()] An error occurred will chmod $file_path with $file_permission\x1B[0m"
-        exit 1
+        display_error "[copyfile()] An error occurred will chmod $file_path with $file_permission"
     fi
 
     # Set the right group.
     chown "$file_group" "$file_path"
     if (($? != 0)); then
-        echo -e "\n\x1B[31m[copyfile()] An error occurred will chown $file_path with $file_group\x1B[0m"
-        exit 1
+        display_error "[copyfile()] An error occurred will chown $file_path with $file_group"
     fi
 }
 
 function display_end_message(){
     if ($var_install_fingerprint); then
-        echo -e "\n\x1B[34mEnd configuration : Fingerprint\x1B[0m"
+        display_step "End configuration : Fingerprint"
         function end_prompt_fingerprint(){
             read -rp "Do you want to register a fingerprint ? [yn]  " yn
             case $yn in
                 [Yy]* )
+                    display_step "[Fingerprint] Enrolling a new fingerprint"
                     sudo -H -u "$SUDO_USER" bash -c 'fprintd-enroll '"$SUDO_USER"
                     if (($? != 0)); then
-                        echo -e "\n\x1B[31mAn error occurred will enrolling fingerprint\x1B[0m"
-                        exit 1
+                        display_error "An error occurred will enrolling fingerprint"
                     fi
+                    display_step "[Fingerprint] Verifying the newly registered fingerprint"
                     sudo -H -u "$SUDO_USER" bash -c 'fprintd-verify'
                     if (($? != 0)); then
-                        echo -e "\n\x1B[31mAn error occurred will verifying fingerprint enroll\x1B[0m"
-                        exit 1
+                        display_error "An error occurred will verifying fingerprint enroll"
                     fi
                 ;;
                 [Nn]* )
                     echo -e "\nIf there is no fingerprint registered, execute the following command :"
-                    echo -e "\x1B[33mfprintd-enroll \$(whoami)\x1B[0m"
-                    echo -e "\x1B[33mfprintd-verify\x1B[0m"
+                    echo -e "${orange_color}fprintd-enroll \$(whoami)${reset_color}"
+                    echo -e "${orange_color}fprintd-verify${reset_color}"
                 ;;
                 * ) echo "Please answer yes or no."; end_prompt_fingerprint;;
             esac
@@ -208,27 +265,48 @@ function display_end_message(){
     fi
 
     if ($var_configure_yubikey); then
-        echo -e "\n\x1B[34mEnd configuration : Fingerprint\x1B[0m"
+        display_step "End configuration : Fingerprint"
         echo "To continue the configuration of the Yubikey, execute :"
-        echo -e "\x1B[33mgpg --edit-card\x1B[0m"
+        echo -e "${orange_color}gpg --edit-card${reset_color}"
         echo "Copy the secret key ID, then"
-        echo -e "\x1B[33mgpg --edit-key KEYID\x1B[0m"
-        echo -e "\x1B[33mtrust\x1B[0m"
-        echo -e "\x1B[33m5\x1B[0m"
-        echo -e "\x1B[33mquit\x1B[0m"
+        echo -e "${orange_color}gpg --edit-key KEYID${reset_color}"
+        echo -e "${orange_color}trust${reset_color}"
+        echo -e "${orange_color}5${reset_color}"
+        echo -e "${orange_color}quit${reset_color}"
         echo "Then, reboot."
     fi
 
-    echo -e "\n\x1B[33m⚠️ Please, check that you are using x11, VNC Server won't start on Wayland ⚠️\n\n\x1B[34mDone\x1B[0m\n\n"
+    echo -e "\n${orange_color}⚠️ Please, check that you are using x11, VNC Server won't start on Wayland ⚠️\n\n"
+}
+
+function display_step {
+  echo -e "\n--------------------------------------------------------------------------------"
+  echo -e "${blue_color}$1${reset_color}"
+  echo -e "--------------------------------------------------------------------------------"
+}
+
+function display_error {
+  echo -e "\n--------------------------------------------------------------------------------"
+  echo -e "${red_background_color}$1${reset_background_color}"
+  echo -e "--------------------------------------------------------------------------------\n"
+  exit 1
 }
 
 
 ##################################################
 # PROGRAM
 ##################################################
+# Variables for text color.
+reset_color="\x1B[0m"
+green_color="\x1B[32m"
+orange_color="\x1B[33m"
+blue_color="\x1B[34m"
+reset_background_color="\x1B[49m"
+red_background_color="\x1B[41m"
 # Variables for choices prompt.
 var_install_packages=false
 var_install_extra=false
+var_install_qemu=false
 var_install_ohmyzsh=false
 var_install_fingerprint=false
 var_configure_yubikey=false
@@ -252,6 +330,16 @@ function prompt_extra_packages(){
     esac
 }
 prompt_extra_packages
+
+function prompt_qemu(){
+    read -rp "Install Virt-manager with Qemu ? [yn] " yn
+    case $yn in
+        [Yy]* ) var_install_qemu=true;;
+        [Nn]* ) var_install_qemu=false;;
+        * ) echo "Please answer yes or no."; prompt_qemu;;
+    esac
+}
+prompt_qemu
 
 function prompt_ohmyzsh(){
     read -rp "Install Oh My Zsh with plugins ? Warning : It will delete current installation [yn] " yn
@@ -290,6 +378,9 @@ fi
 if ($var_install_extra); then
     install_extra_packages
 fi
+if ($var_install_qemu); then
+    install_qemu
+fi
 if ($var_install_ohmyzsh); then
     install_ohmyzsh
 fi
@@ -303,5 +394,5 @@ fi
 
 display_end_message
 
-echo -e "\n\x1B[32mDone\x1B[0m"
+echo -e "\n\n${green_color}Done${reset_color}"
 exit 0

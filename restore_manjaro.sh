@@ -16,7 +16,7 @@ database="permissions_manjaro.db"
 # FUNCTIONS
 ##################################################
 function install_packages(){
-    display_step "Updating package list and system packages"
+    display_step "Updating package list and system packages (It may take a long time)"
     pacman-mirrors -c ch,de,fr,nl
     pacman -Syyu --noconfirm
     if (($? != 0)); then
@@ -35,7 +35,7 @@ function install_packages(){
 }
 
 function install_extra_packages(){
-    display_step "Updating package list and system packages"
+    display_step "Updating package list and system packages (It may take a long time)"
     pacman -Syyu --noconfirm
     if (($? != 0)); then
         display_error "[Extra packages] An error occurred will updating the system"
@@ -74,11 +74,6 @@ function install_extra_packages(){
 }
 
 function install_qemu(){
-    display_step "Updating package list and system packages"
-    pacman -Syyu --noconfirm
-    if (($? != 0)); then
-        display_error "[Virt-manager - Qemu] An error occurred will updating the system"
-    fi
     display_step "Installing Virt-manager libvirt and Qemu [step 1/2]"
     pacman -S yay --noconfirm
     if (($? != 0)); then

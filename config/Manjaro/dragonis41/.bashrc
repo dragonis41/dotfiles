@@ -187,12 +187,6 @@ search() {
 searchcontent() {
 	fd --type f --exec grep -H "$*" --color=always | sed -r "s/([^:]*):/\x1B[34m\1\x1B[0m:/"
 }
-get_cpu_temp() {
-	CEL=$'\xc2\xb0C';
-	temp=$(cat /sys/devices/virtual/thermal/thermal_zone10/temp);
-	temp=`expr $temp / 1000`;
-	echo $temp$CEL;
-}
 ghooks() {  # TUI to de/activate git hooks
   # Define the directories
   local directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")

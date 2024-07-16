@@ -1,16 +1,15 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ] || [ "$SUDO_USER" = "" ]; then
-    echo "Please run as sudo but not as root"
-    exit
-fi
-
-
 ##################################################
 # VARIABLES
 ##################################################
 # Name of the database where permissions, owners and paths are stored.
 database="permissions_manjaro.db"
+
+
+###################################################################################################################################
+################################################## DO NOT MODIFY BELOW THIS LINE ##################################################
+###################################################################################################################################
 
 
 ##################################################
@@ -311,7 +310,7 @@ function display_error {
 
 
 ##################################################
-# PROGRAM
+# INTERNAL VARIABLES
 ##################################################
 # Variables for text color.
 reset_color="\x1B[0m"
@@ -327,6 +326,14 @@ var_install_qemu=false
 var_install_ohmyzsh=false
 var_install_fingerprint=false
 var_configure_yubikey=false
+
+
+##################################################
+# PROGRAM
+##################################################
+if [ "$EUID" -ne 0 ] || [ "$SUDO_USER" = "" ]; then
+    display_error "Please run as your current user with sudo but not as root"
+fi
 
 function prompt_packages(){
     read -rp "Install base packages ? [yn] " yn
@@ -411,5 +418,5 @@ fi
 
 display_end_message
 
-echo -e "\n\n${green_color}Done${reset_color}"
+echo -e "\n${green_color}Done${reset_color}"
 exit 0

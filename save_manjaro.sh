@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ] || [ "$SUDO_USER" = "" ]; then
-    echo "Please run as sudo but not as root"
-    exit
-fi
-
 ##################################################
 # VARIABLES
 ##################################################
@@ -67,6 +62,11 @@ files=(
 )
 
 
+###################################################################################################################################
+################################################## DO NOT MODIFY BELOW THIS LINE ##################################################
+###################################################################################################################################
+
+
 ##################################################
 # FUNCTIONS
 ##################################################
@@ -81,54 +81,115 @@ function mkcp(){
     # Create destination folder.
     if [[ ! -e $folder_dest ]]; then
         mkdir "$folder_dest" -m 755 -p
+        if (($? != 0)); then
+            display_error "An error occurred will creating $folder_dest"
+        fi
+
         chown "$SUDO_USER":"$SUDO_USER" "$folder_dest"
         if (($? != 0)); then
-            echo -e "\n\x1B[31mAn error occurred will chmod $folder_dest as $SUDO_USER\x1B[0m"
-            return 1
+            display_error "An error occurred will chmod $folder_dest as $SUDO_USER"
         fi
     fi
 
     # Copy each file if it is different and newer preserving its attributes.
     cp -uv --preserve=all "$file_source" "$folder_dest"
     if (($? != 0)); then
-        echo -e "\n\x1B[31mAn error occurred will copying $file_source to $folder_dest\x1B[0m"
-        return 1
+        display_error "An error occurred will copying $file_source to $folder_dest"
     fi
 
     return 0
 }
 
+function init_database {
+    display_step "Resetting permission database"
+
+    echo -n "" > $database
+    chmod 664 $database
+    if (($? != 0)); then
+        display_error "[init_database] An error occurred will chmod 664 to $database"
+    fi
+
+    chown "$SUDO_USER":"$SUDO_USER" $database
+    if (($? != 0)); then
+        display_error "[init_database] An error occurred will chmod $SUDO_USER to $database"
+    fi
+
+    top_backup_folder=$(echo $backup_folder | cut -d'/' -f 1)
+    if [ -d "$top_backup_folder" ]; then
+        rm -r "${top_backup_folder:?}/"
+        if (($? != 0)); then
+            display_error "[init_database] An error occurred will removing the folder ${top_backup_folder:?}/"
+        fi
+    fi
+
+    echo -e "${green_color}ok${reset_color}"
+}
+
+function cleaning {
+    display_step "Cleaning"
+    find "./$top_backup_folder" -type d -exec chmod 755 {} +
+    if (($? != 0)); then
+        display_error "[cleaning] An error occurred will setting 755 permission to backup folders"
+    fi
+
+    find "./$top_backup_folder" -type f -exec chmod 664 {} +
+    if (($? != 0)); then
+        display_error "[cleaning] An error occurred will setting 755 permission to backup files"
+    fi
+
+    chown -R "$SUDO_USER":"$SUDO_USER" "${top_backup_folder:?}/"
+    if (($? != 0)); then
+        display_error "[cleaning] An error occurred will chmod $SUDO_USER to backup files"
+    fi
+
+    echo -e "${green_color}ok${reset_color}"
+}
+
+function display_step {
+  echo -e "\n--------------------------------------------------------------------------------"
+  echo -e "${blue_color}$1${reset_color}"
+  echo -e "--------------------------------------------------------------------------------"
+}
+
+function display_error {
+  echo -e "\n--------------------------------------------------------------------------------"
+  echo -e "${red_background_color}$1${reset_background_color}"
+  echo -e "--------------------------------------------------------------------------------\n"
+  exit 1
+}
+
 
 ##################################################
-# DATABASE INIT
+# INTERNAL VARIABLES
 ##################################################
-echo -e "\n\x1B[34mResetting permission database\x1B[0m"
-echo -n "" > $database
-chmod 664 $database
-chown "$SUDO_USER":"$SUDO_USER" $database
-top_backup_folder=$(echo $backup_folder | cut -d'/' -f 1)
-if [ -d "$top_backup_folder" ]; then
-    rm -r "${top_backup_folder:?}/"
+# Variables for text color.
+reset_color="\x1B[0m"
+green_color="\x1B[32m"
+blue_color="\x1B[34m"
+reset_background_color="\x1B[49m"
+red_background_color="\x1B[41m"
+
+
+##################################################
+# PROGRAM
+##################################################
+if [ "$EUID" -ne 0 ] || [ "$SUDO_USER" = "" ]; then
+    display_error "Please run as your current user with sudo but not as root"
 fi
 
-##################################################
-# COPY
-##################################################
-echo -e "\n\x1B[34mCopying files\x1B[0m"
+# database cleaning
+init_database
 
+# Copy all files
+display_step "Copying files"
 for f in "${files[@]}"
 do
-    if mkcp "$f"; then
-        continue
-    else
-        exit 1
-    fi
+    mkcp "$f"
 done
+echo -e "${green_color}ok${reset_color}"
 
-echo -e "\n\x1B[34mCleaning\x1B[0m"
-find "./$top_backup_folder" -type d -exec chmod 755 {} +
-find "./$top_backup_folder" -type f -exec chmod 664 {} +
-chown -R "$SUDO_USER":"$SUDO_USER" "${top_backup_folder:?}/"
+# Setting rights to the backup files
+cleaning
 
-echo -e "\n\x1B[32mDone\x1B[0m"
+echo -e "\n${green_color}Done${reset_color}"
 exit 0

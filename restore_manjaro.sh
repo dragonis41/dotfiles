@@ -5,6 +5,13 @@
 ##################################################
 # Name of the database where permissions, owners and paths are stored.
 database="permissions_manjaro.db"
+# Path of files used for Nvidia configuration.
+# If there is no Nvidia card, we need to exclude thoses files or the graphical environnement will not start.
+nvidia_config_files=(
+    "/etc/optimus-manager/optimus-manager.conf"
+    "/etc/X11/xorg.conf.d/10-optimus-manager.conf"
+    "/etc/sddm.conf"
+)
 
 
 ###################################################################################################################################
@@ -188,6 +195,7 @@ function restore_config(){
     display_step "Restoring configuration files"
     while read -r line
     do
+        file_path="$(echo "$line" | cut -d ";" -f3)"
         folder_path="$(echo "$line" | cut -d ";" -f6)"
 
         # Restore files if
@@ -195,6 +203,10 @@ function restore_config(){
         # - The folder is "/etc/pam.d" and $var_install_fingerprint is true
         if [ "$folder_path" == "/etc/pam.d" ]; then
             if [ "$var_install_fingerprint" == "true" ]; then
+                copyfile "$line"
+            fi
+        elif [[ ${nvidia_config_files[*]} =~ $file_path ]]; then
+            if [ "$var_install_nvidia" == "true" ]; then
                 copyfile "$line"
             fi
         else
@@ -320,6 +332,7 @@ var_install_extra=false
 var_install_qemu=false
 var_install_ohmyzsh=false
 var_install_fingerprint=false
+var_install_nvidia=false
 var_configure_yubikey=false
 
 
@@ -380,6 +393,16 @@ function prompt_fingerprint(){
 }
 prompt_fingerprint
 
+function prompt_nvidia(){
+    read -rp "Install Nvidia configuration files ? [yn] " yn
+    case $yn in
+        [Yy]* ) var_install_nvidia=true;;
+        [Nn]* ) var_install_nvidia=false;;
+        * ) echo "Please answer yes or no."; prompt_nvidia;;
+    esac
+}
+prompt_nvidia
+
 function prompt_yubikey(){
     read -rp "Configure the Yubikey ? [yn] " yn
     case $yn in
@@ -403,7 +426,6 @@ fi
 if ($var_install_ohmyzsh); then
     install_ohmyzsh
 fi
-
 if ! restore_config; then
     exit 1
 fi

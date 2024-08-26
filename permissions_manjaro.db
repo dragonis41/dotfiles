@@ -31,6 +31,8 @@
 644;root:root;/etc/optimus-manager/optimus-manager.conf;755;root:root;/etc/optimus-manager;config/Manjaro/etc/optimus-manager/optimus-manager.conf
 644;root:root;/etc/X11/xorg.conf.d/10-optimus-manager.conf;755;root:root;/etc/X11/xorg.conf.d;config/Manjaro/etc/X11/xorg.conf.d/10-optimus-manager.conf
 644;root:root;/etc/sddm.conf;755;root:root;/etc;config/Manjaro/etc/sddm.conf
+644;root:root;/etc/modprobe.d/nvidia-installer-disable-nouveau.conf;755;root:root;/etc/modprobe.d;config/Manjaro/etc/nvidia-installer-disable-nouveau.conf
+644;root:root;/usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf;755;root:root;/usr/lib/modprobe.d;config/Manjaro/usr/lib/modprobe.dnvidia-installer-disable-nouveau.conf
 644;root:root;/root/.bashrc;755;root:root;/root;config/Manjaro/root/.bashrc
 644;root:root;/root/.config/htop/htoprc;700;root:root;/root/.config/htop;config/Manjaro/root/htoprc
 644;root:root;/root/.nanorc;755;root:root;/root;config/Manjaro/root/.nanorc

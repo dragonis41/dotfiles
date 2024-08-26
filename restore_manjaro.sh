@@ -11,6 +11,8 @@ nvidia_config_files=(
     "/etc/optimus-manager/optimus-manager.conf"
     "/etc/X11/xorg.conf.d/10-optimus-manager.conf"
     "/etc/sddm.conf"
+    "/etc/modprobe.d/nvidia-installer-disable-nouveau.conf"
+    "/usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf"
 )
 
 
@@ -35,9 +37,16 @@ function install_packages(){
         display_error "[Base packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing base packages [step 2/2] (It may take a long time)"
-    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux69 linux69-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager'
+    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux610 linux610-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager'
     if (($? != 0)); then
         display_error "[Base packages] An error occurred will installing packages with yay"
+    fi
+    if [ "$var_install_nvidia" == "true" ]; then
+        display_step "Installing Nvidia packages (It may take a long time)"
+        sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux610-nvidia optimus-manager bbswitch acpi_call'
+        if (($? != 0)); then
+            display_error "[Base packages] An error occurred will installing packages with yay"
+        fi
     fi
 }
 
@@ -53,7 +62,7 @@ function install_extra_packages(){
         display_error "[Extra packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing extra packages [step 2/2] (It may take a long time)"
-    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox mattermost-desktop notepadqq thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
+    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox mattermost-desktop thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
     if (($? != 0)); then
         display_error "[Extra packages] An error occurred will installing packages with yay"
     fi

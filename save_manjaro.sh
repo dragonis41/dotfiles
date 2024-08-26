@@ -52,6 +52,8 @@ files=(
     "/etc/optimus-manager/optimus-manager.conf:${backup_folder}/etc/optimus-manager/"
     "/etc/X11/xorg.conf.d/10-optimus-manager.conf:${backup_folder}/etc/X11/xorg.conf.d/"
     "/etc/sddm.conf:${backup_folder}/etc/"
+    "/etc/modprobe.d/nvidia-installer-disable-nouveau.conf:${backup_folder}/etc/"
+    "/usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf:${backup_folder}/usr/lib/modprobe.d"
 
     ####################### Root config files #######################
     "/root/.bashrc:${backup_folder}/root/"

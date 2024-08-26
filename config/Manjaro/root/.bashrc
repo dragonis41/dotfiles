@@ -187,12 +187,6 @@ search() {
 searchcontent() {
 	fd --type f --exec grep -H "$*" --color=always | sed -r "s/([^:]*):/\x1B[34m\1\x1B[0m:/"
 }
-get_cpu_temp() {
-	CEL=$'\xc2\xb0C';
-	temp=$(cat /sys/devices/virtual/thermal/thermal_zone10/temp);
-	temp=`expr $temp / 1000`;
-	echo $temp$CEL;
-}
 ghooks() {  # TUI to de/activate git hooks
   # Define the directories
   local directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")
@@ -245,4 +239,24 @@ ghooks() {  # TUI to de/activate git hooks
   done
 
   echo -e "\x1B[32mDone\x1B[0m"
+}
+gchelp() {
+  echo -e "-------------------------------------------------------------------------------"
+  echo -e "The format is : \x1B[1m\x1B[3mtype(scope): subject\x1B[0m"
+  echo -e "Types :"
+  echo -e " * \x1B[93mbuild\x1B[0m: Change in build configuration, dev tools, external dependencies, or other changes that don't affect the user."
+  echo -e " * \x1B[93mBREAKING CHANGE\x1B[0m: Indicates that the change affects the public API, usually the removal or major modification of a feature."
+  echo -e " * \x1B[93mchore\x1B[0m: Technical or preventive maintenance that is not related to functionality and does not impact the user. For example, the release of a new version or the regeneration of generated code can be considered as chores."
+  echo -e " * \x1B[93mci\x1B[0m: Change related to continuous integration or the deployment environment."
+  echo -e " * \x1B[93mdeprecate\x1B[0m: Marks a feature as deprecated but does not remove it so as not to break applications that use it."
+  echo -e " * \x1B[93mdocs\x1B[0m: For documentation changes only."
+  echo -e " * \x1B[93mfeat\x1B[0m: Implements a new feature."
+  echo -e " * \x1B[93mfix\x1B[0m: Fix a bug or defect."
+  echo -e " * \x1B[93minit\x1B[0m: Initialize a repository/project."
+  echo -e " * \x1B[93mperf\x1B[0m: Change that improves performance."
+  echo -e " * \x1B[93mrefactor\x1B[0m: Change that does not fix a bug or add functionality."
+  echo -e " * \x1B[93msecurity\x1B[0m: Change that fixes a security vulnerability."
+  echo -e " * \x1B[93mstyle\x1B[0m: Change that do not affect code execution (spaces, formatting, missing semicolon, etc)."
+  echo -e " * \x1B[93mtest\x1B[0m: Addition of missing tests or correction of existing tests."
+  echo -e "-------------------------------------------------------------------------------"
 }

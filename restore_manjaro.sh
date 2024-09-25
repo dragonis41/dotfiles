@@ -108,24 +108,21 @@ function install_qemu(){
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Enabling virtlogd.socket"
-    systemctl enable virtlogd.socket
-    if ! systemctl start virtlogd.socket
+    if ! systemctl enable --now virtlogd.socket
     then
         display_error "[Virt-manager - Qemu] An error occurred will enabling virtlogd.socket"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Enabling virtqemud.socket"
-    systemctl enable virtqemud.socket
-    if ! systemctl start virtqemud.socket
+    if ! systemctl enable --now virtqemud.socket
     then
         display_error "[Virt-manager - Qemu] An error occurred will enabling virtqemud.socket"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Enabling libvirtd.service"
-    systemctl enable libvirtd.service
-    if ! systemctl start libvirtd.service
+    if ! systemctl enable --now libvirtd.service
     then
         display_error "[Virt-manager - Qemu] An error occurred will enabling libvirtd.service"
     else

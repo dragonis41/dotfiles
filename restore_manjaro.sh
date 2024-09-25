@@ -27,24 +27,24 @@ nvidia_config_files=(
 function install_packages(){
     display_step "Updating package list and system packages (It may take a long time)"
     pacman-mirrors -c ch,de,fr,nl
-    pacman -Syyu --noconfirm
-    if (($? != 0)); then
+    if ! pacman -Syyu --noconfirm
+    then
         display_error "[Base packages] An error occurred will updating the system"
     fi
     display_step "Installing base packages [step 1/2] (It may take a long time)"
-    pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
-    if (($? != 0)); then
+    if ! pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
+    then
         display_error "[Base packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing base packages [step 2/2] (It may take a long time)"
-    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux610 linux610-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager'
-    if (($? != 0)); then
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux610 linux610-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager'
+    then
         display_error "[Base packages] An error occurred will installing packages with yay"
     fi
     if [ "$var_install_nvidia" == "true" ]; then
         display_step "Installing Nvidia packages (It may take a long time)"
-        sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux610-nvidia optimus-manager bbswitch acpi_call'
-        if (($? != 0)); then
+        if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux610-nvidia optimus-manager bbswitch acpi_call'
+        then
             display_error "[Base packages] An error occurred will installing packages with yay"
         fi
     fi
@@ -52,37 +52,37 @@ function install_packages(){
 
 function install_extra_packages(){
     display_step "Updating package list and system packages (It may take a long time)"
-    pacman -Syyu --noconfirm
-    if (($? != 0)); then
+    if ! pacman -Syyu --noconfirm
+    then
         display_error "[Extra packages] An error occurred will updating the system"
     fi
     display_step "Installing extra packages [step 1/2]"
-    pacman -S yay --noconfirm
-    if (($? != 0)); then
+    if ! pacman -S yay --noconfirm
+    then
         display_error "[Extra packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing extra packages [step 2/2] (It may take a long time)"
-    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox mattermost-desktop thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
-    if (($? != 0)); then
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S google-chrome jetbrains-toolbox mattermost-desktop thunderbird vlc realvnc-vnc-viewer realvnc-vnc-server hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
+    then
         display_error "[Extra packages] An error occurred will installing packages with yay"
     fi
     display_step "[Extra packages] Enabling docker.service"
-    systemctl enable docker.service
-    if (($? != 0)); then
+    if ! systemctl enable docker.service
+    then
         display_error "[Extra packages] An error occurred will enabling docker.service"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Extra packages] Adding user ${SUDO_USER} to docker group"
-    usermod -aG docker "$SUDO_USER"
-    if (($? != 0)); then
+    if ! usermod -aG docker "$SUDO_USER"
+    then
         display_error "[Extra packages] An error occurred will usermod docker group for $SUDO_USER$"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Extra packages] Enabling vncserver-x11-serviced.service"
-    systemctl enable vncserver-x11-serviced.service
-    if (($? != 0)); then
+    if ! systemctl enable vncserver-x11-serviced.service
+    then
         display_error "[Extra packages] An error occurred will enabling vncserver-x11-serviced.service"
     else
         echo -e "${green_color}ok${reset_color}"
@@ -91,63 +91,63 @@ function install_extra_packages(){
 
 function install_qemu(){
     display_step "Installing Virt-manager libvirt and Qemu [step 1/2]"
-    pacman -S yay --noconfirm
-    if (($? != 0)); then
+    if ! pacman -S yay --noconfirm
+    then
         display_error "[Virt-manager - Qemu] An error occurred will installing packages with pacman"
     fi
     display_step "Installing Virt-manager libvirt and Qemu [step 2/2] (It may take a long time)"
-    sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S qemu virt-manager libvirt'
-    if (($? != 0)); then
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S qemu virt-manager libvirt'
+    then
         display_error "[Extra packages] An error occurred will installing packages with yay"
     fi
     display_step "[Virt-manager - Qemu] Adding user ${SUDO_USER} to libvirt group"
-    usermod -aG libvirt "$SUDO_USER"
-    if (($? != 0)); then
+    if ! usermod -aG libvirt "$SUDO_USER"
+    then
         display_error "[Virt-manager - Qemu] An error occurred will adding ${SUDO_USER} to libvirt group"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Enabling virtlogd.socket"
     systemctl enable virtlogd.socket
-    systemctl start virtlogd.socket
-    if (($? != 0)); then
+    if ! systemctl start virtlogd.socket
+    then
         display_error "[Virt-manager - Qemu] An error occurred will enabling virtlogd.socket"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Enabling virtqemud.socket"
     systemctl enable virtqemud.socket
-    systemctl start virtqemud.socket
-    if (($? != 0)); then
+    if ! systemctl start virtqemud.socket
+    then
         display_error "[Virt-manager - Qemu] An error occurred will enabling virtqemud.socket"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Enabling libvirtd.service"
     systemctl enable libvirtd.service
-    systemctl start libvirtd.service
-    if (($? != 0)); then
+    if ! systemctl start libvirtd.service
+    then
         display_error "[Virt-manager - Qemu] An error occurred will enabling libvirtd.service"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Setting user rights to libvirt-sock"
-    setfacl -m user:${SUDO_USER}:rw /var/run/libvirt/libvirt-sock
-    if (($? != 0)); then
+    if ! setfacl -m user:"${SUDO_USER}":rw /var/run/libvirt/libvirt-sock
+    then
         display_error "[Virt-manager - Qemu] An error occurred will setting user rights to libvirt-sock"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Defining default Qemu network"
-    virsh net-define /etc/libvirt/qemu/networks/default.xml
-    if (($? != 0)); then
+    if ! virsh net-define /etc/libvirt/qemu/networks/default.xml
+    then
         display_error "[Virt-manager - Qemu] An error occurred will defining default Qemu network"
     else
         echo -e "${green_color}ok${reset_color}"
     fi
     display_step "[Virt-manager - Qemu] Setting autostart on default Qemu network"
-    virsh net-autostart default
-    if (($? != 0)); then
+    if ! virsh net-autostart default
+    then
         display_error "[Virt-manager - Qemu] An error occurred will setting autostart on Qemu network"
     else
         echo -e "${green_color}ok${reset_color}"
@@ -181,8 +181,8 @@ function install_ohmyzsh(){
 
 function configure_yubikey(){
     display_step "[Yubikey] Enabling pcscd.socket"
-    systemctl enable --now pcscd.socket
-    if (($? != 0)); then
+    if ! systemctl enable --now pcscd.socket
+    then
         display_error "[Yubikey] An error occurred will enabling pcscd.socket"
     else
         echo -e "${green_color}ok${reset_color}"
@@ -194,8 +194,8 @@ function configure_yubikey(){
         * ) display_step "Configuring Yubikey";;
     esac
 
-    sudo -H -u "$SUDO_USER" bash -c 'gpg --import $HOME/.gnupg/public.key'
-    if (($? != 0)); then
+    if ! sudo -H -u "$SUDO_USER" bash -c 'gpg --import $HOME/.gnupg/public.key'
+    then
         display_error "[Yubikey] An error occurred will importing new GPG key"
     fi
 }
@@ -238,31 +238,32 @@ function copyfile(){
 
     # create original folder with right permissions.
     if [[ ! -e $folder_path ]]; then
-        mkdir "$folder_path" -m "$folder_permission" -p
-        if (($? != 0)); then
+        # shellcheck disable=SC2174
+        if ! mkdir "$folder_path" -m "$folder_permission" -p
+        then
             display_error "[copyfile()] An error occurred will creating $folder_path folder"
         fi
-        chown -R "$folder_group" "$folder_path"
-        if (($? != 0)); then
+        if ! chown -R "$folder_group" "$folder_path"
+        then
             display_error "[copyfile()] An error occurred will chown $folder_path with $folder_group"
         fi
     fi
 
     # Copy each file by preserving its attributes.
-    cp -v --preserve=all "$backup_file" "$file_path"
-    if (($? != 0)); then
+    if ! cp -v --preserve=all "$backup_file" "$file_path"
+    then
         display_error "[copyfile()] An error occurred will copying $backup_file to $file_path"
     fi
 
     # Set the right permission.
-    chmod "$file_permission" "$file_path"
-    if (($? != 0)); then
+    if ! chmod "$file_permission" "$file_path"
+    then
         display_error "[copyfile()] An error occurred will chmod $file_path with $file_permission"
     fi
 
     # Set the right group.
-    chown "$file_group" "$file_path"
-    if (($? != 0)); then
+    if ! chown "$file_group" "$file_path"
+    then
         display_error "[copyfile()] An error occurred will chown $file_path with $file_group"
     fi
 }
@@ -275,13 +276,13 @@ function display_end_message(){
             case $yn in
                 [Yy]* )
                     display_step "[Fingerprint] Enrolling a new fingerprint"
-                    sudo -H -u "$SUDO_USER" bash -c 'fprintd-enroll '"$SUDO_USER"
-                    if (($? != 0)); then
+                    if ! sudo -H -u "$SUDO_USER" bash -c 'fprintd-enroll '"$SUDO_USER"
+                    then
                         display_error "An error occurred will enrolling fingerprint"
                     fi
                     display_step "[Fingerprint] Verifying the newly registered fingerprint"
-                    sudo -H -u "$SUDO_USER" bash -c 'fprintd-verify'
-                    if (($? != 0)); then
+                    if ! sudo -H -u "$SUDO_USER" bash -c 'fprintd-verify'
+                    then
                         display_error "An error occurred will verifying fingerprint enroll"
                     fi
                 ;;

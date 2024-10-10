@@ -5,48 +5,53 @@ file_blacklist=(
     "mytestfile.txt"
 )
 ## Blacklist those file extensions
+# If a file is a binary file, it will be automatically skipped.
 extension_blacklist=(
     "mo"
-    "exe"
-    "bin"
 )
 
+## Get all staged files.
+STAGED_FILES=$(git diff --staged --name-only --diff-filter=d --)
 
-## Get all staged file.
-STAGED_GO_FILES=$(git diff --staged --name-only --diff-filter=d --)
-
-## Check if there is staged file.
-if [[ $STAGED_GO_FILES == "" ]]; then
+## Check if there are staged files.
+if [[ -z "$STAGED_FILES" ]]; then
     echo -e "Fix end of file......................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
-## otherwise we can do stuff with these changed go files.
+## otherwise we can do stuff with these changed files.
 else
-    for file in $STAGED_GO_FILES; do
-        filename=$(basename $file)
+    # Use a while loop with read to properly handle filenames with spaces
+    echo "$STAGED_FILES" | while IFS= read -r file; do
+        filename=$(basename "$file")
+
         # Check if the file is in the file blacklist.
-        for blacklist_item in "${file_blacklist[@]}"; do
-            if [[ $filename == $blacklist_item ]]; then
-                continue 2
-            fi
-        done
+        if [[ ${file_blacklist[*]} =~ $filename ]]; then
+            continue
+        fi
 
         # Check if the file extension is in the extension blacklist.
-        for blacklist_item in "${extension_blacklist[@]}"; do
-            if [[ ${filename##*.} == $blacklist_item ]]; then
-                continue 2
-            fi
-        done
+        extension="${filename##*.}"
+        if [[ ${extension_blacklist[*]} =~ $extension ]]; then
+            continue
+        fi
+
+        # Check if the file is binary
+        if ! file "$file" | grep -q text; then
+            continue
+        fi
 
         ## format our file
         if [ "$(tail -c1 "$file")" != "" ]; then
             # Add new line.
             echo "" >> "$file"
             ## add any potential changes from our formatting to the commit.
-            git add $file
-            if (($? != 0)); then
+            if ! git add "$file"; then
                 echo -e "Fix end of file..........................................................\x1B[41mFAILED\x1B[0m"
                 exit 1
             fi
         fi
     done
-    echo -e "Fix end of file..........................................................\x1B[42mPASSED\x1B[0m"
+
+    # Check the exit status of the while loop
+    if [ $? -eq 0 ]; then
+        echo -e "Fix end of file..........................................................\x1B[42mPASSED\x1B[0m"
+    fi
 fi

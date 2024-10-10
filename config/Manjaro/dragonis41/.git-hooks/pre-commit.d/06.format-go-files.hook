@@ -10,14 +10,10 @@ if [[ $STAGED_GO_FILES == "" ]]; then
 else
     for file in $STAGED_GO_FILES; do
         ## format our file
-        go fmt $file
-        if (($? != 0)); then
-            echo -e "Format .go files.........................................................\x1B[41mFAILED\x1B[0m"
-            exit 1
-        fi
-        ## add any potential changes from our formatting to the commit.
-        git add $file
-        if (($? != 0)); then
+        if go fmt "$file"; then
+            ## add any potential changes from our formatting to the commit.
+            git add "$file"
+        else
             echo -e "Format .go files.........................................................\x1B[41mFAILED\x1B[0m"
             exit 1
         fi

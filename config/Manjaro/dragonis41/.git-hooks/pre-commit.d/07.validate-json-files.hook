@@ -13,10 +13,9 @@ else
     else
         for file in $STAGED_JSON_FILES; do
             ## Validate our file
-            jq . "$file" >/dev/null 2>&1
-            if (($? != 0)); then
+            if ! jq . "$file" >/dev/null 2>&1; then
                 echo -e "Validate JSON files......................................................\x1B[41mFAILED\x1B[0m"
-                echo -e "\x1B[31mThe following file is not a valid JSON file: \x1B[33m$file\x1B[0m"
+                echo -e "\n\x1B[31mThe following file is not a valid JSON file: \x1B[33m$file\x1B[0m\n"
                 jq . "$file"
                 echo -e "\x1B[0m"
                 exit 1

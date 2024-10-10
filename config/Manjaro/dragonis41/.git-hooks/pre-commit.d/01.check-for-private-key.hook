@@ -19,29 +19,67 @@ blacklists=(
 )
 
 
-## Get all staged file.
-STAGED_GO_FILES=$(git diff --staged --name-only --diff-filter=d --)
+# Get all staged files
+STAGED_FILES=$(git diff --staged --name-only --diff-filter=d --)
 
-## Check if there is staged file.
-if [[ $STAGED_GO_FILES == "" ]]; then
+
+# Check if there are staged files
+if [[ -z "$STAGED_FILES" ]]; then
     echo -e "Check for private key................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
-## otherwise we can do stuff with these changed files.
-else
-    for file in $STAGED_GO_FILES; do
-        filename=$(basename $file)
-        for blacklist in "${blacklists[@]}"; do
-            # Check if the file is blacklisted
-            if [[ $filename != $blacklist ]]; then
-                ## Check if it contains a private key
-                for sentence in "${sentences[@]}"; do
-                    if grep -q -e "$sentence" "$file"; then
-                        echo -e "Check for private key....................................................\x1B[41mFAILED\x1B[0m"
-                        echo -e "\x1B[31mA private key was found in staged file: $file\x1B[0m"
-                        exit 1
-                    fi
-                done
-            fi
-        done
+    exit 0
+fi
+
+
+PRIVATE_KEY_FOUND=false
+
+
+# Function to check a single file for private keys
+check_file() {
+    local file="$1"
+    # shellcheck disable=SC2155
+    local filename=$(basename "$file")
+
+    # Check if the file is blacklisted
+    if [[ "${blacklists[*]}" =~ $filename ]]; then
+        return 0
+    fi
+
+    # Check if the file is binary
+    if ! file "$file" | grep -q text; then
+        return 0
+    fi
+
+    # Check if it contains a private key
+    for sentence in "${sentences[@]}"; do
+        if grep -q -e "$sentence" "$file"; then
+            echo -e "\x1B[31mA private key has been found in staged file: $file\x1B[0m"
+            echo -e "Matching pattern: $sentence"
+            PRIVATE_KEY_FOUND=true
+            return 1
+        fi
     done
+
+    return 0
+}
+
+
+# Check all files
+while IFS= read -r file; do
+    check_file "$file"
+done <<< "$STAGED_FILES"
+
+
+if [[ "$PRIVATE_KEY_FOUND" = true ]]; then
+    # Ask the user if they want to ignore the warning
+    read -p $'\nDo you want to proceed with the commit anyway? [y/N]: ' IGNORE_WARNING < /dev/tty
+    if [[ $IGNORE_WARNING =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        echo -e "Check for private key...................................................\x1B[43mSKIPPED\x1B[0m"
+        exit 0
+    else
+        echo -e "Check for private key....................................................\x1B[41mFAILED\x1B[0m"
+        exit 1
+    fi
+else
     echo -e "Check for private key....................................................\x1B[42mPASSED\x1B[0m"
+    exit 0
 fi

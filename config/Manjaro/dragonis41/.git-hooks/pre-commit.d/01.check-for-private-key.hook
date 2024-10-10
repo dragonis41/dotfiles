@@ -71,6 +71,7 @@ done <<< "$STAGED_FILES"
 
 if [[ "$PRIVATE_KEY_FOUND" = true ]]; then
     # Ask the user if they want to ignore the warning
+    # shellcheck disable=SC2162
     read -p $'\nDo you want to proceed with the commit anyway? [y/N]: ' IGNORE_WARNING < /dev/tty
     if [[ $IGNORE_WARNING =~ ^([yY][eE][sS]|[yY])$ ]]; then
         echo -e "Check for private key...................................................\x1B[43mSKIPPED\x1B[0m"

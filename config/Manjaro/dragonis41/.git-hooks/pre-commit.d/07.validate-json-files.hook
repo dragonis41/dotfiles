@@ -4,7 +4,7 @@
 STAGED_JSON_FILES=$(git diff --staged --name-only --diff-filter=d -- '*.json')
 
 ## Check if there is staged file.
-if [[ $STAGED_JSON_FILES == "" ]]; then
+if [[ -z $STAGED_JSON_FILES ]]; then
     echo -e "Validate JSON files..................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
 ## otherwise we can do stuff with these changed Json files.
 else

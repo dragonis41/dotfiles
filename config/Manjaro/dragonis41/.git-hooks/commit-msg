@@ -14,8 +14,7 @@ for file in "$folder"/*; do
   # Check if the file is executable.
   if [ -x "$file" ]; then
     # Execute the file.
-    "$file" $1
-    if (($? != 0)); then
+    if ! "$file" $1; then
       exit 1
     fi
   fi

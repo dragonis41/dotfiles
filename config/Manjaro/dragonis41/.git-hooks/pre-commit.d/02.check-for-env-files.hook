@@ -5,7 +5,7 @@ STAGED_GO_FILES=$(git diff --staged --name-only --diff-filter=d --)
 regex="/\.env(?:(?:_db)?(?:\.(?!ex[ae]mple|sample)[\w-]+)*)$/gm"
 
 ## Check if there is staged file.
-if [[ $STAGED_GO_FILES == "" ]]; then
+if [[ -z $STAGED_GO_FILES ]]; then
     echo -e "Check for env file...................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
 ## otherwise we can do stuff with these changed files.
 else

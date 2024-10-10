@@ -15,7 +15,7 @@ extension_blacklist=(
 STAGED_FILES=$(git diff --staged --name-only --diff-filter=d --)
 
 ## Check if there are staged files.
-if [[ -z "$STAGED_FILES" ]]; then
+if [[ -z $STAGED_FILES ]]; then
     echo -e "Remove trailing space................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
 ## otherwise we can do stuff with these changed files.
 else

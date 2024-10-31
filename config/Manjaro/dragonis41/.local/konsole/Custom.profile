@@ -23,7 +23,7 @@ SemanticUpDown=true
 TerminalCenter=false
 
 [Interaction Options]
-TrimLeadingSpacesInSelectedText=true
+TrimLeadingSpacesInSelectedText=false
 TrimTrailingSpacesInSelectedText=true
 UnderlineFilesEnabled=true
 
@@ -36,4 +36,5 @@ HistorySize=10000
 
 [Terminal Features]
 BlinkingCursorEnabled=true
+LineNumbers=0
 VerticalLine=false

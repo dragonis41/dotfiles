@@ -145,7 +145,7 @@ alias cls='clear'
 alias dcd='docker compose down --remove-orphans --rmi all --volumes'
 alias dcu='docker compose up -d --always-recreate-deps --force-recreate --build'
 alias gc='git commit -S -m'
-alias gfp='git fetch && git pull'
+alias gfp='git fetch --all && git pull'
 alias gh='git log --oneline | gum filter | cut -d" " -f1 | xargs -I {} sh -c "echo -n {} | xclip -sel clip"'
 alias gtree='git log --graph --oneline --all'
 alias gtree+="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches --all"

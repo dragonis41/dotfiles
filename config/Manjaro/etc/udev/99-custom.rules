@@ -1,0 +1,6 @@
+# Rule for the keyboard IronClad v3 with Via/QMK firmware
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="320f", ATTRS{idProduct}=="511e", MODE="0666"
+
+# Rule for the Polyglot keyboard.
+SUBSYSTEM=="tty", ATTRS{idVendor}=="9000", ATTRS{idProduct}=="0003", MODE="0666"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="9000", ATTRS{idProduct}=="0003", MODE="0666"

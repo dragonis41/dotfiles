@@ -47,7 +47,7 @@ files=(
     "/etc/pam.d/system-auth:${backup_folder}/etc/pam.d/"
     "/etc/sudoers.d/timeout:${backup_folder}/etc/sudoers.d/"
     "/etc/sudoers.d/editor:${backup_folder}/etc/sudoers.d/"
-    "/etc/udev/rules.d/99-via.rules:${backup_folder}/etc/udev/"
+    "/etc/udev/rules.d/99-custom.rules:${backup_folder}/etc/udev/"
     # Config for Nvidia graphic card
     "/etc/optimus-manager/optimus-manager.conf:${backup_folder}/etc/optimus-manager/"
     "/etc/X11/xorg.conf.d/10-optimus-manager.conf:${backup_folder}/etc/X11/xorg.conf.d/"

@@ -8,7 +8,7 @@ Switch keyboard layout to English (US, alt. intl.)=none,none,Switch keyboard lay
 Switch keyboard layout to French (alt.)=none,none,Switch keyboard layout to French (alt.)
 Switch keyboard layout to International Phonetic Alphabet (QWERTY)=none,none,Switch keyboard layout to International Phonetic Alphabet (QWERTY)
 Switch to Last-Used Keyboard Layout=Meta+Alt+L,none,Switch to Last-Used Keyboard Layout
-Switch to Next Keyboard Layout=Meta+Alt+K,Meta+Alt+K,Switch to Next Keyboard Layout
+Switch to Next Keyboard Layout=Meta+Space,Meta+Alt+K,Switch to Next Keyboard Layout
 _k_friendly_name=Keyboard Layout Switcher
 
 [kaccess]

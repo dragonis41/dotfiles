@@ -133,7 +133,7 @@ ex ()
 
 # Exports
 # Options for GPG and SSH agents with Yubikey.
-export PATH=${PATH}:`go env GOPATH`/bin
+export PATH=${PATH}:$(go env GOPATH)/bin
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
@@ -142,7 +142,7 @@ gpgconf --launch gpg-agent
 # Alias
 alias ccopy='xclip -sel clip <'
 alias cls='clear'
-alias dcd='docker compose down --remove-orphans --rmi all --volumes'
+alias dcd='docker compose down --rmi all'
 alias dcu='docker compose up -d --always-recreate-deps --force-recreate --build'
 alias gc='git commit -S -m'
 alias gfp='git fetch --all && git pull'

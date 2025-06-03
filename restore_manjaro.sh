@@ -37,13 +37,19 @@ function install_packages(){
         display_error "[Base packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing base packages [step 2/2] (It may take a long time)"
-    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux611 linux611-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager'
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux611 linux611-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager extra/libinput-gestures'
     then
         display_error "[Base packages] An error occurred will installing packages with yay"
     fi
+    if ! usermod -aG input "$SUDO_USER"
+    then
+        display_error "[Base packages] An error occurred will usermod input group for $SUDO_USER$"
+    else
+        echo -e "${green_color}ok${reset_color}"
+    fi
     if [ "$var_install_nvidia" == "true" ]; then
         display_step "Installing Nvidia packages (It may take a long time)"
-        if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux611-nvidia optimus-manager bbswitch acpi_call'
+        if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux614-nvidia optimus-manager bbswitch acpi_call'
         then
             display_error "[Base packages] An error occurred will installing packages with yay"
         fi

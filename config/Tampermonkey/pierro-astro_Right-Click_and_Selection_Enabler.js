@@ -56,7 +56,7 @@
                 }
         }
 
-        console.log('Right-click, text selection, and image interactions re-enabled');
+        console.log('Tampermonkey : Right-click and text selection re-enabled');
     }
 
     // Ensure the script runs after the page is fully loaded

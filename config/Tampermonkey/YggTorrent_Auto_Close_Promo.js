@@ -2,7 +2,7 @@
 // @name         YggTorrent Auto Close Promo
 // @namespace    http://tampermonkey.net/
 // @version      2025-05-20
-// @description  Ferme automatiquement les fenêtres de promo sur yggtorrent.top
+// @description  Automatically close yggtorrent.top promotion banner
 // @author       dragonis41
 // @match        https://www.yggtorrent.top/*
 // @grant        none
@@ -11,26 +11,26 @@
 (function() {
     'use strict';
 
-    // Fonction pour cliquer sur le bouton de fermeture
+    // Function to automatically click on the close button
     function clickPromoCloseButton() {
         const closeButtons = document.querySelectorAll('.promo-close');
 
         if (closeButtons && closeButtons.length > 0) {
-            console.log('YggTorrent Auto Close: Bouton de fermeture trouvé, clic en cours...');
+            console.log('Tampermonkey : Found promo close button, clicking...');
             closeButtons.forEach(button => button.click());
         } else {
-            console.log('YggTorrent Auto Close: Bouton de fermeture non trouvé');
+            console.log('Tampermonkey : No promo close button found');
         }
     }
 
-    // Exécute immédiatement et périodiquement au cas où la promo apparaît après chargement
+    // Execute the function now
     clickPromoCloseButton();
 
-    // Observer les changements dans le DOM pour détecter l'apparition de nouvelles promos
+    // Watch for changes on the page in case the banner appears later
     //const observer = new MutationObserver(function(mutations) {
     //    clickPromoCloseButton();
     //});
 
-    // Observer tout le document pour les modifications
+    // Watch for changes on the whole document
     //observer.observe(document.body, { childList: true, subtree: true });
 })();

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pierro-astro Right-Click and Selection Enabler
 // @namespace    http://tampermonkey.net/
-// @version      2025-06-02
+// @version      2025-06-05
 // @description  Re-enables right-click and text selection on websites with disabled interactions
 // @author       dragonis41
 // @match        https://www.pierro-astro.com/*
@@ -46,6 +46,10 @@
         document.addEventListener('selectstart', function(e) {
             e.stopPropagation();
         }, true);
+
+        // Override the oncopy event for the document body
+        document.body.oncopy = null;
+        document.oncopy = null;
 
         // Remove any existing selection prevention scripts
         const scripts = document.getElementsByTagName('script');

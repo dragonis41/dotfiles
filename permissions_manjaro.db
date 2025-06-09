@@ -1,6 +1,7 @@
 644;dragonis41:dragonis41;/home/dragonis41/.bashrc;710;dragonis41:dragonis41;/home/dragonis41;config/Manjaro/dragonis41/.bashrc
 600;dragonis41:dragonis41;/home/dragonis41/.config/htop/htoprc;700;dragonis41:dragonis41;/home/dragonis41/.config/htop;config/Manjaro/dragonis41/.config/htop/htoprc
 600;dragonis41:dragonis41;/home/dragonis41/.config/kglobalshortcutsrc;755;dragonis41:dragonis41;/home/dragonis41/.config;config/Manjaro/dragonis41/.config/kglobalshortcutsrc
+644;dragonis41:dragonis41;/home/dragonis41/.config/libinput-gestures.conf;755;dragonis41:dragonis41;/home/dragonis41/.config;config/Manjaro/dragonis41/.config/libinput-gestures.conf
 644;dragonis41:dragonis41;/home/dragonis41/.gitconfig;710;dragonis41:dragonis41;/home/dragonis41;config/Manjaro/dragonis41/.gitconfig
 644;dragonis41:dragonis41;/home/dragonis41/.gnupg/gpg-agent.conf;700;dragonis41:dragonis41;/home/dragonis41/.gnupg;config/Manjaro/dragonis41/.gnupg/gpg-agent.conf
 644;dragonis41:dragonis41;/home/dragonis41/.gnupg/public.key;700;dragonis41:dragonis41;/home/dragonis41/.gnupg;config/Manjaro/dragonis41/.gnupg/public.key

@@ -14,6 +14,7 @@ files=(
     "/home/${SUDO_USER}/.bashrc:${backup_folder}/${SUDO_USER}/"
     "/home/${SUDO_USER}/.config/htop/htoprc:${backup_folder}/${SUDO_USER}/.config/htop/"
     "/home/${SUDO_USER}/.config/kglobalshortcutsrc:${backup_folder}/${SUDO_USER}/.config/"
+    "/home/${SUDO_USER}/.config/libinput-gestures.conf:${backup_folder}/${SUDO_USER}/.config/"
     "/home/${SUDO_USER}/.gitconfig:${backup_folder}/${SUDO_USER}/"
     "/home/${SUDO_USER}/.gnupg/gpg-agent.conf:${backup_folder}/${SUDO_USER}/.gnupg/"
     "/home/${SUDO_USER}/.gnupg/public.key:${backup_folder}/${SUDO_USER}/.gnupg/"

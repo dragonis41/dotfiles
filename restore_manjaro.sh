@@ -37,7 +37,7 @@ function install_packages(){
         display_error "[Base packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing base packages [step 2/2] (It may take a long time)"
-    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux611 linux611-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager extra/libinput-gestures extra/gestures'
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux615 linux615-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager extra/libinput-gestures extra/gestures'
     then
         display_error "[Base packages] An error occurred will installing packages with yay"
     fi
@@ -49,7 +49,7 @@ function install_packages(){
     fi
     if [ "$var_install_nvidia" == "true" ]; then
         display_step "Installing Nvidia packages (It may take a long time)"
-        if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux614-nvidia optimus-manager bbswitch acpi_call'
+        if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux615-nvidia optimus-manager extra/bbswitch-dkms acpi_call libva-nvidia-driver --overwrite'
         then
             display_error "[Base packages] An error occurred will installing packages with yay"
         fi

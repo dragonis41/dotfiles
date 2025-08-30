@@ -124,7 +124,7 @@ alias gp='git push'
 alias gpg-yubi='gpg-connect-agent "scd serialno" "learn --force" /bye'
 alias history="omz_history -i | awk '{ printf \"\033[1;32m%s  \033[1;33m%s \033[1;33m%s \033[0m\", \$1, \$2, \$3; for(i=4; i<=NF; i++) printf \" \033[1;34m%s\033[0m\", \$i; printf \"\n\" }'"
 alias ip='ip -color'
-alias l='ls -laF --group-directories-first --color=auto'
+alias l='ls -lahF --group-directories-first --time-style="+%d-%m-%Y" --color=auto'
 alias lzd='lazydocker'
 alias pager='gum pager <'
 alias reboot-bios='sudo systemctl reboot --firmware-setup'
@@ -133,7 +133,7 @@ alias update='sudo pacman-mirrors -c ch,de,fr,nl; yay -Syyu; omz update; git -C 
 alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 # Fonctions
-chpwd() { ls -laF --group-directories-first --color=auto }  # ZSH function. Show the content of the folder we just cd into.
+chpwd() { ls -lahF --group-directories-first --time-style="+%d-%m-%Y" --color=auto }  # ZSH function. Show the content of the folder we just cd into.
 gpmr() {
     # Ensure target branch is provided
     if [ -z "$1" ]

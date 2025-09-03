@@ -49,7 +49,7 @@ function install_packages(){
     fi
     if [ "$var_install_nvidia" == "true" ]; then
         display_step "Installing Nvidia packages (It may take a long time)"
-        if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux616-nvidia optimus-manager extra/bbswitch-dkms acpi_call nvtop libva-nvidia-driver --overwrite'
+        if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux616-nvidia envycontrol extra/plasma6-applets-optimus-gpu-switcher nvtop libva-nvidia-driver --overwrite'
         then
             display_error "[Base packages] An error occurred will installing packages with yay"
         fi

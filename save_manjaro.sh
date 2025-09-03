@@ -50,8 +50,8 @@ files=(
     "/etc/sudoers.d/editor:${backup_folder}/etc/sudoers.d/"
     "/etc/udev/rules.d/99-custom.rules:${backup_folder}/etc/udev/"
     # Config for Nvidia graphic card
-    "/etc/optimus-manager/optimus-manager.conf:${backup_folder}/etc/optimus-manager/"
-    "/etc/X11/xorg.conf.d/10-optimus-manager.conf:${backup_folder}/etc/X11/xorg.conf.d/"
+    #"/etc/optimus-manager/optimus-manager.conf:${backup_folder}/etc/optimus-manager/"
+    #"/etc/X11/xorg.conf.d/10-optimus-manager.conf:${backup_folder}/etc/X11/xorg.conf.d/"
     "/etc/sddm.conf:${backup_folder}/etc/"
     "/etc/modprobe.d/nvidia-installer-disable-nouveau.conf:${backup_folder}/etc/"
     "/usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf:${backup_folder}/usr/lib/modprobe.d"

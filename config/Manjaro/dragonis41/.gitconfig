@@ -12,6 +12,7 @@
 	autoSetupRemote = true
 [alias]
 	unstage = reset HEAD --
+	uncommit = reset --soft HEAD~1
 [core]
 	autocrlf = input
 	editor = nano

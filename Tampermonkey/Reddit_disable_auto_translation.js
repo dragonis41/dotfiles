@@ -9,11 +9,11 @@
 // ==/UserScript==
 
 (function() {
-    'use strict';
-    let url = new URL(window.location.href);
-    if (url.searchParams.has('tl')) {
-        url.searchParams.delete('tl');
-        window.history.replaceState(null, '', url);
-        window.location.reload();
-    }
+  'use strict';
+  let url = new URL(window.location.href);
+  if (url.searchParams.has('tl')) {
+	url.searchParams.delete('tl');
+	window.history.replaceState(null, '', url);
+	window.location.reload();
+  }
 })();

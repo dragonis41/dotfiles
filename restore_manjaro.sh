@@ -8,8 +8,8 @@ database="permissions_manjaro.db"
 # Path of files used for Nvidia configuration.
 # If there is no Nvidia card, we need to exclude thoses files or the graphical environnement will not start.
 nvidia_config_files=(
-    "/etc/optimus-manager/optimus-manager.conf"
-    "/etc/X11/xorg.conf.d/10-optimus-manager.conf"
+    #"/etc/optimus-manager/optimus-manager.conf"
+    #"/etc/X11/xorg.conf.d/10-optimus-manager.conf"
     "/etc/sddm.conf"
     "/etc/modprobe.d/nvidia-installer-disable-nouveau.conf"
     "/usr/lib/modprobe.d/nvidia-installer-disable-nouveau.conf"

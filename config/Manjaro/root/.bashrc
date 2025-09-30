@@ -154,7 +154,7 @@ alias go-get='ssh-add -L && export GOPRIVATE=gitlab.dev.petit.ninja && go get -v
 alias gp='git push'
 alias gpg-yubi='gpg-connect-agent "scd serialno" "learn --force" /bye'
 alias ip='ip -color'
-alias l='ls -laF --group-directories-first --color=auto'
+alias l='ls -lahF --group-directories-first --time-style="+%d-%m-%Y" --color=auto'
 alias lzd='lazydocker'
 alias pager='gum pager <'
 alias reboot-bios='sudo systemctl reboot --firmware-setup'

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pierro-astro Right-Click and Selection Enabler
 // @namespace    http://tampermonkey.net/
-// @version      2025-06-05
+// @version      2025-09-30
 // @description  Re-enables right-click and text selection on websites with disabled interactions
 // @author       dragonis41
 // @match        https://www.pierro-astro.com/*
@@ -36,7 +36,7 @@
             // Remove any existing event listeners that prevent right-click
             img.oncontextmenu = null;
 
-            // Optional: Add default browser context menu back
+            // Add browser context menu back
             img.addEventListener('contextmenu', function(e) {
                 e.stopPropagation(); // Stop propagation of any parent prevention
             }, false);

@@ -1,21 +1,43 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-## Get all staged file.
-STAGED_GO_FILES=$(git diff --staged --name-only --diff-filter=d --)
-regex="/\.env(?:(?:_db)?(?:\.(?!ex[ae]mple|sample)[\w-]+)*)$/gm"
+import subprocess
+import re
+import sys
 
-## Check if there is staged file.
-if [[ -z $STAGED_GO_FILES ]]; then
-    echo -e "Check for env file...................................(no files to check)\x1B[44mSKIPPED\x1B[0m"
-## otherwise we can do stuff with these changed files.
-else
-    for file in $STAGED_GO_FILES; do
-        ## Check if the file is an environment file.
-        if [[ $file =~ $regex ]]; then
-            echo -e "Check for env file.......................................................\x1B[41mFAILED\x1B[0m"
-            echo -e "\x1B[31mAn environment file was found in staged files: \x1B[33m$file\x1B[0m"
-            exit 1
-        fi
-    done
-    echo -e "Check for env file.......................................................\x1B[42mPASSED\x1B[0m"
-fi
+staged_files = subprocess.run(
+    ["git", "diff", "--staged", "--name-only", "--diff-filter=d", "--"],
+    capture_output=True, text=True
+).stdout.strip().splitlines()
+
+regex = re.compile(r'\.env(?:_db)?(?:\d+)?(?:[.\-_](?!.*(?:ex[ae]mple|sample|template))[\w-]+)?$')
+
+if not staged_files:
+    print("Check for env file...................................(no files to check)\x1B[44mSKIPPED\x1B[0m")
+    sys.exit(0)
+
+found_files = []
+for file in staged_files:
+    if regex.search(file):
+        found_files.append(file)
+
+if found_files:
+    print("\x1B[31mEnvironment file(s) found in staged files:\x1B[0m")
+    for file in found_files:
+        print(f"  \x1B[33m{file}\x1B[0m")
+
+    try:
+        with open("/dev/tty", "r") as tty:
+            print("\nDo you want to proceed with the commit anyway? [y/N]: ", end="", flush=True)
+            response = tty.readline().strip()
+        if response.lower() in ("y", "yes"):
+            print("Check for env file.......................................................\x1B[43mSKIPPED\x1B[0m")
+            sys.exit(0)
+        else:
+            print("Check for env file.......................................................\x1B[41mFAILED\x1B[0m")
+            sys.exit(1)
+    except (EOFError, OSError):
+        print("Check for env file.......................................................\x1B[41mFAILED\x1B[0m")
+        sys.exit(1)
+else:
+    print("Check for env file.......................................................\x1B[42mPASSED\x1B[0m")
+    sys.exit(0)

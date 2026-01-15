@@ -15,12 +15,6 @@ _k_friendly_name=Keyboard Layout Switcher
 Toggle Screen Reader On and Off=Meta+Alt+S,Meta+Alt+S,Toggle Screen Reader On and Off
 _k_friendly_name=Accessibility
 
-[kcm_touchpad]
-Disable Touchpad=Touchpad Off,Touchpad Off,Disable Touchpad
-Enable Touchpad=Touchpad On,Touchpad On,Enable Touchpad
-Toggle Touchpad=Touchpad Toggle\tMeta+Ctrl+Zenkaku Hankaku,Touchpad Toggle\tMeta+Ctrl+Touchpad Toggle\tMeta+Ctrl+Zenkaku Hankaku,Toggle Touchpad
-_k_friendly_name=Touchpad
-
 [khotkeys]
 _k_friendly_name=Custom Shortcuts Service
 {d03619b6-9b3c-48cc-9d9c-a2aadb485550}=none,none,Search
@@ -118,14 +112,14 @@ Switch to Screen to the Right=none,,Switch to Screen to the Right
 Toggle Night Color=none,none,Suspend/Resume Night Light
 Toggle Window Raise/Lower=none,,Toggle Window Raise/Lower
 ToggleMouseClick=Meta+*,Meta+*,Toggle Mouse Click Animation
-Walk Through Windows=Alt+Tab,Alt+Tab,Walk Through Windows
-Walk Through Windows (Reverse)=Alt+Shift+Backtab,Alt+Shift+Tab,Walk Through Windows (Reverse)
-Walk Through Windows Alternative=none,,Walk Through Windows Alternative
-Walk Through Windows Alternative (Reverse)=none,,Walk Through Windows Alternative (Reverse)
-Walk Through Windows of Current Application=Alt+`,Alt+`,Walk Through Windows of Current Application
-Walk Through Windows of Current Application (Reverse)=Alt+~,Alt+~,Walk Through Windows of Current Application (Reverse)
-Walk Through Windows of Current Application Alternative=none,,Walk Through Windows of Current Application Alternative
-Walk Through Windows of Current Application Alternative (Reverse)=none,,Walk Through Windows of Current Application Alternative (Reverse)
+Walk Through Windows=Alt+Tab,Meta+Tab\tAlt+Tab,Walk Through Windows
+Walk Through Windows (Reverse)=Alt+Shift+Backtab,Meta+Shift+Tab\tAlt+Shift+Tab,Walk Through Windows (Reverse)
+Walk Through Windows Alternative=none,none,Walk Through Windows Alternative
+Walk Through Windows Alternative (Reverse)=none,none,Walk Through Windows Alternative (Reverse)
+Walk Through Windows of Current Application=Alt+`,Meta+`\tAlt+`,Walk Through Windows of Current Application
+Walk Through Windows of Current Application (Reverse)=Alt+~,Meta+~\tAlt+~,Walk Through Windows of Current Application (Reverse)
+Walk Through Windows of Current Application Alternative=none,none,Walk Through Windows of Current Application Alternative
+Walk Through Windows of Current Application Alternative (Reverse)=none,none,Walk Through Windows of Current Application Alternative (Reverse)
 Window Above Other Windows=none,,Keep Window Above Others
 Window Below Other Windows=none,,Keep Window Below Others
 Window Close=Alt+F4,Alt+F4,Close Window
@@ -153,7 +147,7 @@ Window One Screen Down=none,,Move Window One Screen Down
 Window One Screen Up=none,,Move Window One Screen Up
 Window One Screen to the Left=none,,Move Window One Screen to the Left
 Window One Screen to the Right=none,,Move Window One Screen to the Right
-Window Operations Menu=Alt+F3,Alt+F3,Window Operations Menu
+Window Operations Menu=Alt+F3,Alt+F3,Window Menu
 Window Pack Down=none,,Move Window Down
 Window Pack Left=none,,Move Window Left
 Window Pack Right=none,,Move Window Right
@@ -220,6 +214,25 @@ playpausemedia=Media Play,Media Play,Play/Pause media playback
 previousmedia=Media Previous,Media Previous,Media playback previous
 stopmedia=Media Stop,Media Stop,Stop media playback
 
+[org.chromium.Chromium]
+478052A905073DC9F19D155AE640E070-open-dashboard=none,none,Open dashboard
+478052A905073DC9F19D155AE640E070-open-dashboard-with-running-scripts=none,none,Open dashboard with the current tab's URL used as filter
+478052A905073DC9F19D155AE640E070-open-new-script=none,none,Open new script tab
+478052A905073DC9F19D155AE640E070-toggle-enable=none,none,Toggle enable state
+4FB873A69550818787C62385766CA0EF-autofill_card=none,none,Autofill the last used card for the current website
+4FB873A69550818787C62385766CA0EF-autofill_identity=none,none,Autofill the last used identity for the current website
+4FB873A69550818787C62385766CA0EF-autofill_login=none,none,Autofill the last used login for the current website
+4FB873A69550818787C62385766CA0EF-generate_password=none,none,Generate and copy a new random password to the clipboard
+4FB873A69550818787C62385766CA0EF-lock_vault=none,none,Lock the vault
+FA24903DD088BAFC532522C3A45188C5-launch-element-picker=none,none,Enter element picker mode
+FA24903DD088BAFC532522C3A45188C5-launch-element-zapper=none,none,Enter element zapper mode
+FA24903DD088BAFC532522C3A45188C5-launch-logger=none,none,Open the logger
+FA24903DD088BAFC532522C3A45188C5-open-dashboard=none,none,Open the dashboard
+FA24903DD088BAFC532522C3A45188C5-relax-blocking-mode=none,none,Relax blocking mode
+FA24903DD088BAFC532522C3A45188C5-toggle-cosmetic-filtering=none,none,Toggle cosmetic filtering
+FA24903DD088BAFC532522C3A45188C5-toggle-javascript=none,none,Toggle JavaScript
+_k_friendly_name=org.chromium.Chromium
+
 [org_kde_powerdevil]
 Decrease Keyboard Brightness=Keyboard Brightness Down,Keyboard Brightness Down,Decrease Keyboard Brightness
 Decrease Screen Brightness=Monitor Brightness Down,Monitor Brightness Down,Decrease Screen Brightness
@@ -237,6 +250,7 @@ _k_friendly_name=Power Management
 powerProfile=Battery\tMeta+B,Battery\tMeta+B,Switch Power Profile
 
 [plasmashell]
+Slideshow Wallpaper Next Image=none,,Next Wallpaper Image
 _k_friendly_name=plasmashell
 activate application launcher=Meta,Meta\tAlt+F1,Activate Application Launcher
 activate task manager entry 1=Meta+1,Meta+1,Activate Task Manager Entry 1
@@ -252,6 +266,8 @@ activate task manager entry 9=Meta+9,Meta+9,Activate Task Manager Entry 9
 activate widget 110=none,none,Activate Weather Report Widget
 activate widget 112=none,none,Activate Application Launcher Widget
 activate widget 143=none,none,Activate Icons-Only Task Manager Widget
+activate widget 205=none,none,Activate Application Launcher Widget
+activate widget 261=none,none,Activate Application Launcher Widget
 activate widget 3=Alt+F1,none,Activate Application Launcher Widget
 activate widget 5=none,none,Activate Application Launcher Widget
 activate widget 87=none,none,Activate Application Launcher Widget
@@ -260,7 +276,7 @@ clipboard_action=Meta+Ctrl+X,Meta+Ctrl+X,Automatic Action Popup Menu
 cycle-panels=Meta+Alt+P,Meta+Alt+P,Move keyboard focus between panels
 cycleNextAction=none,,Next History Item
 cyclePrevAction=none,,Previous History Item
-edit_clipboard=none,none,Edit Contents…
+edit_clipboard=none,,Edit Contents…
 manage activities=Meta+Q,Meta+Q,Show Activity Switcher
 next activity=Meta+A,none,Walk through activities
 previous activity=Meta+Shift+A,none,Walk through activities (Reverse)
@@ -268,7 +284,6 @@ repeat_action=Meta+Ctrl+R,,Manually Invoke Action on Current Clipboard
 show dashboard=Ctrl+F12,Ctrl+F12,Show Desktop
 show-barcode=none,,Show Barcode…
 show-on-mouse-pos=Meta+V,Meta+V,Show Clipboard Items at Mouse Position
-stop current activity=Meta+S,Meta+S,Stop Current Activity
 switch to next activity=none,,Switch to Next Activity
 switch to previous activity=none,,Switch to Previous Activity
 toggle do not disturb=none,,Toggle do not disturb
@@ -283,3 +298,6 @@ _launch=Meta+Ctrl+Alt+Shift+Space\tMeta+.\tMeta+;
 RecordWindow=none
 RectangularRegionScreenShot=Meta+Shift+S\tMeta+Shift+Print
 _launch=Print
+
+[services][org.kde.touchpadshortcuts.desktop]
+ToggleTouchpad=Touchpad Toggle\tMeta+Ctrl+Zenkaku Hankaku

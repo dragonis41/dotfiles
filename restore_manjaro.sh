@@ -37,7 +37,7 @@ function install_packages(){
         display_error "[Base packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing base packages [step 2/2] (It may take a long time)"
-    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux616 linux616-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager extra/libinput-gestures extra/gestures throttled'
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux618 linux618-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager extra/libinput-gestures extra/gestures throttled'
     then
         display_error "[Base packages] An error occurred will installing packages with yay"
     fi
@@ -49,7 +49,7 @@ function install_packages(){
     fi
     if [ "$var_install_nvidia" == "true" ]; then
         display_step "Installing Nvidia packages (It may take a long time)"
-        if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux616-nvidia envycontrol extra/plasma6-applets-optimus-gpu-switcher nvtop libva-nvidia-driver --overwrite'
+        if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux618-nvidia envycontrol extra/plasma6-applets-optimus-gpu-switcher nvtop libva-nvidia-driver --overwrite'
         then
             display_error "[Base packages] An error occurred will installing packages with yay"
         fi
@@ -68,7 +68,7 @@ function install_extra_packages(){
         display_error "[Extra packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing extra packages [step 2/2] (It may take a long time)"
-    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S brave-browser jetbrains-toolbox mattermost-desktop thunderbird vlc hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata'
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S brave-browser jetbrains-toolbox mattermost-desktop thunderbird vlc hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata plasma5-themes-sweet-full-git'
     then
         display_error "[Extra packages] An error occurred will installing packages with yay"
     fi

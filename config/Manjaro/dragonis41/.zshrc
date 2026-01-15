@@ -109,7 +109,7 @@ setopt SHARE_HISTORY # This option both imports new commands from the history fi
 
 
 # Alias
-alias ccopy='xclip -sel clip <'
+alias ccopy='xclip -sel clip'
 alias cls='clear'
 alias dcd='docker compose down --rmi all'
 alias dcu='docker compose up -d --always-recreate-deps --force-recreate --build'

@@ -13,6 +13,7 @@
 [alias]
 	unstage = reset HEAD --
 	uncommit = reset --soft HEAD~1
+	cleanup = "!git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D"
 [core]
 	autocrlf = input
 	editor = nano

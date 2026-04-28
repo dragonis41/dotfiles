@@ -124,7 +124,7 @@ alias gp='git push'
 alias gpg-yubi='gpg-connect-agent "scd serialno" "learn --force" /bye'
 alias history="omz_history -i | awk '{ printf \"\033[1;32m%s  \033[1;33m%s \033[1;33m%s \033[0m\", \$1, \$2, \$3; for(i=4; i<=NF; i++) printf \" \033[1;34m%s\033[0m\", \$i; printf \"\n\" }'"
 alias ip='ip -color'
-alias l='LC_COLLATE=C ls -lAhF --group-directories-first --time-style="+%d-%m-%Y" --color=auto'
+alias l='ls -lAhF --group-directories-first --time-style="+%d-%m-%Y" --color=auto'
 alias lzd='lazydocker'
 alias pager='gum pager <'
 alias reboot-bios='sudo systemctl reboot --firmware-setup'

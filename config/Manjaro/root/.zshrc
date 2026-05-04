@@ -152,7 +152,7 @@ search() { find -L . -name "*$**" }  # Search for a specific file name recursive
 searchcontent() { fd --type f --exec grep -H "$*" --color=always | sed -r "s/([^:]*):/\x1B[34m\1\x1B[0m:/" } # Search for a string in all files recursively.
 ghooks() {  # TUI to de/activate git hooks
   # Define the directories
-  local -a directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")
+  local -a directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d" "$HOME/.git-hooks/prepare-commit-msg.d")
 
   # Create an array to hold the files
   local -a elements=()
@@ -172,7 +172,8 @@ ghooks() {  # TUI to de/activate git hooks
 
   # Use gum to display a selectable list
   local result
-  result=$(gum choose --no-limit --selected=$elements_selected $elements)
+  local list_height=${#elements[@]}
+  result=$(gum choose --height $(( list_height > 20 ? 20 : list_height )) --no-limit --no-strip-ansi --cursor="➜ " --selected=$elements_selected $elements)
   # Check the exit status of dialog
   local dialog_status=$?
 

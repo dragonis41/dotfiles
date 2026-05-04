@@ -45,7 +45,7 @@ function install_packages(){
     then
         display_error "[Base packages] An error occurred will usermod input group for $SUDO_USER$"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
     if [ "$var_install_nvidia" == "true" ]; then
         display_step "Installing Nvidia packages (It may take a long time)"
@@ -77,14 +77,14 @@ function install_extra_packages(){
     then
         display_error "[Extra packages] An error occurred will enabling docker.service"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
     display_step "[Extra packages] Adding user ${SUDO_USER} to docker group"
     if ! usermod -aG docker "$SUDO_USER"
     then
         display_error "[Extra packages] An error occurred will usermod docker group for $SUDO_USER$"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
 }
 
@@ -104,49 +104,49 @@ function install_qemu(){
     then
         display_error "[Virt-manager - Qemu] An error occurred will adding ${SUDO_USER} to libvirt group"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
     display_step "[Virt-manager - Qemu] Enabling virtlogd.socket"
     if ! systemctl enable --now virtlogd.socket
     then
         display_error "[Virt-manager - Qemu] An error occurred will enabling virtlogd.socket"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
     display_step "[Virt-manager - Qemu] Enabling virtqemud.socket"
     if ! systemctl enable --now virtqemud.socket
     then
         display_error "[Virt-manager - Qemu] An error occurred will enabling virtqemud.socket"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
     display_step "[Virt-manager - Qemu] Enabling libvirtd.service"
     if ! systemctl enable --now libvirtd.service
     then
         display_error "[Virt-manager - Qemu] An error occurred will enabling libvirtd.service"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
     display_step "[Virt-manager - Qemu] Setting user rights to libvirt-sock"
     if ! setfacl -m user:"${SUDO_USER}":rw /var/run/libvirt/libvirt-sock
     then
         display_error "[Virt-manager - Qemu] An error occurred will setting user rights to libvirt-sock"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
     display_step "[Virt-manager - Qemu] Defining default Qemu network"
     if ! virsh net-define /etc/libvirt/qemu/networks/default.xml
     then
         display_error "[Virt-manager - Qemu] An error occurred will defining default Qemu network"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
     display_step "[Virt-manager - Qemu] Setting autostart on default Qemu network"
     if ! virsh net-autostart default
     then
         display_error "[Virt-manager - Qemu] An error occurred will setting autostart on Qemu network"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
 }
 
@@ -181,7 +181,7 @@ function configure_yubikey(){
     then
         display_error "[Yubikey] An error occurred will enabling pcscd.socket"
     else
-        echo -e "${green_color}ok${reset_color}"
+        display_success
     fi
 
     echo ""
@@ -317,6 +317,10 @@ function display_error {
   echo -e "${red_background_color}$1${reset_background_color}"
   echo -e "--------------------------------------------------------------------------------\n"
   exit 1
+}
+
+function display_success {
+  echo -e "${green_color}success${reset_color}"
 }
 
 

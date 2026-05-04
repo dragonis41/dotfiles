@@ -189,39 +189,35 @@ searchcontent() {
 }
 ghooks() {  # TUI to de/activate git hooks
   # Define the directories
-  local directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d")
+  local -a directories=("$HOME/.git-hooks/pre-commit.d" "$HOME/.git-hooks/commit-msg.d" "$HOME/.git-hooks/post-update.d" "$HOME/.git-hooks/prepare-commit-msg.d")
 
   # Create an array to hold the files
-  local elements=()
+  local -a elements=()
+  local -a elements_selected=()
 
   # Loop through each directory and each file in each directory
   for directory in "${directories[@]}"; do
     for file in "$directory"/*; do
+      # Add the file to the list
+      elements+=("$file")
       # Check if the file is executable
       if [[ -x "$file" ]]; then
-        elements+=("$file" "activated" "ON")  # If it is, add it to the array with a ON state
-      else
-        elements+=("$file" "deactivated" "OFF")  # If it isn't, add it to the array with a OFF state
+        elements_selected+=("$file")  # If it is, add it to the selected array
       fi
     done
   done
 
-  # Get terminal dimensions
-  local height=$(tput lines)
-  local width=$(tput cols)
-
-  # Use dialog to display a selectable list
+  # Use gum to display a selectable list
   local result
-  result=$(dialog --checklist "Activated hooks :" $((height-10)) $((width/3*2)) $((height/3*2-5)) "${elements[@]}" 3>&1 1>&2 2>&3 3>&-)
+  local list_height=${#elements[@]}
+  result=$(gum choose --height $(( list_height > 20 ? 20 : list_height )) --no-limit --no-strip-ansi --cursor="➜ " --selected=$elements_selected $elements)
   # Check the exit status of dialog
   local dialog_status=$?
 
-  clear
-
   # If the status is 1, the user clicked "Cancel", so exit the function
-  if [[ $dialog_status -eq 1 ]]; then
+  if [[ $dialog_status -ne 0 ]]; then
     echo -e "\x1B[33mCanceled\x1B[0m"
-    return
+    return 1
   fi
 
   # Reset permissions
@@ -229,16 +225,20 @@ ghooks() {  # TUI to de/activate git hooks
     chmod -x "$directory"/*
   done
 
+  if [[ -z "$result" ]]; then
+    return 0
+  fi
+
   # Convert result string to an array
-  local result_array
-  IFS=' ' read -ra result_array <<< "$result"
+  local -a result_array=("${(@f)result}")
 
   # Make executable every selected hook
   for item in "${result_array[@]}"; do
     chmod +x "$item"
   done
 
-  echo -e "\x1B[32mDone\x1B[0m"
+
+  return 0
 }
 gchelp() {
   echo -e "-------------------------------------------------------------------------------"

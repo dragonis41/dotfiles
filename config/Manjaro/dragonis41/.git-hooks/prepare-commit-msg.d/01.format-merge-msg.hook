@@ -1,0 +1,13 @@
+#!/bin/bash
+
+MSG_FILE=$1
+MSG_SOURCE=$2
+
+# We only want to modify the message if it's a merge
+if [ "$MSG_SOURCE" = "merge" ]; then
+    # Grab only the first line (the "Merge branch..." text)
+    # Prepend 'fix: ' and overwrite the file, which naturally
+    # removes all the default Git comments (#)
+    ORIGINAL_MSG=$(head -n 1 "$MSG_FILE")
+    echo "fix: $ORIGINAL_MSG" > "$MSG_FILE"
+fi

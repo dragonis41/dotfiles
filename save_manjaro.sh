@@ -41,6 +41,9 @@ files=(
     # Post update
     "/home/${SUDO_USER}/.git-hooks/post-update:${backup_folder}/${SUDO_USER}/.git-hooks/"
     "/home/${SUDO_USER}/.git-hooks/post-update.d/01.update-server-info.hook:${backup_folder}/${SUDO_USER}/.git-hooks/post-update.d/"
+    # Prepare commit message
+    "/home/${SUDO_USER}/.git-hooks/prepare-commit-msg:${backup_folder}/${SUDO_USER}/.git-hooks/"
+    "/home/${SUDO_USER}/.git-hooks/prepare-commit-msg.d/01.format-merge-msg.hook:${backup_folder}/${SUDO_USER}/.git-hooks/prepare-commit-msg.d/"
 
     ############################ System #############################
     "/etc/issue:${backup_folder}/etc/"
@@ -125,7 +128,7 @@ function init_database {
         fi
     fi
 
-    echo -e "${green_color}ok${reset_color}"
+    display_success
 }
 
 function cleaning {
@@ -145,7 +148,7 @@ function cleaning {
         display_error "[cleaning] An error occurred will chmod $SUDO_USER to backup files"
     fi
 
-    echo -e "${green_color}ok${reset_color}"
+    display_success
 }
 
 function display_step {
@@ -159,6 +162,10 @@ function display_error {
   echo -e "${red_background_color}$1${reset_background_color}"
   echo -e "--------------------------------------------------------------------------------\n"
   exit 1
+}
+
+function display_success {
+  echo -e "${green_color}success${reset_color}"
 }
 
 
@@ -189,7 +196,7 @@ for f in "${files[@]}"
 do
     mkcp "$f"
 done
-echo -e "${green_color}ok${reset_color}"
+display_success
 
 # Setting rights to the backup files
 cleaning

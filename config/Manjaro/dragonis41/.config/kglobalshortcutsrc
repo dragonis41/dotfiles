@@ -86,6 +86,11 @@ Switch to Desktop 18=none,,Switch to Desktop 18
 Switch to Desktop 19=none,,Switch to Desktop 19
 Switch to Desktop 2=Ctrl+F2,Ctrl+F2,Switch to Desktop 2
 Switch to Desktop 20=none,,Switch to Desktop 20
+Switch to Desktop 21=,,Switch to Desktop 21
+Switch to Desktop 22=,,Switch to Desktop 22
+Switch to Desktop 23=,,Switch to Desktop 23
+Switch to Desktop 24=,,Switch to Desktop 24
+Switch to Desktop 25=,,Switch to Desktop 25
 Switch to Desktop 3=Ctrl+F3,Ctrl+F3,Switch to Desktop 3
 Switch to Desktop 4=Ctrl+F4,Ctrl+F4,Switch to Desktop 4
 Switch to Desktop 5=none,,Switch to Desktop 5
@@ -178,6 +183,11 @@ Window to Desktop 18=none,,Window to Desktop 18
 Window to Desktop 19=none,,Window to Desktop 19
 Window to Desktop 2=none,,Window to Desktop 2
 Window to Desktop 20=none,,Window to Desktop 20
+Window to Desktop 21=,,Window to Desktop 21
+Window to Desktop 22=,,Window to Desktop 22
+Window to Desktop 23=,,Window to Desktop 23
+Window to Desktop 24=,,Window to Desktop 24
+Window to Desktop 25=,,Window to Desktop 25
 Window to Desktop 3=none,,Window to Desktop 3
 Window to Desktop 4=none,,Window to Desktop 4
 Window to Desktop 5=none,,Window to Desktop 5
@@ -212,6 +222,10 @@ pausemedia=Media Pause,Media Pause,Pause media playback
 playmedia=none,,Play media playback
 playpausemedia=Media Play,Media Play,Play/Pause media playback
 previousmedia=Media Previous,Media Previous,Media playback previous
+seekbackwardmedia=Media Rewind,Media Rewind,Media playback seek backward 5s
+seekbackwardmedialong=,,Media playback seek backward 30s
+seekforwardmedia=Media Fast Forward,Media Fast Forward,Media playback seek forward 5s
+seekforwardmedialong=,,Media playback seek forward 30s
 stopmedia=Media Stop,Media Stop,Stop media playback
 
 [org.chromium.Chromium]
@@ -295,6 +309,8 @@ _launch=Meta+T\tCtrl+Alt+T
 _launch=Meta+Ctrl+Alt+Shift+Space\tMeta+.\tMeta+;
 
 [services][org.kde.spectacle.desktop]
+CurrentMonitorScreenShot=
+OpenWithoutScreenshot=
 RecordWindow=none
 RectangularRegionScreenShot=Meta+Shift+S\tMeta+Shift+Print
 _launch=Print

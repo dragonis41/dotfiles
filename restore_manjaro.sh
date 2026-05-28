@@ -32,12 +32,12 @@ function install_packages(){
         display_error "[Base packages] An error occurred will updating the system"
     fi
     display_step "Installing base packages [step 1/2] (It may take a long time)"
-    if ! pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid gtk2 intel-ucode
+    if ! pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid intel-ucode
     then
         display_error "[Base packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing base packages [step 2/2] (It may take a long time)"
-    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux618 linux618-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager extra/libinput-gestures extra/gestures throttled'
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux618 linux618-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager libinput-gestures gestures throttled'
     then
         display_error "[Base packages] An error occurred will installing packages with yay"
     fi

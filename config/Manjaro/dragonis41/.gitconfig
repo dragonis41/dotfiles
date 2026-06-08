@@ -22,3 +22,5 @@
 	helper = store
 [url "ssh://git@gitlab.dev.petit.ninja/"]
 	insteadOf = https://gitlab.dev.petit.ninja/
+[init]
+	defaultBranch = main

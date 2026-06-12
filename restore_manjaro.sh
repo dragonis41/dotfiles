@@ -127,7 +127,7 @@ function install_qemu(){
     fi
     display_step "Installing Virt-manager libvirt and Qemu [step 2/2] (It may take a long time)"
     ensure_pacman_unlocked
-    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S qemu virt-manager libvirt'
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S --needed qemu virt-manager libvirt qemu-hw-display-qxl qemu-hw-display-virtio-gpu qemu-hw-display-virtio-gpu-pci qemu-ui-spice-core qemu-ui-spice-app qemu-audio-spice'
     then
         display_error "[Extra packages] An error occurred will installing packages with yay"
     fi

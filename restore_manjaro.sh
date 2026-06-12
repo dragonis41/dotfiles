@@ -24,9 +24,35 @@ nvidia_config_files=(
 ##################################################
 # FUNCTIONS
 ##################################################
+# Make sure no other package manager (e.g. Manjaro's pamac background updater)
+# is holding the pacman database lock before we run pacman/yay. Running two
+# package managers at once is what makes the logs look like concurrent
+# processes and can fail with "unable to lock database".
+function ensure_pacman_unlocked(){
+    local lock="/var/lib/pacman/db.lck"
+    local waited=0
+    while [ -e "$lock" ]; do
+        # If nothing actually holds the lock, it is stale: remove it and move on.
+        if ! fuser "$lock" >/dev/null 2>&1; then
+            display_step "Removing stale pacman lock ($lock)"
+            rm -f "$lock"
+            break
+        fi
+        if [ "$waited" -eq 0 ]; then
+            display_step "Waiting for another package manager to release the pacman lock (stop pamac to speed this up)"
+        fi
+        if [ "$waited" -ge 180 ]; then
+            display_error "Another package manager has held the pacman lock for over 180s. Stop it (e.g. 'systemctl stop pamac-daemon') and retry."
+        fi
+        sleep 3
+        waited=$((waited + 3))
+    done
+}
+
 function install_packages(){
     display_step "Updating package list and system packages (It may take a long time)"
     pacman-mirrors -c ch,de,fr,nl
+    ensure_pacman_unlocked
     if ! pacman -Syyu --noconfirm
     then
         display_error "[Base packages] An error occurred will updating the system"
@@ -37,6 +63,7 @@ function install_packages(){
         display_error "[Base packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing base packages [step 2/2] (It may take a long time)"
+    ensure_pacman_unlocked
     if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux618 linux618-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager libinput-gestures gestures throttled'
     then
         display_error "[Base packages] An error occurred will installing packages with yay"
@@ -49,6 +76,7 @@ function install_packages(){
     fi
     if [ "$var_install_nvidia" == "true" ]; then
         display_step "Installing Nvidia packages (It may take a long time)"
+        ensure_pacman_unlocked
         if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux618-nvidia envycontrol extra/plasma6-applets-optimus-gpu-switcher nvtop libva-nvidia-driver --overwrite'
         then
             display_error "[Base packages] An error occurred will installing packages with yay"
@@ -58,7 +86,8 @@ function install_packages(){
 
 function install_extra_packages(){
     display_step "Updating package list and system packages (It may take a long time)"
-    if ! pacman -Syyu --noconfirm
+    ensure_pacman_unlocked
+    if ! pacman -Syu --noconfirm
     then
         display_error "[Extra packages] An error occurred will updating the system"
     fi
@@ -68,6 +97,7 @@ function install_extra_packages(){
         display_error "[Extra packages] An error occurred will installing packages with pacman"
     fi
     display_step "Installing extra packages [step 2/2] (It may take a long time)"
+    ensure_pacman_unlocked
     if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S brave-browser jetbrains-toolbox mattermost-desktop thunderbird vlc hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata plasma5-themes-sweet-full-git'
     then
         display_error "[Extra packages] An error occurred will installing packages with yay"
@@ -90,11 +120,13 @@ function install_extra_packages(){
 
 function install_qemu(){
     display_step "Installing Virt-manager libvirt and Qemu [step 1/2]"
-    if ! pacman -S yay --noconfirm
+    ensure_pacman_unlocked
+    if ! pacman -Syu yay --noconfirm
     then
         display_error "[Virt-manager - Qemu] An error occurred will installing packages with pacman"
     fi
     display_step "Installing Virt-manager libvirt and Qemu [step 2/2] (It may take a long time)"
+    ensure_pacman_unlocked
     if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S qemu virt-manager libvirt'
     then
         display_error "[Extra packages] An error occurred will installing packages with yay"

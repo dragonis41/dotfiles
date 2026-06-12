@@ -355,9 +355,8 @@ function prompt_restore(){
     echo -e "This script will restore files for user [$SUDO_USER], if the already backed up files do not match this username, you can break your system !"
     read -rp "Continue ? [yn] " yn
     case $yn in
-        [Yy]* ) var_install_packages=true;;
-        [Nn]* ) var_install_packages=false;;
-        * ) echo "Please answer yes or no."; prompt_restore;;
+        [Yy]* ) return;;
+        * ) exit 0;;
     esac
 }
 prompt_restore

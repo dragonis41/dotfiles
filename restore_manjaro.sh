@@ -64,7 +64,7 @@ function install_packages(){
     fi
     display_step "Installing base packages [step 2/2] (It may take a long time)"
     ensure_pacman_unlocked
-    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux618 linux618-headers mkinitcpio-firmware autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager libinput-gestures gestures throttled'
+    if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux618 linux618-headers mkinitcpio-firmware plasma-x11-session autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager libinput-gestures gestures throttled'
     then
         display_error "[Base packages] An error occurred will installing packages with yay"
     fi

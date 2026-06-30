@@ -1,6 +1,7 @@
 [ActivityManager]
 _k_friendly_name=Activity Manager
 switch-to-activity-50546067-16c4-47bc-8aa0-ff7a1409137a=none,none,Switch to activity "Default"
+switch-to-activity-83d36569-507d-4f69-bd53-e4e0b4beda4f=none,none,Switch to activity "Default"
 switch-to-activity-e431abcd-42e5-4d6b-b7d1-186ece1d2793=none,none,Switch to activity "Default"
 
 [KDE Keyboard Layout Switcher]
@@ -54,6 +55,7 @@ ExposeClassCurrentDesktop=none,none,Toggle Present Windows (Window class on curr
 Grid View=Meta+G,Meta+G,Toggle Grid View
 Increase Opacity=none,,Increase Opacity of Active Window by 5%
 Kill Window=Meta+Ctrl+Esc,Meta+Ctrl+Esc,Kill Window
+Move Tablet to Next LogicalOutput=none,none,Move the tablet to the next output
 Move Tablet to Next Output=none,none,Move the tablet to the next output
 MoveMouseToCenter=Meta+F6,Meta+F6,Move Mouse to Center
 MoveMouseToFocus=Meta+F5,Meta+F5,Move Mouse to Focus
@@ -284,6 +286,7 @@ activate widget 205=none,none,Activate Application Launcher Widget
 activate widget 261=none,none,Activate Application Launcher Widget
 activate widget 3=Alt+F1,none,Activate Application Launcher Widget
 activate widget 5=none,none,Activate Application Launcher Widget
+activate widget 80=,none,Activate Application Launcher Widget
 activate widget 87=none,none,Activate Application Launcher Widget
 clear-history=none,,Clear Clipboard History
 clipboard_action=Meta+Ctrl+X,Meta+Ctrl+X,Automatic Action Popup Menu

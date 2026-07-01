@@ -55,22 +55,22 @@ function install_packages(){
     ensure_pacman_unlocked
     if ! pacman -Syyu --noconfirm
     then
-        display_error "[Base packages] An error occurred will updating the system"
+        display_error "[Base packages] An error occurred while updating the system"
     fi
     display_step "Installing base packages [step 1/2] (It may take a long time)"
     if ! pacman --noconfirm -S yay nano gnupg xclip git base base-devel go pcsc-tools ccid intel-ucode
     then
-        display_error "[Base packages] An error occurred will installing packages with pacman"
+        display_error "[Base packages] An error occurred while installing packages with pacman"
     fi
     display_step "Installing base packages [step 2/2] (It may take a long time)"
     ensure_pacman_unlocked
     if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S bind linux618 linux618-headers mkinitcpio-firmware plasma-x11-session autojump fprintd fd jq fx dialog gum noto-fonts-emoji mtr nano-syntax-highlighting partitionmanager libinput-gestures gestures throttled'
     then
-        display_error "[Base packages] An error occurred will installing packages with yay"
+        display_error "[Base packages] An error occurred while installing packages with yay"
     fi
     if ! usermod -aG input "$SUDO_USER"
     then
-        display_error "[Base packages] An error occurred will usermod input group for $SUDO_USER$"
+        display_error "[Base packages] An error occurred while usermod input group for $SUDO_USER$"
     else
         display_success
     fi
@@ -79,7 +79,7 @@ function install_packages(){
         ensure_pacman_unlocked
         if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S linux618-nvidia envycontrol extra/plasma6-applets-optimus-gpu-switcher nvtop libva-nvidia-driver --overwrite'
         then
-            display_error "[Base packages] An error occurred will installing packages with yay"
+            display_error "[Base packages] An error occurred while installing packages with yay"
         fi
     fi
 }
@@ -89,30 +89,30 @@ function install_extra_packages(){
     ensure_pacman_unlocked
     if ! pacman -Syu --noconfirm
     then
-        display_error "[Extra packages] An error occurred will updating the system"
+        display_error "[Extra packages] An error occurred while updating the system"
     fi
     display_step "Installing extra packages [step 1/2]"
     if ! pacman -S yay --noconfirm
     then
-        display_error "[Extra packages] An error occurred will installing packages with pacman"
+        display_error "[Extra packages] An error occurred while installing packages with pacman"
     fi
     display_step "Installing extra packages [step 2/2] (It may take a long time)"
     ensure_pacman_unlocked
     if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S brave-browser jetbrains-toolbox mattermost-desktop thunderbird vlc hopenpgp-tools yubikey-personalization docker docker-compose docker-machine lazydocker gpart mtools gparted visidata plasma5-themes-sweet-full-git'
     then
-        display_error "[Extra packages] An error occurred will installing packages with yay"
+        display_error "[Extra packages] An error occurred while installing packages with yay"
     fi
     display_step "[Extra packages] Enabling docker.service"
     if ! systemctl enable docker.service
     then
-        display_error "[Extra packages] An error occurred will enabling docker.service"
+        display_error "[Extra packages] An error occurred while enabling docker.service"
     else
         display_success
     fi
     display_step "[Extra packages] Adding user ${SUDO_USER} to docker group"
     if ! usermod -aG docker "$SUDO_USER"
     then
-        display_error "[Extra packages] An error occurred will usermod docker group for $SUDO_USER$"
+        display_error "[Extra packages] An error occurred while usermod docker group for $SUDO_USER$"
     else
         display_success
     fi
@@ -123,60 +123,56 @@ function install_qemu(){
     ensure_pacman_unlocked
     if ! pacman -Syu yay --noconfirm
     then
-        display_error "[Virt-manager - Qemu] An error occurred will installing packages with pacman"
+        display_error "[Virt-manager - Qemu] An error occurred while installing packages with pacman"
     fi
     display_step "Installing Virt-manager libvirt and Qemu [step 2/2] (It may take a long time)"
     ensure_pacman_unlocked
     if ! sudo -H -u "$SUDO_USER" bash -c 'yay --noconfirm --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop -S --needed qemu virt-manager libvirt qemu-hw-display-qxl qemu-hw-display-virtio-gpu qemu-hw-display-virtio-gpu-pci qemu-ui-spice-core qemu-ui-spice-app qemu-audio-spice'
     then
-        display_error "[Extra packages] An error occurred will installing packages with yay"
+        display_error "[Extra packages] An error occurred while installing packages with yay"
     fi
     display_step "[Virt-manager - Qemu] Adding user ${SUDO_USER} to libvirt group"
     if ! usermod -aG libvirt "$SUDO_USER"
     then
-        display_error "[Virt-manager - Qemu] An error occurred will adding ${SUDO_USER} to libvirt group"
+        display_error "[Virt-manager - Qemu] An error occurred while adding ${SUDO_USER} to libvirt group"
     else
         display_success
     fi
     display_step "[Virt-manager - Qemu] Enabling virtlogd.socket"
     if ! systemctl enable --now virtlogd.socket
     then
-        display_error "[Virt-manager - Qemu] An error occurred will enabling virtlogd.socket"
+        display_error "[Virt-manager - Qemu] An error occurred while enabling virtlogd.socket"
     else
         display_success
     fi
-    display_step "[Virt-manager - Qemu] Enabling virtqemud.socket"
-    if ! systemctl enable --now virtqemud.socket
-    then
-        display_error "[Virt-manager - Qemu] An error occurred will enabling virtqemud.socket"
-    else
-        display_success
-    fi
-    display_step "[Virt-manager - Qemu] Enabling libvirtd.service"
-    if ! systemctl enable --now libvirtd.service
-    then
-        display_error "[Virt-manager - Qemu] An error occurred will enabling libvirtd.service"
-    else
-        display_success
-    fi
+    display_step "[Virt-manager - Qemu] Unmasking and enabling modular libvirt sockets"
+    for socket in qemu network storage secret nodedev interface nwfilter; do
+        systemctl unmask "virt${socket}d.socket"
+        if ! systemctl enable --now "virt${socket}d.socket"
+        then
+            display_error "[Virt-manager - Qemu] An error occurred while enabling virt${socket}d.socket"
+        fi
+    done
+    display_success
+
     display_step "[Virt-manager - Qemu] Setting user rights to libvirt-sock"
     if ! setfacl -m user:"${SUDO_USER}":rw /var/run/libvirt/libvirt-sock
     then
-        display_error "[Virt-manager - Qemu] An error occurred will setting user rights to libvirt-sock"
+        display_error "[Virt-manager - Qemu] An error occurred while setting user rights to libvirt-sock"
     else
         display_success
     fi
     display_step "[Virt-manager - Qemu] Defining default Qemu network"
     if ! virsh net-define /etc/libvirt/qemu/networks/default.xml
     then
-        display_error "[Virt-manager - Qemu] An error occurred will defining default Qemu network"
+        display_error "[Virt-manager - Qemu] An error occurred while defining default Qemu network"
     else
         display_success
     fi
     display_step "[Virt-manager - Qemu] Setting autostart on default Qemu network"
     if ! virsh net-autostart default
     then
-        display_error "[Virt-manager - Qemu] An error occurred will setting autostart on Qemu network"
+        display_error "[Virt-manager - Qemu] An error occurred while setting autostart on Qemu network"
     else
         display_success
     fi
@@ -211,7 +207,7 @@ function configure_yubikey(){
     display_step "[Yubikey] Enabling pcscd.socket"
     if ! systemctl enable --now pcscd.socket
     then
-        display_error "[Yubikey] An error occurred will enabling pcscd.socket"
+        display_error "[Yubikey] An error occurred while enabling pcscd.socket"
     else
         display_success
     fi
@@ -224,7 +220,7 @@ function configure_yubikey(){
 
     if ! sudo -H -u "$SUDO_USER" bash -c 'gpg --import $HOME/.gnupg/public.key'
     then
-        display_error "[Yubikey] An error occurred will importing new GPG key"
+        display_error "[Yubikey] An error occurred while importing new GPG key"
     fi
 }
 
@@ -269,30 +265,30 @@ function copyfile(){
         # shellcheck disable=SC2174
         if ! mkdir "$folder_path" -m "$folder_permission" -p
         then
-            display_error "[copyfile()] An error occurred will creating $folder_path folder"
+            display_error "[copyfile()] An error occurred while creating $folder_path folder"
         fi
         if ! chown -R "$folder_group" "$folder_path"
         then
-            display_error "[copyfile()] An error occurred will chown $folder_path with $folder_group"
+            display_error "[copyfile()] An error occurred while chown $folder_path with $folder_group"
         fi
     fi
 
     # Copy each file by preserving its attributes.
     if ! cp -v --preserve=all "$backup_file" "$file_path"
     then
-        display_error "[copyfile()] An error occurred will copying $backup_file to $file_path"
+        display_error "[copyfile()] An error occurred while copying $backup_file to $file_path"
     fi
 
     # Set the right permission.
     if ! chmod "$file_permission" "$file_path"
     then
-        display_error "[copyfile()] An error occurred will chmod $file_path with $file_permission"
+        display_error "[copyfile()] An error occurred while chmod $file_path with $file_permission"
     fi
 
     # Set the right group.
     if ! chown "$file_group" "$file_path"
     then
-        display_error "[copyfile()] An error occurred will chown $file_path with $file_group"
+        display_error "[copyfile()] An error occurred while chown $file_path with $file_group"
     fi
 }
 
@@ -306,12 +302,12 @@ function display_end_message(){
                     display_step "[Fingerprint] Enrolling a new fingerprint"
                     if ! sudo -H -u "$SUDO_USER" bash -c 'fprintd-enroll '"$SUDO_USER"
                     then
-                        display_error "An error occurred will enrolling fingerprint"
+                        display_error "An error occurred while enrolling fingerprint"
                     fi
                     display_step "[Fingerprint] Verifying the newly registered fingerprint"
                     if ! sudo -H -u "$SUDO_USER" bash -c 'fprintd-verify'
                     then
-                        display_error "An error occurred will verifying fingerprint enroll"
+                        display_error "An error occurred while verifying fingerprint enroll"
                     fi
                 ;;
                 [Nn]* )

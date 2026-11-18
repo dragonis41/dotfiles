@@ -1,0 +1,134 @@
+---
+# ==============================================================================
+# 1. MAINTENANCE APT + FSTRIM ON ALL VMs
+# ==============================================================================
+- name: Global system update (apt + fstrim)
+  hosts: all_vms
+  become: yes
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  tasks:
+    - name: apt update and upgrade
+      apt:
+        update_cache: yes
+        upgrade: yes
+        dpkg_options: 'force-confdef,force-confold'
+
+    - name: apt autoremove --purge
+      apt:
+        autoremove: yes
+        purge: yes
+
+    - name: cleaning apt cache
+      command: apt-get clean
+      changed_when: false
+
+    - name: fstrim -av
+      command: fstrim -av
+      register: fstrim_out
+      changed_when: "'0 B' not in fstrim_out.stdout"
+
+# ==============================================================================
+# 2. STANDARD DOCKER COMPOSE STACK
+# ==============================================================================
+- name: Update docker images with docker compose
+  hosts: docker_compose_standard
+  tasks:
+    - name: pull and recreate with remove-orphans (compose file in ~/)
+      community.docker.docker_compose_v2:
+        project_src: "{{ ansible_facts['env']['HOME'] }}"
+        pull: always
+        state: present
+        remove_orphans: yes
+
+    - name: pruning old images, volumes and networks
+      command: docker system prune -f
+
+# ==============================================================================
+# 3. SPECIAL CASE : LAB-SATISFACTORY
+# ==============================================================================
+- name: Update Satisfactory with docker compose
+  hosts: lab-satisfactory
+  tasks:
+    - name: pull latest image
+      command: docker compose pull
+      args:
+        chdir: "{{ ansible_facts['env']['HOME'] }}"
+
+    - name: clean stop of the server
+      command: docker compose stop
+      args:
+        chdir: "{{ ansible_facts['env']['HOME'] }}"
+
+    - name: start again with remove-orphans
+      command: docker compose up -d --remove-orphans
+      args:
+        chdir: "{{ ansible_facts['env']['HOME'] }}"
+
+    - name: pruning old images, volumes and networks
+      command: docker system prune -f
+
+# ==============================================================================
+# 4. SPECIAL CASE : LAB-TRACKER (autonomous container)
+# ==============================================================================
+- name: Update Traccar container
+  hosts: lab-tracker
+  tasks:
+    - name: pull traccar/traccar:latest
+      community.docker.docker_image:
+        name: traccar/traccar:latest
+        source: pull
+        force_source: yes
+
+    - name: restarting Traccar container
+      community.docker.docker_container:
+        name: traccar
+        state: started
+        restart: yes
+
+    - name: pruning old images, volumes and networks
+      command: docker system prune -f
+
+# ==============================================================================
+# 5. SPECIAL CASE : LAB-DISCORD-BOTS (2 Git + build)
+# ==============================================================================
+- name: Update discord bots
+  hosts: lab-discord-bots
+  tasks:
+    - name: Git pull and build for discord-bot-ovh-email
+      shell: |
+        git fetch --all
+        git pull
+        docker compose up -d --build
+      args:
+        chdir: "{{ ansible_facts['env']['HOME'] }}/discord-bot-ovh-email"
+
+    - name: Git pull and build for discord-bot-moderation
+      shell: |
+        git fetch --all
+        git pull
+        docker compose up -d --build
+      args:
+        chdir: "{{ ansible_facts['env']['HOME'] }}/discord-bot-moderation"
+
+    - name: pruning old images, volumes and networks
+      command: docker system prune -f
+
+# ==============================================================================
+# 6. UPDATE LAZYDOCKER
+# ==============================================================================
+- name: Update Lazydocker
+  hosts: lazydocker_hosts
+  tasks:
+    - name: Download and install Lazydocker
+      shell: curl -s https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+      args:
+        executable: /bin/bash
+
+    - name: Move the binary to /usr/bin/lazydocker
+      become: yes
+      copy:
+        src: "{{ ansible_facts['env']['HOME'] }}/.local/bin/lazydocker"
+        dest: /usr/bin/lazydocker
+        mode: '0755'
+        remote_src: yes

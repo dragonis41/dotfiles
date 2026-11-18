@@ -48,8 +48,9 @@ plugins=(
 )
 
 # Exports
-# Options for GPG and SSH agents with Yubikey.
+export PATH="/home/dragonis41/.local/bin:$PATH"
 export PATH=${PATH}:$(go env GOPATH)/bin
+# Options for GPG and SSH agents with Yubikey.
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
@@ -130,6 +131,7 @@ alias pager='gum pager <'
 alias reboot-bios='sudo systemctl reboot --firmware-setup'
 alias restart-network='sudo systemctl restart NetworkManager.service'
 alias update='sudo pacman-mirrors -c ch,de,fr,nl; yay -Syyu; omz update; git -C ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k pull'
+alias update-lab='ANSIBLE_CONFIG=~/ansible/homelab/ansible.cfg ansible-playbook ~/ansible/homelab/update.yml -K'
 alias yay='yay --answerclean All --answerdiff None --answeredit None --cleanafter --removemake --sudoloop'
 
 # Fonctions

@@ -24,6 +24,11 @@ files=(
     "/home/${SUDO_USER}/.ssh/config:${backup_folder}/${SUDO_USER}/.ssh/"
     "/home/${SUDO_USER}/.zshrc:${backup_folder}/${SUDO_USER}/"
 
+    ########################### Ansible ###########################
+    "/home/${SUDO_USER}/ansible/homelab/ansible.cfg:${backup_folder}/${SUDO_USER}/ansible/homelab/"
+    "/home/${SUDO_USER}/ansible/homelab/hosts.ini:${backup_folder}/${SUDO_USER}/ansible/homelab/"
+    "/home/${SUDO_USER}/ansible/homelab/update.yml:${backup_folder}/${SUDO_USER}/ansible/homelab/"
+
     ########################### Git Hooks ###########################
     # Pre commit
     "/home/${SUDO_USER}/.git-hooks/pre-commit:${backup_folder}/${SUDO_USER}/.git-hooks/"

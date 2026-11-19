@@ -13,6 +13,12 @@
         update_cache: yes
         upgrade: yes
         dpkg_options: 'force-confdef,force-confold'
+      register: apt_res
+
+    - name: show upgraded apt packages
+      debug:
+        var: apt_res.stdout_lines
+      when: apt_res.changed
 
     - name: apt autoremove --purge
       apt:
@@ -26,7 +32,7 @@
     - name: fstrim -av
       command: fstrim -av
       register: fstrim_out
-      changed_when: "'0 B' not in fstrim_out.stdout"
+      changed_when: false
 
 # ==============================================================================
 # 2. STANDARD DOCKER COMPOSE STACK
@@ -40,9 +46,25 @@
         pull: always
         state: present
         remove_orphans: yes
+      register: compose_res
+      retries: 3
+      delay: 5
+      until: compose_res is not failed
+
+    - name: show updated containers
+      debug:
+        var: compose_res.actions
+      when: compose_res.changed
 
     - name: pruning old images, volumes and networks
       command: docker system prune -f
+      register: prune_res
+      changed_when: "'Total reclaimed space: 0B' not in prune_res.stdout"
+
+    - name: show reclaimed docker space
+      debug:
+        msg: "{{ prune_res.stdout_lines[-1] }}"
+      when: prune_res.changed
 
 # ==============================================================================
 # 3. SPECIAL CASE : LAB-SATISFACTORY
@@ -51,22 +73,34 @@
   hosts: lab-satisfactory
   tasks:
     - name: pull latest image
-      command: docker compose pull
-      args:
-        chdir: "{{ ansible_facts['env']['HOME'] }}"
+      community.docker.docker_compose_v2_pull:
+        project_src: "{{ ansible_facts['env']['HOME'] }}"
+      register: sat_pull
+      retries: 3
+      delay: 5
+      until: sat_pull is not failed
 
     - name: clean stop of the server
       command: docker compose stop
       args:
         chdir: "{{ ansible_facts['env']['HOME'] }}"
+      when: sat_pull.changed
 
     - name: start again with remove-orphans
       command: docker compose up -d --remove-orphans
       args:
         chdir: "{{ ansible_facts['env']['HOME'] }}"
+      when: sat_pull.changed
 
     - name: pruning old images, volumes and networks
       command: docker system prune -f
+      register: prune_res
+      changed_when: "'Total reclaimed space: 0B' not in prune_res.stdout"
+
+    - name: show reclaimed docker space
+      debug:
+        msg: "{{ prune_res.stdout_lines[-1] }}"
+      when: prune_res.changed
 
 # ==============================================================================
 # 4. SPECIAL CASE : LAB-TRACKER (autonomous container)
@@ -79,15 +113,27 @@
         name: traccar/traccar:latest
         source: pull
         force_source: yes
+      register: traccar_pull
+      retries: 3
+      delay: 5
+      until: traccar_pull is not failed
 
     - name: restarting Traccar container
       community.docker.docker_container:
         name: traccar
         state: started
         restart: yes
+      when: traccar_pull.changed
 
     - name: pruning old images, volumes and networks
       command: docker system prune -f
+      register: prune_res
+      changed_when: "'Total reclaimed space: 0B' not in prune_res.stdout"
+
+    - name: show reclaimed docker space
+      debug:
+        msg: "{{ prune_res.stdout_lines[-1] }}"
+      when: prune_res.changed
 
 # ==============================================================================
 # 5. SPECIAL CASE : LAB-DISCORD-BOTS (2 Git + build)
@@ -98,21 +144,40 @@
     - name: Git pull and build for discord-bot-ovh-email
       shell: |
         git fetch --all
-        git pull
-        docker compose up -d --build
+        OUT=$(git pull)
+        echo "$OUT"
+        if [[ "$OUT" != *"Already up to date."* ]]; then
+          docker compose up -d --build
+        fi
       args:
         chdir: "{{ ansible_facts['env']['HOME'] }}/discord-bot-ovh-email"
+        executable: /bin/bash
+      register: bot1_res
+      changed_when: "'Already up to date.' not in bot1_res.stdout"
 
     - name: Git pull and build for discord-bot-moderation
       shell: |
         git fetch --all
-        git pull
-        docker compose up -d --build
+        OUT=$(git pull)
+        echo "$OUT"
+        if [[ "$OUT" != *"Already up to date."* ]]; then
+          docker compose up -d --build
+        fi
       args:
         chdir: "{{ ansible_facts['env']['HOME'] }}/discord-bot-moderation"
+        executable: /bin/bash
+      register: bot2_res
+      changed_when: "'Already up to date.' not in bot2_res.stdout"
 
     - name: pruning old images, volumes and networks
       command: docker system prune -f
+      register: prune_res
+      changed_when: "'Total reclaimed space: 0B' not in prune_res.stdout"
+
+    - name: show reclaimed docker space
+      debug:
+        msg: "{{ prune_res.stdout_lines[-1] }}"
+      when: prune_res.changed
 
 # ==============================================================================
 # 6. UPDATE LAZYDOCKER
@@ -124,6 +189,7 @@
       shell: curl -s https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
       args:
         executable: /bin/bash
+      changed_when: false
 
     - name: Move the binary to /usr/bin/lazydocker
       become: yes

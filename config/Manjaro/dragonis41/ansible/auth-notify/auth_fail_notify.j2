@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# Configuration
+TOPIC_URL="https://notify.guillaume-pinon.eu/ssh"
+CURRENT_SERVER="{{ inventory_hostname }}"
+NTFY_TOKEN="{{ ntfy_token }}"
+COOLDOWN_SECONDS=60
+
+declare -A last_alert_time
+
+send_post_request() {
+    local ip=$1
+    local username=$2
+    local timestamp=$3
+    local failure_type=$4
+
+    curl -sS -X POST \
+        -H "Authorization: Bearer $NTFY_TOKEN" \
+        -H "Title: Auth failure detected" \
+        -H "Priority: urgent" \
+        -H "Tags: warning" \
+        -d "Server : $CURRENT_SERVER
+IP / Source : $ip
+User : $username
+At : $timestamp
+Failure type : $failure_type
+
+Act right away" "$TOPIC_URL" > /dev/null 2>&1 &
+}
+
+echo "Script started at $(date)"
+
+journalctl SYSLOG_IDENTIFIER=sshd SYSLOG_IDENTIFIER=sudo SYSLOG_IDENTIFIER=su -f -n 0 -o cat | while read -r message; do
+    username=""
+    ip=""
+    failure_type=""
+
+    if [[ "$message" =~ Failed\ (password|publickey)\ for\ (invalid\ user\ )?([^ ]+)\ from\ ([0-9a-fA-F.:]+) ]]; then
+        auth_method="${BASH_REMATCH[1]}"
+        is_invalid="${BASH_REMATCH[2]}"
+        username="${BASH_REMATCH[3]}"
+        ip="${BASH_REMATCH[4]}"
+
+        if [[ -n "$is_invalid" ]]; then
+            failure_type="SSH: Failed $auth_method (Invalid user)"
+        else
+            failure_type="SSH: Failed $auth_method"
+        fi
+
+    elif [[ "$message" =~ ^Invalid\ user\ ([^ ]+)\ from\ ([0-9a-fA-F.:]+) ]]; then
+        username="${BASH_REMATCH[1]}"
+        ip="${BASH_REMATCH[2]}"
+        failure_type="SSH: Invalid user attempt"
+
+    elif [[ "$message" =~ Connection\ (closed|reset)\ by\ authenticating\ user\ ([^ ]+)\ ([0-9a-fA-F.:]+).*\[preauth\] ]]; then
+        username="${BASH_REMATCH[2]}"
+        ip="${BASH_REMATCH[3]}"
+        failure_type="SSH: Pre-auth disconnect (${BASH_REMATCH[1]})"
+
+    elif [[ "$message" =~ Unable\ to\ negotiate\ with\ ([0-9a-fA-F.:]+)\ port\ [0-9]+:\ no\ matching\ ([^:]+) ]]; then
+        username="N/A"
+        ip="${BASH_REMATCH[1]}"
+        failure_type="SSH: Negotiation failed (${BASH_REMATCH[2]})"
+
+    elif [[ "$message" =~ pam_unix\((sudo|su|su-l):auth\):\ authentication\ failure.*ruser=([^ ]*).*user=([^ ]+) ]]; then
+        service="${BASH_REMATCH[1]}"
+        calling_user="${BASH_REMATCH[2]:-unknown}"
+        target_user="${BASH_REMATCH[3]}"
+        username="${calling_user} -> ${target_user}"
+        ip="local (${service})"
+        failure_type="${service^^}: Wrong password"
+
+    elif [[ "$message" =~ ^[[:space:]]*([^ ]+)[[:space:]]*:[[:space:]]*user\ NOT\ in\ sudoers.*COMMAND=(.*)$ ]]; then
+        username="${BASH_REMATCH[1]}"
+        cmd="${BASH_REMATCH[2]}"
+        ip="local (sudo)"
+        failure_type="SUDO: User not in sudoers (Cmd: $cmd)"
+    fi
+
+    if [[ -n "$failure_type" && -n "$ip" ]]; then
+        now=$(date +%s)
+        rate_key="${ip}_${username}"
+        last_seen=${last_alert_time["$rate_key"]:-0}
+
+        if (( now - last_seen >= COOLDOWN_SECONDS )); then
+            last_alert_time["$rate_key"]=$now
+            timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+            send_post_request "$ip" "$username" "$timestamp" "$failure_type"
+        fi
+    fi
+done

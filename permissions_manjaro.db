@@ -11,8 +11,13 @@
 644;dragonis41:dragonis41;/home/dragonis41/.ssh/config;700;dragonis41:dragonis41;/home/dragonis41/.ssh;config/Manjaro/dragonis41/.ssh/config
 644;dragonis41:dragonis41;/home/dragonis41/.zshrc;710;dragonis41:dragonis41;/home/dragonis41;config/Manjaro/dragonis41/.zshrc
 644;dragonis41:dragonis41;/home/dragonis41/ansible/homelab/ansible.cfg;755;dragonis41:dragonis41;/home/dragonis41/ansible/homelab;config/Manjaro/dragonis41/ansible/homelab/ansible.cfg
-644;dragonis41:dragonis41;/home/dragonis41/ansible/homelab/hosts.ini;755;dragonis41:dragonis41;/home/dragonis41/ansible/homelab;config/Manjaro/dragonis41/ansible/homelab/hosts.ini
+644;dragonis41:dragonis41;/home/dragonis41/ansible/homelab/inventory.ini;755;dragonis41:dragonis41;/home/dragonis41/ansible/homelab;config/Manjaro/dragonis41/ansible/homelab/inventory.ini
 644;dragonis41:dragonis41;/home/dragonis41/ansible/homelab/update.yml;755;dragonis41:dragonis41;/home/dragonis41/ansible/homelab;config/Manjaro/dragonis41/ansible/homelab/update.yml
+644;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify/ansible.cfg;755;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify;config/Manjaro/dragonis41/ansible/auth-notify/ansible.cfg
+644;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify/auth_fail_notify.j2;755;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify;config/Manjaro/dragonis41/ansible/auth-notify/auth_fail_notify.j2
+644;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify/auth-fail-notify.service;755;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify;config/Manjaro/dragonis41/ansible/auth-notify/auth-fail-notify.service
+644;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify/deploy.yml;755;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify;config/Manjaro/dragonis41/ansible/auth-notify/deploy.yml
+644;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify/inventory.ini;755;dragonis41:dragonis41;/home/dragonis41/ansible/auth-notify;config/Manjaro/dragonis41/ansible/auth-notify/inventory.ini
 755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/pre-commit;755;dragonis41:dragonis41;/home/dragonis41/.git-hooks;config/Manjaro/dragonis41/.git-hooks/pre-commit
 755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/pre-commit.d/01.check-for-private-key.hook;755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/pre-commit.d;config/Manjaro/dragonis41/.git-hooks/pre-commit.d/01.check-for-private-key.hook
 755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/pre-commit.d/02.check-for-env-files.hook;755;dragonis41:dragonis41;/home/dragonis41/.git-hooks/pre-commit.d;config/Manjaro/dragonis41/.git-hooks/pre-commit.d/02.check-for-env-files.hook

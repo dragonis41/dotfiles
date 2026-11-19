@@ -26,8 +26,14 @@ files=(
 
     ########################### Ansible ###########################
     "/home/${SUDO_USER}/ansible/homelab/ansible.cfg:${backup_folder}/${SUDO_USER}/ansible/homelab/"
-    "/home/${SUDO_USER}/ansible/homelab/hosts.ini:${backup_folder}/${SUDO_USER}/ansible/homelab/"
+    "/home/${SUDO_USER}/ansible/homelab/inventory.ini:${backup_folder}/${SUDO_USER}/ansible/homelab/"
     "/home/${SUDO_USER}/ansible/homelab/update.yml:${backup_folder}/${SUDO_USER}/ansible/homelab/"
+
+    "/home/${SUDO_USER}/ansible/auth-notify/ansible.cfg:${backup_folder}/${SUDO_USER}/ansible/auth-notify/"
+    "/home/${SUDO_USER}/ansible/auth-notify/auth_fail_notify.j2:${backup_folder}/${SUDO_USER}/ansible/auth-notify/"
+    "/home/${SUDO_USER}/ansible/auth-notify/auth-fail-notify.service:${backup_folder}/${SUDO_USER}/ansible/auth-notify/"
+    "/home/${SUDO_USER}/ansible/auth-notify/deploy.yml:${backup_folder}/${SUDO_USER}/ansible/auth-notify/"
+    "/home/${SUDO_USER}/ansible/auth-notify/inventory.ini:${backup_folder}/${SUDO_USER}/ansible/auth-notify/"
 
     ########################### Git Hooks ###########################
     # Pre commit

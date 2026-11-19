@@ -1,0 +1,77 @@
+---
+- name: Deploy and migrate auth-fail-notify across all VMs
+  hosts: all_vms
+  become: yes
+  vars:
+    ntfy_token: "CHANGE-ME"
+
+  tasks:
+    - name: 1. Stop and disable old ssh-fail-notify service if present
+      ansible.builtin.systemd:
+        name: ssh-fail-notify
+        state: stopped
+        enabled: no
+      register: old_service_stop
+      failed_when: false
+      changed_when: old_service_stop.status is defined and old_service_stop.status.ActiveState == 'inactive'
+
+    - name: 2. Remove old service unit file and script if present
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/systemd/system/ssh-fail-notify.service
+        - /usr/local/bin/ssh_fail_notify
+
+    - name: 3. Ensure /usr/local/bin exists
+      ansible.builtin.file:
+        path: /usr/local/bin
+        state: directory
+        mode: '0755'
+
+    - name: 4. Deploy auth_fail_notify script from template
+      ansible.builtin.template:
+        src: auth_fail_notify.j2
+        dest: /usr/local/bin/auth_fail_notify
+        owner: root
+        group: root
+        mode: '0744'
+      notify: Restart auth-fail-notify
+
+    - name: 5. Deploy systemd service file
+      ansible.builtin.copy:
+        src: auth-fail-notify.service
+        dest: /etc/systemd/system/auth-fail-notify.service
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart auth-fail-notify
+
+    - name: 6. Reload systemd and enable/start auth-fail-notify
+      ansible.builtin.systemd:
+        name: auth-fail-notify
+        daemon_reload: yes
+        state: started
+        enabled: yes
+
+    - name: 7. Wait briefly to ensure service does not crash on startup
+      ansible.builtin.pause:
+        seconds: 2
+
+    - name: 8. Check auth-fail-notify service status
+      ansible.builtin.systemd:
+        name: auth-fail-notify
+      register: service_status
+      failed_when: service_status.status.ActiveState != 'active' or service_status.status.SubState != 'running'
+
+    - name: 9. Verify recent logs for errors
+      ansible.builtin.command: journalctl -u auth-fail-notify -n 5 --no-pager
+      register: service_logs
+      changed_when: false
+      failed_when: "'Script started at' not in service_logs.stdout"
+
+  handlers:
+    - name: Restart auth-fail-notify
+      ansible.builtin.systemd:
+        name: auth-fail-notify
+        state: restarted

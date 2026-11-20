@@ -4,41 +4,49 @@
 # ==============================================================================
 - name: Global system update (apt + fstrim)
   hosts: all_vms
-  become: yes
   environment:
     DEBIAN_FRONTEND: noninteractive
   tasks:
-    - name: apt update and upgrade
-      apt:
-        update_cache: yes
-        upgrade: yes
-        dpkg_options: 'force-confdef,force-confold'
-      register: apt_res
+    - name: System maintenance as root
+      become: yes
+      block:
+        - name: apt update and upgrade
+          apt:
+            update_cache: yes
+            upgrade: yes
+            dpkg_options: 'force-confdef,force-confold'
+          register: apt_res
 
-    - name: show upgraded apt packages
-      debug:
-        var: apt_res.stdout_lines
-      when: apt_res.changed
+        - name: show upgraded apt packages
+          debug:
+            msg: >-
+              {{
+                apt_res.stdout_lines
+                | select('match', '^(The following |  |[0-9]+ upgraded,)')
+                | list
+              }}
+          when: apt_res.changed
 
-    - name: apt autoremove --purge
-      apt:
-        autoremove: yes
-        purge: yes
+        - name: apt autoremove --purge
+          apt:
+            autoremove: yes
+            purge: yes
 
-    - name: cleaning apt cache
-      command: apt-get clean
-      changed_when: false
+        - name: cleaning apt cache
+          command: apt-get clean
+          changed_when: false
 
-    - name: fstrim -av
-      command: fstrim -av
-      register: fstrim_out
-      changed_when: false
+        - name: fstrim -av
+          command: fstrim -av
+          register: fstrim_out
+          changed_when: false
 
 # ==============================================================================
 # 2. STANDARD DOCKER COMPOSE STACK
 # ==============================================================================
 - name: Update docker images with docker compose
   hosts: docker_compose_standard
+  gather_facts: false
   tasks:
     - name: pull and recreate with remove-orphans (compose file in ~/)
       community.docker.docker_compose_v2:
@@ -71,6 +79,7 @@
 # ==============================================================================
 - name: Update Satisfactory with docker compose
   hosts: lab-satisfactory
+  gather_facts: false
   tasks:
     - name: pull latest image
       community.docker.docker_compose_v2_pull:
@@ -107,6 +116,7 @@
 # ==============================================================================
 - name: Update Traccar container
   hosts: lab-tracker
+  gather_facts: false
   tasks:
     - name: pull traccar/traccar:latest
       community.docker.docker_image:
@@ -140,6 +150,7 @@
 # ==============================================================================
 - name: Update discord bots
   hosts: lab-discord-bots
+  gather_facts: false
   tasks:
     - name: Git pull and build for discord-bot-ovh-email
       shell: |
@@ -184,6 +195,7 @@
 # ==============================================================================
 - name: Update Lazydocker
   hosts: lazydocker_hosts
+  gather_facts: false
   tasks:
     - name: Download and install Lazydocker
       shell: curl -s https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
